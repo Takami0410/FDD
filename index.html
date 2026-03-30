@@ -1,91 +1,651 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="UTF-8">
-<title>Futsal Club</title>
-<link rel="stylesheet" href="css/style.css">
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BOUNDLESS FC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600&family=Barlow:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --black: #0a0a0a;
+      --white: #f4f4f4;
+      --gray:  #666;
+      --line:  #222;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-cond:    'Barlow Condensed', sans-serif;
+      --font-body:    'Barlow', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--white); }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 28px 56px;
+      transition: padding 0.3s, background 0.3s, border-color 0.3s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      padding: 18px 56px;
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(8px);
+      border-color: var(--line);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 22px; letter-spacing: 5px;
+      color: var(--white); text-decoration: none;
+    }
+    .nav-links {
+      display: flex; gap: 40px; list-style: none;
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+    }
+    .nav-links a {
+      color: var(--gray); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-join {
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--black); background: var(--white);
+      padding: 9px 24px; text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-join:hover { background: var(--gray); color: var(--white); }
+
+    /* ── HERO ── */
+    .hero {
+      height: 100vh; min-height: 640px;
+      position: relative;
+      display: flex; align-items: flex-end;
+      padding: 0 56px 72px;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('assets/images/8520ae62-a61d-40bb-b34c-4b3b897d2247.jpg') center/cover no-repeat;
+      filter: brightness(0.35);
+    }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-label {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gray); margin-bottom: 20px;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(72px, 11vw, 148px);
+      line-height: 0.9; letter-spacing: 2px;
+      margin-bottom: 32px;
+    }
+    .hero-title .stroke {
+      -webkit-text-stroke: 1px var(--white);
+      color: transparent;
+    }
+    .hero-actions {
+      display: flex; gap: 20px; align-items: center;
+    }
+    .btn-white {
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--black); background: var(--white);
+      padding: 13px 36px; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-white:hover { background: #ccc; }
+    .btn-line {
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--white);
+      padding: 13px 0;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-line:hover { border-color: var(--white); }
+
+    .hero-stats {
+      position: absolute; bottom: 72px; right: 56px; z-index: 2;
+      display: flex; gap: 48px;
+    }
+    .stat { text-align: right; }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 42px; line-height: 1;
+    }
+    .stat-label {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--gray); margin-top: 2px;
+    }
+
+    /* ── DIVIDER ── */
+    .rule { border: none; border-top: 1px solid var(--line); }
+
+    /* ── SECTION BASE ── */
+    .section { padding: 96px 56px; }
+    .section-sm { padding: 72px 56px; }
+
+    .label {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gray); margin-bottom: 20px;
+    }
+    .heading {
+      font-family: var(--font-display);
+      font-size: clamp(44px, 6vw, 80px);
+      line-height: 0.95; letter-spacing: 1px;
+    }
+    .heading .stroke {
+      -webkit-text-stroke: 1px var(--white);
+      color: transparent;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+      margin-top: 64px;
+    }
+    .about-img {
+      width: 100%; height: 520px;
+      object-fit: cover;
+      display: block;
+      filter: contrast(1.05);
+      transition: filter 0.5s;
+    }
+    .about-img:hover { filter: contrast(1.05); }
+
+    .about-body p {
+      font-size: 15px; line-height: 1.8; color: var(--gray);
+      margin-bottom: 20px;
+    }
+    .features {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: var(--line);
+      margin-top: 40px;
+    }
+    .feat {
+      background: var(--black);
+      padding: 20px 22px;
+      font-family: var(--font-cond);
+    }
+    .feat-name {
+      font-size: 14px; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: var(--white); margin-bottom: 4px;
+    }
+    .feat-sub { font-size: 12px; color: var(--gray); }
+
+    /* ── GALLERY ── */
+    .gallery-section { background: #111; padding: 96px 56px; }
+    .gallery-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 40px;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 280px 220px;
+      gap: 4px;
+    }
+    .g-item {
+      overflow: hidden;
+    }
+    .g-item img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: filter 0.5s, transform 0.5s;
+    }
+    .g-item:hover img { filter: grayscale(0%); transform: scale(1.04); }
+    .g1 { grid-column: 1; grid-row: 1 / 3; }
+
+    /* ── ACTIVITIES ── */
+    .activities-section { padding: 96px 56px; }
+    .activities-list {
+      margin-top: 56px;
+      border-top: 1px solid var(--line);
+    }
+    .activity-row {
+      display: flex; align-items: center;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none; color: var(--white);
+      gap: 32px;
+      transition: padding-left 0.3s;
+    }
+    .activity-row:hover { padding-left: 16px; }
+    .activity-num {
+      font-family: var(--font-display);
+      font-size: 16px; color: var(--gray);
+      min-width: 36px;
+    }
+    .activity-name {
+      font-family: var(--font-display);
+      font-size: 36px; letter-spacing: 1px;
+      flex: 1;
+    }
+    .activity-tag {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gray);
+    }
+    .activity-arrow {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gray);
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .activity-row:hover .activity-arrow { opacity: 1; color: var(--white); }
+
+    /* ── NEWS ── */
+    .news-section { background: #111; padding: 96px 56px; }
+    .news-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 40px;
+    }
+    .news-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--line);
+    }
+    .news-card {
+      background: #111;
+      padding: 32px;
+      text-decoration: none; color: var(--white);
+      display: flex; flex-direction: column;
+      gap: 12px;
+      transition: background 0.2s;
+    }
+    .news-card:hover { background: #161616; }
+    .news-card-img {
+      width: 100%; height: 200px;
+      object-fit: cover; display: block;
+      margin-bottom: 8px;
+      transition: filter 0.4s;
+    }
+    .news-card:hover .news-card-img { filter: grayscale(40%); }
+    .news-date {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gray);
+    }
+    .news-title {
+      font-family: var(--font-cond);
+      font-size: 19px; font-weight: 600;
+      line-height: 1.3; letter-spacing: 0.5px;
+    }
+    .news-read {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gray); margin-top: auto;
+      transition: color 0.2s;
+    }
+    .news-card:hover .news-read { color: var(--white); }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: 120px 56px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-bg {
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?w=1800&q=80') center/cover;
+      filter: brightness(0.2);
+    }
+    .cta-content { position: relative; z-index: 2; }
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(56px, 9vw, 120px);
+      line-height: 0.92; letter-spacing: 2px;
+      margin-bottom: 32px;
+    }
+    .cta-title .stroke {
+      -webkit-text-stroke: 1px rgba(255,255,255,0.35);
+      color: transparent;
+    }
+    .cta-sub {
+      font-family: var(--font-cond);
+      font-size: 13px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gray); margin-bottom: 44px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #050505;
+      border-top: 1px solid var(--line);
+      padding: 56px 56px 28px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px; margin-bottom: 48px;
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 24px; letter-spacing: 5px;
+      margin-bottom: 14px;
+    }
+    .footer-desc {
+      font-size: 13px; color: var(--gray);
+      line-height: 1.7; max-width: 260px;
+    }
+    .footer-col h4 {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 3.5px; text-transform: uppercase;
+      color: var(--gray); margin-bottom: 18px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 10px; }
+    .footer-col a {
+      font-size: 14px; color: #555; text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex; justify-content: space-between;
+      padding-top: 24px; border-top: 1px solid var(--line);
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 2px; color: #333;
+      text-transform: uppercase;
+    }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      nav, nav.scrolled { padding: 20px 28px; }
+      .section, .section-sm, .gallery-section,
+      .activities-section, .news-section, .cta-section { padding: 72px 28px; }
+      .hero { padding: 0 28px 60px; }
+      .hero-stats { right: 28px; gap: 28px; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .about-img { height: 360px; }
+      .news-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
+    }
+    @media (max-width: 640px) {
+      .nav-links, .nav-join { display: none; }
+      .hero-stats { display: none; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .g1 { grid-column: auto; grid-row: auto; height: 200px; }
+      .footer-top { grid-template-columns: 1fr; }
+      .hero-title { font-size: 72px; }
+    }
+  </style>
+</head>
 <body>
 
-<!-- Navigation -->
-<header>
-<h1>Boundless FC</h1>
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">BOUNDLESS FC</a>
+    <ul class="nav-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="activities.html">Activities</a></li>
+      <li><a href="event.html">Events</a></li>
+      <li><a href="highlight.html">Highlights</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="register.html" class="nav-join">Join</a>
+  </nav>
 
-<nav>
-<a href="index.html">Home</a>
-<a href="about.html">About Us</a>
-<a href="events.html">Event Schedule</a>
-<a href="register.html">Register</a>
-<a href="login.html">Login</a>
-<a href="contact.html">Contact</a>
-</nav>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-label">Futsal Community · Est. 2022</p>
+      <h1 class="hero-title">
+        PLAY<br>
+        <span class="stroke">WITHOUT</span><br>
+        LIMITS
+      </h1>
+      <div class="hero-actions">
+        <a href="register.html" class="btn-white">Join Now</a>
+        <a href="highlight.html" class="btn-line">Watch Highlights</a>
+      </div>
+    </div>
+  </section>
 
-</header>
+  <hr class="rule" />
 
+  <!-- ABOUT -->
+  <section class="section">
+    <div class="reveal">
+      <p class="label">Who We Are</p>
+      <h2 class="heading">MORE THAN<br><span class="stroke">A TEAM</span></h2>
+    </div>
+    <div class="about-grid">
+      <div class="reveal">
+        <img class="about-img"
+          src="assets/images/IMG_2983.jpeg"
+          alt="Futsal team" />
+      </div>
+      <div class="about-body reveal">
+        <p>Boundless FC is a futsal community built for those who live and breathe the game. We bring together players of all levels to compete, improve, and connect.</p>
+        <p>Whether you're a seasoned player or just starting out, there's a place for you here. Built on respect, drive, and a shared love of futsal.</p>
+        <a href="about.html" class="btn-line" style="display:inline-block; margin-top:8px;">Learn More</a>
+        <div class="features">
+          <div class="feat">
+            <div class="feat-name">Weekly Sessions</div>
+            <div class="feat-sub">Regular games & training</div>
+          </div>
+          <div class="feat">
+            <div class="feat-name">Tournaments</div>
+            <div class="feat-sub">Compete at all levels</div>
+          </div>
+          <div class="feat">
+            <div class="feat-name">All Welcome</div>
+            <div class="feat-sub">Any skill level</div>
+          </div>
+          <div class="feat">
+            <div class="feat-name">Community</div>
+            <div class="feat-sub">Brotherhood & teamwork</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<!-- Hero Section -->
-<section class="Introduction">
+  <hr class="rule" />
 
-<h1>Welcome to Our Futsal Community</h1>
+  <!-- GALLERY -->
+  <section class="gallery-section">
+    <div class="gallery-header reveal">
+      <div>
+        <p class="label">Gallery</p>
+        <h2 class="heading">LIVE THE<br><span class="stroke">MOMENT</span></h2>
+      </div>
+      <a href="highlight.html" class="btn-line">View All</a>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="g-item g1">
+        <img src="assets/images/IMG_3399.JPG" alt="Futsal action" />
+      </div>
+      <div class="g-item">
+        <img src="assets/images/IMG_2985.jpeg" alt="Team huddle" />
+      </div>
+      <div class="g-item">
+        <img src="assets/images/IMG_3107.jpeg" alt="Match" />
+      </div>
+      <div class="g-item">
+        <img src="assets/images/IMG_3177.jpeg" alt="Indoor soccer" />
+      </div>
+      <div class="g-item">
+        <img src="assets/images/IMG_3274.jpeg" alt="Team photo" />
+      </div>
+    </div>
+  </section>
 
-<p>
-Our community is a place where students from different countries and cultures 
-come together to enjoy football and futsal. <br>We believe that sports can connect 
-people and create friendships beyond nationality and background.
-</p>
+  <hr class="rule" />
 
-</section>
+  <!-- ACTIVITIES -->
+  <section class="activities-section">
+    <div class="reveal">
+      <p class="label">What We Do</p>
+      <h2 class="heading">OUR<br><span class="stroke">ACTIVITIES</span></h2>
+    </div>
+    <div class="activities-list reveal">
+      <a href="activities.html" class="activity-row">
+        <span class="activity-num">01</span>
+        <span class="activity-name">CASUAL SESSIONS</span>
+        <span class="activity-tag">Weekly</span>
+        <span class="activity-arrow">→</span>
+      </a>
+      <a href="event.html" class="activity-row">
+        <span class="activity-num">02</span>
+        <span class="activity-name">TOURNAMENTS</span>
+        <span class="activity-tag">Competitive</span>
+        <span class="activity-arrow">→</span>
+      </a>
+      <a href="activities.html" class="activity-row">
+        <span class="activity-num">03</span>
+        <span class="activity-name">TRAINING CAMPS</span>
+        <span class="activity-tag">Development</span>
+        <span class="activity-arrow">→</span>
+      </a>
+      <a href="event.html" class="activity-row">
+        <span class="activity-num">04</span>
+        <span class="activity-name">SPECIAL EVENTS</span>
+        <span class="activity-tag">Community</span>
+        <span class="activity-arrow">→</span>
+      </a>
+    </div>
+  </section>
 
+  <hr class="rule" />
 
-<!-- About Preview -->
-<section class="Activities">
+  <!-- NEWS -->
+  <section class="news-section">
+    <div class="news-header reveal">
+      <div>
+        <p class="label">Latest</p>
+        <h2 class="heading">NEWS &<br><span class="stroke">UPDATES</span></h2>
+      </div>
+      <a href="news.html" class="btn-line">All News</a>
+    </div>
+    <div class="news-grid reveal">
+      <a href="news.html" class="news-card">
+        <img class="news-card-img"
+          src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=600&q=80"
+          alt="News" />
+        <div class="news-date">March 2025</div>
+        <div class="news-title">Season Kickoff Tournament — Results Are In</div>
+        <div class="news-read">Read More →</div>
+      </a>
+      <a href="news.html" class="news-card">
+        <img class="news-card-img"
+          src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80"
+          alt="News" />
+        <div class="news-date">Feb 2025</div>
+        <div class="news-title">New Training Schedule Released for Q2</div>
+        <div class="news-read">Read More →</div>
+      </a>
+      <a href="news.html" class="news-card">
+        <img class="news-card-img"
+          src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&q=80"
+          alt="News" />
+        <div class="news-date">Jan 2025</div>
+        <div class="news-title">Welcome to Our Newest Members — January Intake</div>
+        <div class="news-read">Read More →</div>
+      </a>
+    </div>
+  </section>
 
-<h2>Our Activities</h2>
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-bg"></div>
+    <div class="cta-content reveal">
+      <h2 class="cta-title">
+        JOIN<br>
+        <span class="stroke">THE</span><br>
+        SESSION
+      </h2>
+      <p class="cta-sub">Open registrations · All levels welcome</p>
+      <a href="register.html" class="btn-white" style="font-size:13px; padding:16px 48px; letter-spacing:2.5px;">Register Now</a>
+    </div>
+  </section>
 
-<h3>Play Together</h3>
-<p>
-We enjoy football and futsal together regardless of nationality or culture.
-Our community is open to everyone who loves the game.
-</p>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">BOUNDLESS FC</div>
+        <p class="footer-desc">A futsal community built for those who live and breathe the game. Play without limits.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="activities.html">Activities</a></li>
+          <li><a href="event.html">Events</a></li>
+          <li><a href="highlight.html">Highlights</a></li>
+          <li><a href="news.html">News</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="register.html">Join Us</a></li>
+          <li><a href="sponsors.html">Sponsors</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/boundless_fc" target="_blank">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Boundless FC</span>
+      <span>Futsal Community</span>
+    </div>
+  </footer>
 
-<h3>Sessions</h3>
-<p>
-During our sessions, around 20 players join and we divide them into teams 
-to play friendly matches.
-</p>
+  <script>
+    // Navbar scroll
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    });
 
-<h3>Competitions</h3>
-<p>
-We regularly organize competitions and also participate in tournaments 
-with other teams.
-</p>
-
-</section>
-
-<!-- Sponsors -->
-<section class="sponsors">
-
-<h2>Our Sponsors</h2>
-
-<p>Supported by our amazing partners.</p>
-
-<img src="assets/images/sponsor1.png" width="120">
-<img src="assets/images/sponsor2.png" width="120">
-
-</section>
-
-
-<!-- Footer -->
-<footer>
-
-<p>© 2026 Futsal Club</p>
-
-<p>Email: futsalclub@email.com</p>
-
-</footer>
-
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
 </body>
-
 </html>
