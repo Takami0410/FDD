@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — BOUNDLESS FC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600&family=Barlow:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── INFO CARDS ── */
+    .info-cards {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 4px; background: var(--line);
+      margin-top: 56px;
+    }
+    .info-card {
+      background: #111; padding: 40px 36px;
+      transition: background 0.2s;
+    }
+    .info-card:hover { background: #161616; }
+    .info-card-icon { font-size: 24px; margin-bottom: 20px; }
+    .info-card-label {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gray); margin-bottom: 10px;
+    }
+    .info-card-value {
+      font-family: var(--font-cond);
+      font-size: 16px; letter-spacing: 0.5px; line-height: 1.4;
+    }
+    .info-card-value a { color: var(--white); text-decoration: none; }
+    .info-card-value a:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .info-card-sub {
+      font-size: 12px; color: var(--gray); margin-top: 6px; line-height: 1.6;
+    }
+
+    /* ── CONTACT LAYOUT ── */
+    .contact-layout {
+      display: grid; grid-template-columns: 1fr 380px;
+      gap: 0;
+    }
+    .contact-form-wrap { padding: 72px 56px; border-right: 1px solid var(--line); }
+    .contact-sidebar { padding: 72px 48px; }
+
+    /* ── FORM ── */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 20px; }
+    .form-label {
+      display: block;
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--gray); margin-bottom: 8px;
+    }
+    .form-input, .form-textarea, .form-select {
+      width: 100%; box-sizing: border-box;
+      background: none; border: 1px solid var(--line);
+      color: var(--white); font-family: var(--font-body);
+      font-size: 14px; font-weight: 300;
+      padding: 12px 16px; outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    .form-select { cursor: pointer; }
+    .form-input::placeholder, .form-textarea::placeholder { color: #333; }
+    .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: #555; }
+    .form-input.error, .form-textarea.error { border-color: #c84a4a; }
+    .form-textarea { resize: vertical; min-height: 140px; }
+    .form-select option { background: #1a1a1a; }
+
+    /* Topic chips */
+    .form-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+    .chip {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gray); border: 1px solid var(--line);
+      padding: 6px 14px; cursor: pointer;
+      transition: all 0.2s; user-select: none;
+    }
+    .chip:hover { border-color: #555; color: var(--white); }
+    .chip.selected { color: var(--black); background: var(--white); border-color: var(--white); }
+
+    /* Character count */
+    .char-count {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 1px; color: var(--gray);
+      text-align: right; margin-top: 4px;
+      transition: color 0.2s;
+    }
+    .char-count.warn { color: #c8901a; }
+    .char-count.over { color: #c84a4a; }
+
+    /* Error messages */
+    .form-error {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: #c84a4a; margin-top: 6px; display: none;
+    }
+
+    /* Submit */
+    .form-submit-row {
+      display: flex; align-items: center; gap: 20px;
+      margin-top: 8px;
+    }
+    .form-submit {
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--black); background: var(--white);
+      border: none; padding: 14px 40px; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .form-submit:hover { background: #ccc; }
+    .form-submit:disabled { background: #333; color: #555; cursor: not-allowed; }
+    .form-note {
+      font-size: 12px; color: var(--gray); line-height: 1.5;
+    }
+
+    /* Success state */
+    .form-success {
+      display: none;
+      padding: 48px;
+      text-align: center;
+      border: 1px solid var(--line);
+    }
+    .form-success-icon { font-size: 40px; margin-bottom: 20px; }
+    .form-success-title {
+      font-family: var(--font-display);
+      font-size: 40px; letter-spacing: 1px; margin-bottom: 12px;
+    }
+    .form-success-sub {
+      font-size: 14px; color: var(--gray); line-height: 1.7;
+    }
+
+    /* ── SIDEBAR ELEMENTS ── */
+    .sidebar-block { margin-bottom: 48px; }
+    .sidebar-block-label {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gray); margin-bottom: 20px;
+      padding-bottom: 12px; border-bottom: 1px solid var(--line);
+    }
+
+    /* Map placeholder */
+    .map-placeholder {
+      width: 100%; height: 200px;
+      background: #111; border: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 12px;
+      margin-bottom: 16px;
+    }
+    .map-placeholder-icon { font-size: 32px; }
+    .map-placeholder-text {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray);
+    }
+    .map-address {
+      font-size: 13px; color: var(--gray); line-height: 1.7;
+    }
+
+    /* Hours */
+    .hours-row {
+      display: flex; justify-content: space-between;
+      padding: 10px 0; border-bottom: 1px solid var(--line);
+      font-family: var(--font-cond); font-size: 13px;
+    }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-day { color: var(--white); }
+    .hours-time { color: var(--gray); }
+    .hours-closed { color: #444; }
+
+    /* Social links */
+    .social-links { display: flex; flex-direction: column; gap: 0; }
+    .social-link {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0; border-bottom: 1px solid var(--line);
+      text-decoration: none; color: var(--gray);
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .social-link:last-child { border-bottom: none; }
+    .social-link:hover { color: var(--white); }
+
+    /* FAQ shortcut */
+    .faq-shortcut {
+      background: #111; padding: 24px 28px;
+      border: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .faq-shortcut-text { font-size: 13px; color: var(--gray); line-height: 1.5; }
+    .faq-shortcut-text strong { color: var(--white); font-weight: 400; }
+
+    @media (max-width: 1024px) {
+      .info-cards { grid-template-columns: 1fr; }
+      .contact-layout { grid-template-columns: 1fr; }
+      .contact-form-wrap { padding: 48px 28px; border-right: none; border-bottom: 1px solid var(--line); }
+      .contact-sidebar { padding: 48px 28px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .form-submit-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">BOUNDLESS FC</a>
+    <ul class="nav-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="activities.html">Activities</a></li>
+      <li><a href="event.html">Events</a></li>
+      <li><a href="highlight.html">Highlights</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+    <a href="register.html" class="nav-join">Join</a>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-bg" style="background-image: url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1800&q=80');"></div>
+    <div class="page-hero-content">
+      <p class="page-hero-label">Boundless FC · Get In Touch</p>
+      <h1 class="page-hero-title">CONTACT<br><span class="stroke">US</span></h1>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- INFO CARDS -->
+  <section class="section">
+    <div class="reveal">
+      <p class="label">Find Us</p>
+      <h2 class="heading">HOW TO<br><span class="stroke">REACH US</span></h2>
+    </div>
+    <div class="info-cards reveal">
+      <div class="info-card">
+        <div class="info-card-icon">📍</div>
+        <div class="info-card-label">Main Venue</div>
+        <div class="info-card-value">Sports Planet Shah Alam</div>
+        <div class="info-card-sub">Persiaran Kayangan, Seksyen 7,<br>40000 Shah Alam, Selangor</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">✉️</div>
+        <div class="info-card-label">Email</div>
+        <div class="info-card-value"><a href="mailto:hello@boundlessfc.my">hello@boundlessfc.my</a></div>
+        <div class="info-card-sub">We respond within 1–2 working days.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">💬</div>
+        <div class="info-card-label">WhatsApp</div>
+        <div class="info-card-value"><a href="https://wa.me/60123456789">+60 12-345 6789</a></div>
+        <div class="info-card-sub">Quickest way to reach us. Available Mon–Fri, 10AM–8PM.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- CONTACT LAYOUT -->
+  <div class="contact-layout">
+
+    <!-- FORM -->
+    <div class="contact-form-wrap">
+      <p class="label" style="margin-bottom:12px;">Send a Message</p>
+      <h2 class="heading" style="margin-bottom:40px;">YOUR<br><span class="stroke">INQUIRY</span></h2>
+
+      <!-- Topic chips -->
+      <div class="form-group">
+        <label class="form-label">Topic</label>
+        <div class="form-chips" id="topicChips">
+          <span class="chip" data-topic="General">General</span>
+          <span class="chip" data-topic="Membership">Membership</span>
+          <span class="chip" data-topic="Sessions">Sessions</span>
+          <span class="chip" data-topic="Tournament">Tournament</span>
+          <span class="chip" data-topic="Jersey Order">Jersey Order</span>
+          <span class="chip" data-topic="Sponsorship">Sponsorship</span>
+        </div>
+      </div>
+
+      <div id="contactForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="fname">First Name *</label>
+            <input type="text" class="form-input" id="fname" placeholder="Ahmad" />
+            <div class="form-error" id="fnameErr">Please enter your first name.</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="lname">Last Name *</label>
+            <input type="text" class="form-input" id="lname" placeholder="Razali" />
+            <div class="form-error" id="lnameErr">Please enter your last name.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address *</label>
+          <input type="email" class="form-input" id="email" placeholder="ahmad@example.com" />
+          <div class="form-error" id="emailErr">Please enter a valid email address.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="phone">Phone Number</label>
+          <input type="tel" class="form-input" id="phone" placeholder="+60 12-345 6789" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="message">Message * <span id="charDisplay" class="char-count">0 / 500</span></label>
+          <textarea class="form-textarea" id="message" placeholder="Tell us what you need..."></textarea>
+          <div class="form-error" id="messageErr">Please enter your message (min. 10 characters).</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">How did you hear about us?</label>
+          <select class="form-select" id="source">
+            <option value="">Select an option</option>
+            <option value="instagram">Instagram</option>
+            <option value="friend">Friend / Word of Mouth</option>
+            <option value="event">Event</option>
+            <option value="google">Google Search</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-submit-row">
+          <button class="form-submit" id="submitBtn">Send Message</button>
+          <p class="form-note">We'll get back to you within<br>1–2 working days.</p>
+        </div>
+      </div>
+
+      <!-- Success State -->
+      <div class="form-success" id="formSuccess">
+        <div class="form-success-icon">✓</div>
+        <div class="form-success-title">MESSAGE SENT</div>
+        <p class="form-success-sub">Thanks for reaching out. We've received your message and will get back to you within 1–2 working days.</p>
+        <br />
+        <button class="form-submit" id="resetBtn" style="margin: 0 auto;">Send Another</button>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="contact-sidebar">
+
+      <div class="sidebar-block">
+        <div class="sidebar-block-label">Location</div>
+        <div class="map-placeholder">
+          <div class="map-placeholder-icon">🗺️</div>
+          <div class="map-placeholder-text">Sports Planet Shah Alam</div>
+        </div>
+        <p class="map-address">Persiaran Kayangan, Seksyen 7,<br>40000 Shah Alam, Selangor, Malaysia</p>
+      </div>
+
+      <div class="sidebar-block">
+        <div class="sidebar-block-label">Operating Hours</div>
+        <div class="hours-row">
+          <span class="hours-day">Monday</span>
+          <span class="hours-time">8:00 PM – 10:00 PM</span>
+        </div>
+        <div class="hours-row">
+          <span class="hours-day">Tuesday</span>
+          <span class="hours-closed">No Session</span>
+        </div>
+        <div class="hours-row">
+          <span class="hours-day">Wednesday</span>
+          <span class="hours-time">9:00 PM – 11:00 PM</span>
+        </div>
+        <div class="hours-row">
+          <span class="hours-day">Thursday</span>
+          <span class="hours-closed">No Session</span>
+        </div>
+        <div class="hours-row">
+          <span class="hours-day">Friday</span>
+          <span class="hours-time">10:00 PM – 12:00 AM</span>
+        </div>
+        <div class="hours-row">
+          <span class="hours-day">Sat – Sun</span>
+          <span class="hours-closed">Occasional Events</span>
+        </div>
+      </div>
+
+      <div class="sidebar-block">
+        <div class="sidebar-block-label">Follow Us</div>
+        <div class="social-links">
+          <a href="https://www.instagram.com/boundless_fc" target="_blank" class="social-link">
+            <span>Instagram</span>
+            <span>@boundless_fc →</span>
+          </a>
+          <a href="https://wa.me/60123456789" class="social-link">
+            <span>WhatsApp</span>
+            <span>Chat Now →</span>
+          </a>
+          <a href="mailto:hello@boundlessfc.my" class="social-link">
+            <span>Email</span>
+            <span>hello@boundlessfc.my →</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="sidebar-block">
+        <div class="faq-shortcut">
+          <div class="faq-shortcut-text"><strong>Have a quick question?</strong><br>Check our FAQ first — you might find the answer instantly.</div>
+          <a href="faq.html" class="btn-line" style="white-space: nowrap;">View FAQ →</a>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">BOUNDLESS FC</div>
+        <p class="footer-desc">A futsal community built for those who live and breathe the game. Play without limits.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="activities.html">Activities</a></li>
+          <li><a href="event.html">Events</a></li>
+          <li><a href="highlight.html">Highlights</a></li>
+          <li><a href="news.html">News</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="register.html">Join Us</a></li>
+          <li><a href="sponsors.html">Sponsors</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/boundless_fc" target="_blank">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Boundless FC</span>
+      <span>Futsal Community</span>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    // Topic chips
+    let selectedTopic = '';
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+        selectedTopic = chip.dataset.topic;
+      });
+    });
+
+    // Character count
+    const msgInput = document.getElementById('message');
+    const charDisplay = document.getElementById('charDisplay');
+    const MAX_CHARS = 500;
+    msgInput.addEventListener('input', () => {
+      const len = msgInput.value.length;
+      charDisplay.textContent = len + ' / ' + MAX_CHARS;
+      charDisplay.className = 'char-count';
+      if (len > MAX_CHARS * 0.9) charDisplay.classList.add('warn');
+      if (len > MAX_CHARS) charDisplay.classList.add('over');
+    });
+
+    // Form validation & submit
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      let valid = true;
+
+      const fields = [
+        { id: 'fname', errId: 'fnameErr', check: v => v.trim().length > 0 },
+        { id: 'lname', errId: 'lnameErr', check: v => v.trim().length > 0 },
+        { id: 'email', errId: 'emailErr', check: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+        { id: 'message', errId: 'messageErr', check: v => v.trim().length >= 10 && v.trim().length <= MAX_CHARS },
+      ];
+
+      fields.forEach(({ id, errId, check }) => {
+        const input = document.getElementById(id);
+        const err = document.getElementById(errId);
+        const val = input.value;
+        if (!check(val)) {
+          input.classList.add('error');
+          err.style.display = 'block';
+          valid = false;
+        } else {
+          input.classList.remove('error');
+          err.style.display = 'none';
+        }
+      });
+
+      if (valid) {
+        document.getElementById('contactForm').style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+      }
+    });
+
+    // Reset form
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      document.getElementById('contactForm').style.display = 'block';
+      document.getElementById('formSuccess').style.display = 'none';
+      document.getElementById('fname').value = '';
+      document.getElementById('lname').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('phone').value = '';
+      document.getElementById('message').value = '';
+      document.getElementById('source').value = '';
+      charDisplay.textContent = '0 / 500';
+      charDisplay.className = 'char-count';
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+      selectedTopic = '';
+    });
+
+    // Clear error on input
+    ['fname', 'lname', 'email', 'message'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {
+        document.getElementById(id).classList.remove('error');
+        document.getElementById(id + 'Err').style.display = 'none';
+      });
+    });
+  </script>
+</body>
+</html>

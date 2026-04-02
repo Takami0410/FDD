@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News & Updates — BOUNDLESS FC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600&family=Barlow:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── NEWS TOOLBAR ── */
+    .news-toolbar {
+      padding: 28px 56px;
+      border-bottom: 1px solid var(--line);
+      display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+      justify-content: space-between;
+    }
+    .news-search-wrap {
+      position: relative; flex: 1; max-width: 360px;
+    }
+    .news-search {
+      width: 100%; background: none;
+      border: 1px solid var(--line);
+      color: var(--white); font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 10px 16px; outline: none;
+      transition: border-color 0.2s;
+    }
+    .news-search::placeholder { color: var(--gray); }
+    .news-search:focus { border-color: #555; }
+    .news-cats { display: flex; gap: 8px; flex-wrap: wrap; }
+    .cat-btn {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gray); background: none;
+      border: 1px solid var(--line);
+      padding: 7px 16px; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cat-btn:hover, .cat-btn.active {
+      color: var(--black); background: var(--white); border-color: var(--white);
+    }
+
+    /* ── FEATURED ARTICLE ── */
+    .featured-article {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0; border-bottom: 1px solid var(--line);
+      min-height: 480px;
+    }
+    .featured-img {
+      width: 100%; height: 100%; min-height: 400px;
+      object-fit: cover; display: block;
+      filter: contrast(1.05);
+      transition: transform 0.6s;
+    }
+    .featured-article:hover .featured-img { transform: scale(1.02); }
+    .featured-img-wrap { overflow: hidden; position: relative; }
+    .featured-badge {
+      position: absolute; top: 24px; left: 24px;
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      background: var(--white); color: var(--black);
+      padding: 6px 14px;
+    }
+    .featured-body {
+      padding: 56px 56px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      background: #111;
+    }
+    .featured-cat {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gray); margin-bottom: 16px;
+    }
+    .featured-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 54px);
+      line-height: 0.95; letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+    .featured-excerpt {
+      font-size: 14px; color: var(--gray);
+      line-height: 1.75; margin-bottom: 32px;
+      max-width: 440px;
+    }
+    .featured-meta {
+      display: flex; align-items: center; gap: 20px;
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 2px; color: var(--gray);
+      text-transform: uppercase;
+      border-top: 1px solid var(--line); padding-top: 24px;
+    }
+
+    /* ── NEWS LAYOUT ── */
+    .news-layout {
+      display: grid; grid-template-columns: 1fr 320px;
+      gap: 0;
+    }
+    .news-main { border-right: 1px solid var(--line); padding: 56px; }
+    .news-sidebar { padding: 56px 40px; }
+
+    /* ── ARTICLE CARDS ── */
+    .article-list { display: flex; flex-direction: column; gap: 0; }
+    .article-card {
+      display: grid; grid-template-columns: 200px 1fr;
+      gap: 0; border-bottom: 1px solid var(--line);
+      text-decoration: none; color: inherit;
+      transition: background 0.2s;
+    }
+    .article-card:hover { background: #111; }
+    .article-card[data-hidden="true"] { display: none; }
+    .article-thumb {
+      height: 160px; object-fit: cover; display: block;
+      width: 100%;
+      transition: transform 0.4s;
+    }
+    .article-card:hover .article-thumb { transform: scale(1.04); }
+    .article-thumb-wrap { overflow: hidden; }
+    .article-body { padding: 28px 32px; display: flex; flex-direction: column; }
+    .article-tags { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .article-tag {
+      font-family: var(--font-cond);
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gray); border: 1px solid var(--line);
+      padding: 3px 10px;
+    }
+    .article-title {
+      font-family: var(--font-cond);
+      font-size: 18px; font-weight: 600;
+      letter-spacing: 0.5px; line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .article-excerpt {
+      font-size: 13px; color: var(--gray); line-height: 1.65;
+      flex: 1; margin-bottom: 16px;
+    }
+    .article-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray);
+    }
+    .article-read { color: var(--white); transition: color 0.2s; }
+    .article-card:hover .article-read { color: var(--gray); }
+
+    /* ── SIDEBAR ── */
+    .sidebar-section { margin-bottom: 48px; }
+    .sidebar-label {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gray); margin-bottom: 20px;
+      padding-bottom: 12px; border-bottom: 1px solid var(--line);
+    }
+    .deadline-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 0; border-bottom: 1px solid var(--line);
+    }
+    .deadline-item:last-child { border-bottom: none; }
+    .deadline-name {
+      font-family: var(--font-cond);
+      font-size: 13px; letter-spacing: 0.5px;
+    }
+    .deadline-date {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray);
+    }
+    .deadline-urgent { color: #c84a4a; }
+
+    /* Social feed */
+    .social-post {
+      padding: 16px 0; border-bottom: 1px solid var(--line);
+      font-size: 13px; color: var(--gray); line-height: 1.6;
+    }
+    .social-post:last-child { border-bottom: none; }
+    .social-handle {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--white); margin-bottom: 6px;
+    }
+    .social-date {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 1px; color: var(--gray);
+      margin-top: 8px;
+    }
+
+    /* Newsletter signup */
+    .newsletter-form { margin-top: 20px; }
+    .newsletter-input {
+      width: 100%; box-sizing: border-box;
+      background: none; border: 1px solid var(--line);
+      color: var(--white); font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 1.5px;
+      padding: 10px 14px; outline: none; margin-bottom: 10px;
+      transition: border-color 0.2s;
+    }
+    .newsletter-input::placeholder { color: #444; }
+    .newsletter-input:focus { border-color: #555; }
+    .newsletter-btn {
+      width: 100%; font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--black); background: var(--white);
+      border: none; padding: 11px; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .newsletter-btn:hover { background: #ccc; }
+    .newsletter-success {
+      display: none; font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: #4a8a4a; margin-top: 10px;
+    }
+
+    /* No results */
+    .no-results {
+      display: none; padding: 48px 0;
+      text-align: center;
+      font-family: var(--font-cond);
+      font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray);
+    }
+
+    @media (max-width: 1024px) {
+      .news-toolbar { padding: 20px 28px; }
+      .featured-article { grid-template-columns: 1fr; }
+      .featured-body { padding: 36px 28px; }
+      .news-layout { grid-template-columns: 1fr; }
+      .news-main { padding: 40px 28px; border-right: none; border-bottom: 1px solid var(--line); }
+      .news-sidebar { padding: 40px 28px; }
+      .article-card { grid-template-columns: 160px 1fr; }
+    }
+    @media (max-width: 640px) {
+      .article-card { grid-template-columns: 1fr; }
+      .article-thumb { height: 200px; }
+      .news-cats { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">BOUNDLESS FC</a>
+    <ul class="nav-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="activities.html">Activities</a></li>
+      <li><a href="event.html">Events</a></li>
+      <li><a href="highlight.html">Highlights</a></li>
+      <li><a href="news.html" class="active">News</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="register.html" class="nav-join">Join</a>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-bg" style="background-image: url('https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=1800&q=80');"></div>
+    <div class="page-hero-content">
+      <p class="page-hero-label">Boundless FC · Latest</p>
+      <h1 class="page-hero-title">NEWS &<br><span class="stroke">UPDATES</span></h1>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- TOOLBAR -->
+  <div class="news-toolbar">
+    <div class="news-search-wrap">
+      <input type="text" class="news-search" id="newsSearch" placeholder="Search articles..." />
+    </div>
+    <div class="news-cats">
+      <button class="cat-btn active" data-cat="all">All</button>
+      <button class="cat-btn" data-cat="results">Results</button>
+      <button class="cat-btn" data-cat="announcement">Announcements</button>
+      <button class="cat-btn" data-cat="schedule">Schedule</button>
+      <button class="cat-btn" data-cat="community">Community</button>
+    </div>
+  </div>
+
+  <!-- FEATURED ARTICLE -->
+  <div class="featured-article">
+    <div class="featured-img-wrap">
+      <img class="featured-img"
+        src="https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?w=1200&q=80"
+        alt="Season Kickoff Tournament" />
+      <span class="featured-badge">Featured</span>
+    </div>
+    <div class="featured-body">
+      <div class="featured-cat">Results · March 2025</div>
+      <h2 class="featured-title">SEASON KICKOFF TOURNAMENT — RESULTS ARE IN</h2>
+      <p class="featured-excerpt">Team Alpha clinched the inaugural Boundless Cup in a tense final against Team Foxtrot, winning 2–1 after a last-minute finish that had the whole court on their feet. A complete breakdown of the bracket, top scorers, and standout moments from the weekend.</p>
+      <div class="featured-meta">
+        <span>By Boundless FC Admin</span>
+        <span>·</span>
+        <span>8 min read</span>
+        <a href="#" class="btn-line" style="margin-left: auto;">Read Full Story →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="news-layout">
+
+    <!-- ARTICLES -->
+    <div class="news-main">
+      <p class="label" style="margin-bottom: 32px;">All Articles</p>
+      <div class="article-list" id="articleList">
+
+        <a href="#" class="article-card" data-category="schedule" data-title="New Training Schedule Released for Q2">
+          <div class="article-thumb-wrap">
+            <img class="article-thumb"
+              src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80" alt="Training" />
+          </div>
+          <div class="article-body">
+            <div class="article-tags"><span class="article-tag">Schedule</span></div>
+            <div class="article-title">New Training Schedule Released for Q2</div>
+            <p class="article-excerpt">Updated session times and venue confirmations for April through June. Monday nights shift to 8PM to accommodate demand.</p>
+            <div class="article-footer">
+              <span>Feb 2025 · 3 min read</span>
+              <span class="article-read">Read More →</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="article-card" data-category="community" data-title="Welcome to Our Newest Members — January Intake">
+          <div class="article-thumb-wrap">
+            <img class="article-thumb"
+              src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&q=80" alt="Members" />
+          </div>
+          <div class="article-body">
+            <div class="article-tags"><span class="article-tag">Community</span></div>
+            <div class="article-title">Welcome to Our Newest Members — January Intake</div>
+            <p class="article-excerpt">14 new players joined the Boundless FC community in January. Get to know the new faces and what brought them to the court.</p>
+            <div class="article-footer">
+              <span>Jan 2025 · 4 min read</span>
+              <span class="article-read">Read More →</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="article-card" data-category="announcement" data-title="Boundless Cup 2025 — Registration Now Open">
+          <div class="article-thumb-wrap">
+            <img class="article-thumb"
+              src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=400&q=80" alt="Tournament" />
+          </div>
+          <div class="article-body">
+            <div class="article-tags"><span class="article-tag">Announcement</span></div>
+            <div class="article-title">Boundless Cup 2025 — Registration Now Open</div>
+            <p class="article-excerpt">Our biggest event of the year is back. Form your team of 6 and register before the 30th April deadline. Limited to 8 team slots.</p>
+            <div class="article-footer">
+              <span>Apr 2025 · 2 min read</span>
+              <span class="article-read">Read More →</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="article-card" data-category="results" data-title="March Results Roundup — Week 3 & 4">
+          <div class="article-thumb-wrap">
+            <img class="article-thumb"
+              src="https://images.unsplash.com/photo-1550881111-c5b4f2e5b6d8?w=400&q=80" alt="Results" />
+          </div>
+          <div class="article-body">
+            <div class="article-tags"><span class="article-tag">Results</span></div>
+            <div class="article-title">March Results Roundup — Week 3 & 4</div>
+            <p class="article-excerpt">Scorelines, standout performances, and the player of the week picks from our last two Fridays. Another strong turnout.</p>
+            <div class="article-footer">
+              <span>Mar 2025 · 5 min read</span>
+              <span class="article-read">Read More →</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="article-card" data-category="announcement" data-title="Venue Change — April Wednesday Sessions">
+          <div class="article-thumb-wrap">
+            <img class="article-thumb"
+              src="https://images.unsplash.com/photo-1519766304817-4f37bda74a26?w=400&q=80" alt="Venue" />
+          </div>
+          <div class="article-body">
+            <div class="article-tags"><span class="article-tag">Announcement</span></div>
+            <div class="article-title">Venue Change — April Wednesday Sessions</div>
+            <p class="article-excerpt">Due to maintenance at Sports Planet Shah Alam, Wednesday sessions in April will temporarily move to Grandblue Arena, Subang.</p>
+            <div class="article-footer">
+              <span>Mar 2025 · 1 min read</span>
+              <span class="article-read">Read More →</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="article-card" data-category="community" data-title="Charity Match Raises RM 3,200 for Local Youth Club">
+          <div class="article-thumb-wrap">
+            <img class="article-thumb"
+              src="https://images.unsplash.com/photo-1528127269322-539801943592?w=400&q=80" alt="Charity" />
+          </div>
+          <div class="article-body">
+            <div class="article-tags"><span class="article-tag">Community</span></div>
+            <div class="article-title">Charity Match Raises RM 3,200 for Local Youth Club</div>
+            <p class="article-excerpt">Our annual charity fixture brought together 40 players and raised over RM 3,000 for a local youth sports programme in Shah Alam.</p>
+            <div class="article-footer">
+              <span>Dec 2024 · 4 min read</span>
+              <span class="article-read">Read More →</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+      <div class="no-results" id="noResults">No articles found.</div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="news-sidebar">
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Upcoming Deadlines</div>
+        <div class="deadline-item">
+          <div>
+            <div class="deadline-name">Boundless Cup Registration</div>
+            <div class="deadline-date deadline-urgent">30 Apr 2025 · Urgent</div>
+          </div>
+        </div>
+        <div class="deadline-item">
+          <div>
+            <div class="deadline-name">Jersey Order Cutoff</div>
+            <div class="deadline-date">15 May 2025</div>
+          </div>
+        </div>
+        <div class="deadline-item">
+          <div>
+            <div class="deadline-name">External League Entry</div>
+            <div class="deadline-date">1 Jun 2025</div>
+          </div>
+        </div>
+        <div class="deadline-item">
+          <div>
+            <div class="deadline-name">Mid-Year Review Session</div>
+            <div class="deadline-date">14 Jun 2025</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">@boundless_fc</div>
+        <div class="social-post">
+          <div class="social-handle">Instagram</div>
+          Week 12 done. Friday night sessions keep hitting different. See you all Monday 💪
+          <div class="social-date">2 days ago</div>
+        </div>
+        <div class="social-post">
+          <div class="social-handle">Instagram</div>
+          Boundless Cup 2025 registration is officially OPEN. 8 spots. First come first served. Link in bio.
+          <div class="social-date">5 days ago</div>
+        </div>
+        <div class="social-post">
+          <div class="social-handle">Instagram</div>
+          Huge thank you to everyone who showed up to the April skills camp. Level up, every session.
+          <div class="social-date">1 week ago</div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Newsletter</div>
+        <p style="font-size:13px; color:var(--gray); line-height:1.7; margin-bottom:16px;">Get session updates and match results straight to your inbox.</p>
+        <div class="newsletter-form">
+          <input type="email" class="newsletter-input" id="nlEmail" placeholder="Your email address" />
+          <button class="newsletter-btn" id="nlBtn">Subscribe</button>
+          <div class="newsletter-success" id="nlSuccess">✓ You're subscribed!</div>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-bg"></div>
+    <div class="cta-content reveal">
+      <h2 class="cta-title">STAY<br><span class="stroke">IN</span><br>THE LOOP</h2>
+      <p class="cta-sub">Follow us · @boundless_fc</p>
+      <a href="https://www.instagram.com/boundless_fc" target="_blank" class="btn-white" style="font-size:13px; padding:16px 48px; letter-spacing:2.5px;">Instagram</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">BOUNDLESS FC</div>
+        <p class="footer-desc">A futsal community built for those who live and breathe the game. Play without limits.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="activities.html">Activities</a></li>
+          <li><a href="event.html">Events</a></li>
+          <li><a href="highlight.html">Highlights</a></li>
+          <li><a href="news.html">News</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="register.html">Join Us</a></li>
+          <li><a href="sponsors.html">Sponsors</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/boundless_fc" target="_blank">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Boundless FC</span>
+      <span>Futsal Community</span>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    // Category filter
+    let currentCat = 'all';
+    let currentSearch = '';
+
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCat = btn.dataset.cat;
+        applyFilters();
+      });
+    });
+
+    // Search
+    document.getElementById('newsSearch').addEventListener('input', e => {
+      currentSearch = e.target.value.toLowerCase();
+      applyFilters();
+    });
+
+    function applyFilters() {
+      let visible = 0;
+      document.querySelectorAll('.article-card').forEach(card => {
+        const catMatch = currentCat === 'all' || card.dataset.category === currentCat;
+        const searchMatch = !currentSearch || card.dataset.title.toLowerCase().includes(currentSearch) || card.querySelector('.article-excerpt').textContent.toLowerCase().includes(currentSearch);
+        if (catMatch && searchMatch) {
+          card.style.display = '';
+          visible++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    // Newsletter
+    document.getElementById('nlBtn').addEventListener('click', () => {
+      const email = document.getElementById('nlEmail').value;
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (re.test(email)) {
+        document.getElementById('nlSuccess').style.display = 'block';
+        document.getElementById('nlEmail').value = '';
+        document.getElementById('nlBtn').style.display = 'none';
+      } else {
+        document.getElementById('nlEmail').style.borderColor = '#c84a4a';
+        setTimeout(() => { document.getElementById('nlEmail').style.borderColor = ''; }, 2000);
+      }
+    });
+  </script>
+</body>
+</html>
