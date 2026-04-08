@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feedback — BOUNDLESS FC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600&family=Barlow:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── LAYOUT ── */
+    .feedback-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 0;
+      padding: 96px 56px;
+      align-items: start;
+    }
+    .feedback-sidebar {
+      position: sticky; top: 120px;
+      padding-right: 80px;
+    }
+    .feedback-sidebar p {
+      font-size: 14px; color: var(--gray);
+      line-height: 1.8; margin-top: 20px;
+    }
+
+    /* ── STEP PROGRESS ── */
+    .step-progress {
+      display: flex; flex-direction: column; gap: 0;
+      margin-top: 40px;
+    }
+    .step-item {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 0 0 24px;
+      position: relative;
+    }
+    .step-item:not(:last-child)::before {
+      content: '';
+      position: absolute; left: 11px; top: 24px;
+      width: 1px; bottom: 0;
+      background: var(--line);
+    }
+    .step-dot {
+      width: 22px; height: 22px; flex-shrink: 0;
+      border: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 1px;
+      color: var(--gray);
+      transition: background 0.3s, border-color 0.3s, color 0.3s;
+      margin-top: 1px;
+    }
+    .step-dot.active { background: var(--white); color: var(--black); border-color: var(--white); }
+    .step-dot.done   { background: var(--white); color: var(--black); border-color: var(--white); }
+    .step-text {}
+    .step-name {
+      font-family: var(--font-cond);
+      font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--gray);
+      transition: color 0.3s;
+    }
+    .step-name.active { color: var(--white); }
+    .step-sub {
+      font-size: 12px; color: #333; margin-top: 2px;
+    }
+
+    /* ── FORM AREA ── */
+    .feedback-form-area {}
+
+    .form-step { display: none; }
+    .form-step.active { display: block; }
+
+    .step-heading {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4vw, 56px);
+      letter-spacing: 2px; line-height: 0.95;
+      margin-bottom: 8px;
+    }
+    .step-heading .stroke {
+      -webkit-text-stroke: 1px var(--white);
+      color: transparent;
+    }
+    .step-subheading {
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gray); margin-bottom: 48px;
+    }
+
+    /* Form elements */
+    .form-group { margin-bottom: 32px; }
+    .form-label {
+      display: block;
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--gray); margin-bottom: 12px;
+    }
+    .form-input, .form-textarea, .form-select {
+      width: 100%; background: transparent;
+      border: none; border-bottom: 1px solid var(--line);
+      color: var(--white);
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      padding: 12px 0; outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input::placeholder,
+    .form-textarea::placeholder { color: #333; }
+    .form-input:focus, .form-textarea:focus, .form-select:focus { border-bottom-color: var(--white); }
+    .form-textarea { resize: vertical; min-height: 100px; }
+    .form-select { cursor: pointer; }
+    .form-select option { background: #111; }
+
+    /* Star rating */
+    .star-group { display: flex; flex-direction: column; gap: 16px; }
+    .star-item {}
+    .star-item-label {
+      font-size: 14px; color: var(--gray);
+      margin-bottom: 8px;
+    }
+    .stars { display: flex; gap: 4px; }
+    .star {
+      font-size: 22px; cursor: pointer;
+      color: var(--line);
+      transition: color 0.15s, transform 0.15s;
+      user-select: none;
+    }
+    .star.active { color: #c9a84c; }
+    .star:hover  { transform: scale(1.15); }
+
+    /* Radio & checkbox options */
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--line);
+    }
+    .option-item {
+      background: #0d0d0d;
+      transition: background 0.15s;
+    }
+    .option-item:hover { background: #111; }
+    .option-label {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 18px;
+      cursor: pointer;
+    }
+    .option-input { display: none; }
+    .option-box {
+      width: 14px; height: 14px; flex-shrink: 0;
+      border: 1px solid var(--line);
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .option-input:checked + .option-box {
+      background: var(--white); border-color: var(--white);
+    }
+    .option-circle {
+      width: 14px; height: 14px; flex-shrink: 0;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      transition: background 0.15s, border-color 0.15s;
+      position: relative;
+    }
+    .option-input:checked + .option-circle::after {
+      content: '';
+      position: absolute; top: 3px; left: 3px;
+      width: 6px; height: 6px;
+      background: var(--white);
+      border-radius: 50%;
+    }
+    .option-input:checked + .option-circle { border-color: var(--white); }
+    .option-text {
+      font-size: 13px; color: var(--gray); transition: color 0.15s;
+    }
+    .option-input:checked ~ .option-text { color: var(--white); }
+
+    /* Range slider */
+    .range-wrap { display: flex; flex-direction: column; gap: 8px; }
+    .range-labels {
+      display: flex; justify-content: space-between;
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gray);
+    }
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%; height: 1px;
+      background: var(--line); outline: none; cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px; height: 16px;
+      background: var(--white);
+      border-radius: 0;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    input[type="range"]:hover::-webkit-slider-thumb { background: #ccc; }
+    .range-value {
+      font-family: var(--font-display);
+      font-size: 36px; color: var(--white); line-height: 1;
+    }
+
+    /* Error state */
+    .form-hint {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 1px;
+      color: #c0392b; margin-top: 6px;
+      display: none;
+    }
+    .form-hint.show { display: block; }
+    .form-input.error,
+    .form-textarea.error { border-bottom-color: #c0392b; }
+
+    /* Nav buttons */
+    .step-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 48px; padding-top: 32px;
+      border-top: 1px solid var(--line);
+    }
+    .btn-back {
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--gray);
+      background: none; border: none; cursor: pointer;
+      transition: color 0.2s;
+    }
+    .btn-back:hover { color: var(--white); }
+    .btn-next {
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--black); background: var(--white);
+      border: none; cursor: pointer;
+      padding: 13px 40px;
+      transition: background 0.2s;
+    }
+    .btn-next:hover { background: #ccc; }
+
+    /* ── THANK YOU ── */
+    .thank-you {
+      display: none;
+      text-align: center;
+      padding: 96px 56px;
+    }
+    .thank-you.show { display: block; }
+    .ty-icon {
+      font-family: var(--font-display);
+      font-size: 72px; color: var(--line);
+      margin-bottom: 32px;
+      letter-spacing: 4px;
+    }
+    .ty-title {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 8vw, 96px);
+      letter-spacing: 2px; line-height: 0.92;
+      margin-bottom: 24px;
+    }
+    .ty-title .stroke {
+      -webkit-text-stroke: 1px var(--white);
+      color: transparent;
+    }
+    .ty-sub {
+      font-family: var(--font-cond);
+      font-size: 13px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gray); margin-bottom: 48px;
+    }
+    .ty-actions { display: flex; gap: 20px; justify-content: center; align-items: center; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .feedback-wrapper { grid-template-columns: 1fr; gap: 48px; padding: 80px 28px; }
+      .feedback-sidebar { position: static; padding-right: 0; }
+      .step-progress { flex-direction: row; }
+      .step-item { flex-direction: column; gap: 6px; align-items: center; padding: 0 12px 0; flex: 1; }
+      .step-item::before { display: none; }
+      .step-name { font-size: 10px; text-align: center; }
+      .step-sub { display: none; }
+      .option-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .feedback-wrapper { padding: 80px 20px; }
+      .ty-actions { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">BOUNDLESS FC</a>
+    <ul class="nav-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="activities.html">Activities</a></li>
+      <li><a href="event.html">Events</a></li>
+      <li><a href="highlights.html">Highlights</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="register.html" class="nav-join">Join</a>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero" style="height: 40vh; min-height: 320px;">
+    <div class="page-hero-bg" style="background-image: url('https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?w=1800&q=80');"></div>
+    <div class="page-hero-content">
+      <p class="page-hero-label">Have Your Say</p>
+      <h1 class="page-hero-title">
+        FEEDBACK
+      </h1>
+    </div>
+  </section>
+
+  <!-- MAIN FEEDBACK AREA -->
+  <div id="feedback-main">
+    <div class="feedback-wrapper">
+
+      <!-- SIDEBAR -->
+      <div class="feedback-sidebar reveal">
+        <p class="label">Your Voice Matters</p>
+        <h2 class="heading" style="font-size:clamp(32px,4vw,48px);">HELP US <span class="stroke">GROW</span></h2>
+        <p>This quick survey takes about 2 minutes. Your responses go directly to the committee and help us shape better sessions, events and experiences for every member.</p>
+
+        <!-- Step progress indicator -->
+        <div class="step-progress" id="step-progress">
+          <div class="step-item">
+            <div class="step-dot active" id="dot-1">1</div>
+            <div class="step-text">
+              <div class="step-name active" id="sname-1">About You</div>
+              <div class="step-sub">Basic info</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-dot" id="dot-2">2</div>
+            <div class="step-text">
+              <div class="step-name" id="sname-2">Ratings</div>
+              <div class="step-sub">Rate your experience</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-dot" id="dot-3">3</div>
+            <div class="step-text">
+              <div class="step-name" id="sname-3">Suggestions</div>
+              <div class="step-sub">Your ideas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORM AREA -->
+      <form id="feedback-form" novalidate>
+
+        <!-- ── STEP 1: ABOUT YOU ── -->
+        <div class="form-step active reveal" id="step-1">
+          <h2 class="step-heading">ABOUT <span class="stroke">YOU</span></h2>
+          <p class="step-subheading">Step 1 of 3 · Basic info</p>
+
+          <div class="form-group">
+            <label class="form-label">Your Name <span style="color:var(--gray)">(optional)</span></label>
+            <input type="text" class="form-input" id="fb-name" placeholder="Ahmad or leave blank" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">How long have you been with Boundless FC?</label>
+            <div class="option-grid">
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="radio" class="option-input" name="duration" value="new" />
+                  <span class="option-circle"></span>
+                  <span class="option-text">Less than 1 month</span>
+                </label>
+              </div>
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="radio" class="option-input" name="duration" value="1-3" />
+                  <span class="option-circle"></span>
+                  <span class="option-text">1 – 3 months</span>
+                </label>
+              </div>
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="radio" class="option-input" name="duration" value="3-6" />
+                  <span class="option-circle"></span>
+                  <span class="option-text">3 – 6 months</span>
+                </label>
+              </div>
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="radio" class="option-input" name="duration" value="6+" />
+                  <span class="option-circle"></span>
+                  <span class="option-text">6 months or more</span>
+                </label>
+              </div>
+            </div>
+            <span class="form-hint" id="fb-duration-hint">Please select an option.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Which activities do you usually join? <span style="color:var(--gray)">(select all that apply)</span></label>
+            <div class="option-grid">
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="checkbox" class="option-input act-check" value="casual" />
+                  <span class="option-box"></span>
+                  <span class="option-text">Casual Sessions</span>
+                </label>
+              </div>
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="checkbox" class="option-input act-check" value="tournaments" />
+                  <span class="option-box"></span>
+                  <span class="option-text">Tournaments</span>
+                </label>
+              </div>
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="checkbox" class="option-input act-check" value="training" />
+                  <span class="option-box"></span>
+                  <span class="option-text">Training Camps</span>
+                </label>
+              </div>
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="checkbox" class="option-input act-check" value="events" />
+                  <span class="option-box"></span>
+                  <span class="option-text">Special Events</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-nav">
+            <span></span>
+            <button type="button" class="btn-next" id="next-1">Next →</button>
+          </div>
+        </div>
+
+        <!-- ── STEP 2: RATINGS ── -->
+        <div class="form-step reveal" id="step-2">
+          <h2 class="step-heading">YOUR <span class="stroke">RATINGS</span></h2>
+          <p class="step-subheading">Step 2 of 3 · Rate your experience</p>
+
+          <div class="form-group">
+            <label class="form-label">Rate the following (click to rate)</label>
+            <div class="star-group">
+              <div class="star-item">
+                <div class="star-item-label">Session Quality</div>
+                <div class="stars" data-field="session">
+                  <span class="star" data-val="1">★</span>
+                  <span class="star" data-val="2">★</span>
+                  <span class="star" data-val="3">★</span>
+                  <span class="star" data-val="4">★</span>
+                  <span class="star" data-val="5">★</span>
+                </div>
+              </div>
+              <div class="star-item">
+                <div class="star-item-label">Organisation &amp; Communication</div>
+                <div class="stars" data-field="org">
+                  <span class="star" data-val="1">★</span>
+                  <span class="star" data-val="2">★</span>
+                  <span class="star" data-val="3">★</span>
+                  <span class="star" data-val="4">★</span>
+                  <span class="star" data-val="5">★</span>
+                </div>
+              </div>
+              <div class="star-item">
+                <div class="star-item-label">Club Community &amp; Atmosphere</div>
+                <div class="stars" data-field="community">
+                  <span class="star" data-val="1">★</span>
+                  <span class="star" data-val="2">★</span>
+                  <span class="star" data-val="3">★</span>
+                  <span class="star" data-val="4">★</span>
+                  <span class="star" data-val="5">★</span>
+                </div>
+              </div>
+              <div class="star-item">
+                <div class="star-item-label">Facilities &amp; Equipment</div>
+                <div class="stars" data-field="facilities">
+                  <span class="star" data-val="1">★</span>
+                  <span class="star" data-val="2">★</span>
+                  <span class="star" data-val="3">★</span>
+                  <span class="star" data-val="4">★</span>
+                  <span class="star" data-val="5">★</span>
+                </div>
+              </div>
+            </div>
+            <span class="form-hint" id="fb-stars-hint">Please rate at least one category.</span>
+          </div>
+
+          <div class="form-group" style="margin-top:40px;">
+            <label class="form-label">How likely are you to recommend Boundless FC to a friend?</label>
+            <div class="range-wrap">
+              <div class="range-value" id="nps-value">5</div>
+              <input type="range" id="nps-slider" min="0" max="10" value="5" />
+              <div class="range-labels">
+                <span>0 — Not at all</span>
+                <span>10 — Absolutely</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-nav">
+            <button type="button" class="btn-back" id="back-2">← Back</button>
+            <button type="button" class="btn-next" id="next-2">Next →</button>
+          </div>
+        </div>
+
+        <!-- ── STEP 3: SUGGESTIONS ── -->
+        <div class="form-step reveal" id="step-3">
+          <h2 class="step-heading">YOUR <span class="stroke">IDEAS</span></h2>
+          <p class="step-subheading">Step 3 of 3 · Tell us more</p>
+
+          <div class="form-group">
+            <label class="form-label">Which aspect would you most like us to improve?</label>
+            <div class="option-grid">
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="radio" class="option-input" name="improve" value="sessions" />
+                  <span class="option-circle"></span>
+                  <span class="option-text">Session scheduling</span>
+                </label>
+              </div>
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="radio" class="option-input" name="improve" value="coaching" />
+                  <span class="option-circle"></span>
+                  <span class="option-text">Coaching quality</span>
+                </label>
+              </div>
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="radio" class="option-input" name="improve" value="comms" />
+                  <span class="option-circle"></span>
+                  <span class="option-text">Communication</span>
+                </label>
+              </div>
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="radio" class="option-input" name="improve" value="events" />
+                  <span class="option-circle"></span>
+                  <span class="option-text">More events</span>
+                </label>
+              </div>
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="radio" class="option-input" name="improve" value="community" />
+                  <span class="option-circle"></span>
+                  <span class="option-text">Community bonding</span>
+                </label>
+              </div>
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="radio" class="option-input" name="improve" value="equipment" />
+                  <span class="option-circle"></span>
+                  <span class="option-text">Equipment &amp; kits</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">What do you enjoy most about Boundless FC?</label>
+            <textarea class="form-textarea" id="fb-enjoy" placeholder="Tell us what's working well…"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Any other suggestions or comments?</label>
+            <textarea class="form-textarea" id="fb-suggest" placeholder="Any ideas, feedback or requests are welcome…"></textarea>
+            <span class="form-hint" id="fb-suggest-hint">Please share at least a brief thought.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Would you be interested in taking on a committee role?</label>
+            <div class="option-grid">
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="radio" class="option-input" name="committee" value="yes" />
+                  <span class="option-circle"></span>
+                  <span class="option-text">Yes, I'm interested</span>
+                </label>
+              </div>
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="radio" class="option-input" name="committee" value="maybe" />
+                  <span class="option-circle"></span>
+                  <span class="option-text">Maybe, tell me more</span>
+                </label>
+              </div>
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="radio" class="option-input" name="committee" value="no" />
+                  <span class="option-circle"></span>
+                  <span class="option-text">Not right now</span>
+                </label>
+              </div>
+              <div class="option-item">
+                <label class="option-label">
+                  <input type="radio" class="option-input" name="committee" value="na" />
+                  <span class="option-circle"></span>
+                  <span class="option-text">Prefer not to say</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-nav">
+            <button type="button" class="btn-back" id="back-3">← Back</button>
+            <button type="submit" class="btn-next">Submit Feedback</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- THANK YOU STATE -->
+  <div class="thank-you" id="thank-you">
+    <div class="ty-icon">◆</div>
+    <h2 class="ty-title">THANK<br><span class="stroke">YOU</span></h2>
+    <p class="ty-sub">Your feedback has been received</p>
+    <p style="font-size:14px; color:var(--gray); max-width:480px; margin:0 auto 40px; line-height:1.8;">
+      The Boundless FC committee reads every response. Your suggestions help us build a better club for everyone involved. We appreciate you taking the time.
+    </p>
+    <div class="ty-actions">
+      <a href="index.html" class="btn-white" style="font-size:11px; padding:14px 36px; letter-spacing:2.5px;">Back to Home</a>
+      <a href="event.html" class="btn-line">View Events →</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">BOUNDLESS FC</div>
+        <p class="footer-desc">A futsal community built for those who live and breathe the game. Play without limits.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="activities.html">Activities</a></li>
+          <li><a href="event.html">Events</a></li>
+          <li><a href="highlights.html">Highlights</a></li>
+          <li><a href="news.html">News</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="register.html">Join Us</a></li>
+          <li><a href="sponsors.html">Sponsors</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/boundless_fc" target="_blank">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Boundless FC</span>
+      <span>Futsal Community</span>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Navbar ── */
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50));
+
+    /* ── Reveal ── */
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    /* ── Star rating ── */
+    const ratings = {};
+    document.querySelectorAll('.stars').forEach(group => {
+      const field = group.dataset.field;
+      const stars = group.querySelectorAll('.star');
+      ratings[field] = 0;
+
+      stars.forEach(star => {
+        star.addEventListener('click', () => {
+          ratings[field] = parseInt(star.dataset.val);
+          stars.forEach((s, i) => {
+            s.classList.toggle('active', i < ratings[field]);
+          });
+        });
+        star.addEventListener('mouseenter', () => {
+          stars.forEach((s, i) => s.classList.toggle('active', i < parseInt(star.dataset.val)));
+        });
+      });
+      group.addEventListener('mouseleave', () => {
+        stars.forEach((s, i) => s.classList.toggle('active', i < ratings[field]));
+      });
+    });
+
+    /* ── NPS slider ── */
+    const npsSlider = document.getElementById('nps-slider');
+    const npsValue  = document.getElementById('nps-value');
+    npsSlider.addEventListener('input', () => { npsValue.textContent = npsSlider.value; });
+
+    /* ── Multi-step navigation ── */
+    let currentStep = 1;
+    const TOTAL = 3;
+
+    function goToStep(n) {
+      document.getElementById('step-' + currentStep).classList.remove('active');
+      updateProgress(currentStep, n);
+      currentStep = n;
+      document.getElementById('step-' + currentStep).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateProgress(from, to) {
+      // Mark previous as done
+      if (to > from) {
+        document.getElementById('dot-' + from).classList.remove('active');
+        document.getElementById('dot-' + from).classList.add('done');
+        document.getElementById('dot-' + from).textContent = '✓';
+        document.getElementById('sname-' + from).classList.remove('active');
+      }
+      // Activate new
+      document.getElementById('dot-' + to).classList.add('active');
+      document.getElementById('sname-' + to).classList.add('active');
+      // If going back, restore previous
+      if (to < from) {
+        document.getElementById('dot-' + from).classList.remove('active', 'done');
+        document.getElementById('dot-' + from).textContent = from;
+        document.getElementById('sname-' + from).classList.remove('active');
+        document.getElementById('dot-' + to).textContent = to;
+      }
+    }
+
+    /* STEP 1 → 2 */
+    document.getElementById('next-1').addEventListener('click', () => {
+      const selected = document.querySelector('input[name="duration"]:checked');
+      if (!selected) {
+        document.getElementById('fb-duration-hint').classList.add('show');
+        return;
+      }
+      document.getElementById('fb-duration-hint').classList.remove('show');
+      goToStep(2);
+    });
+
+    /* STEP 2 → 3 */
+    document.getElementById('next-2').addEventListener('click', () => {
+      const anyRated = Object.values(ratings).some(v => v > 0);
+      if (!anyRated) {
+        document.getElementById('fb-stars-hint').classList.add('show');
+        return;
+      }
+      document.getElementById('fb-stars-hint').classList.remove('show');
+      goToStep(3);
+    });
+
+    /* Back buttons */
+    document.getElementById('back-2').addEventListener('click', () => goToStep(1));
+    document.getElementById('back-3').addEventListener('click', () => goToStep(2));
+
+    /* ── Form submit ── */
+    document.getElementById('feedback-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const suggest = document.getElementById('fb-suggest').value.trim();
+      if (suggest.length < 3) {
+        document.getElementById('fb-suggest-hint').classList.add('show');
+        return;
+      }
+      document.getElementById('fb-suggest-hint').classList.remove('show');
+
+      // Show thank you
+      document.getElementById('feedback-main').style.display = 'none';
+      document.getElementById('thank-you').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

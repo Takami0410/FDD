@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resources — BOUNDLESS FC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600&family=Barlow:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── SEARCH BAR ── */
+    .search-bar-wrap {
+      padding: 40px 56px 0;
+    }
+    .search-bar {
+      display: flex; align-items: center; gap: 0;
+      border: 1px solid var(--line);
+      background: #0d0d0d;
+    }
+    .search-icon {
+      padding: 0 20px;
+      font-size: 16px; color: var(--gray);
+      flex-shrink: 0;
+    }
+    .search-input {
+      flex: 1;
+      background: transparent; border: none;
+      color: var(--white);
+      font-family: var(--font-body); font-size: 14px; font-weight: 300;
+      padding: 16px 0;
+      outline: none;
+    }
+    .search-input::placeholder { color: #333; }
+    .search-clear {
+      padding: 0 20px;
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gray); background: none; border: none;
+      cursor: pointer; transition: color 0.2s;
+    }
+    .search-clear:hover { color: var(--white); }
+
+    /* ── CATEGORY TABS ── */
+    .cat-bar {
+      display: flex; gap: 0;
+      border-bottom: 1px solid var(--line);
+      padding: 0 56px;
+      overflow-x: auto;
+    }
+    .cat-btn {
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--gray);
+      background: none; border: none; cursor: pointer;
+      padding: 18px 24px 16px;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color 0.2s, border-color 0.2s;
+      position: relative; bottom: -1px;
+    }
+    .cat-btn:hover { color: var(--white); }
+    .cat-btn.active { color: var(--white); border-bottom-color: var(--white); }
+
+    /* ── RESOURCE LIST ── */
+    .resource-section { padding: 64px 56px; }
+    .resource-count {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gray); margin-bottom: 32px;
+    }
+
+    .resource-list { display: flex; flex-direction: column; gap: 1px; background: var(--line); }
+
+    .resource-row {
+      display: flex; align-items: center;
+      background: #0d0d0d;
+      padding: 24px 28px;
+      gap: 24px;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    .resource-row:hover { background: #111; }
+    .resource-row.hidden { display: none; }
+
+    .resource-type-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: 12px; letter-spacing: 1px;
+      border: 1px solid;
+    }
+    .resource-type-icon.pdf   { border-color: #c0392b; color: #c0392b; }
+    .resource-type-icon.docx  { border-color: #2980b9; color: #2980b9; }
+    .resource-type-icon.xlsx  { border-color: #27ae60; color: #27ae60; }
+    .resource-type-icon.img   { border-color: #8e44ad; color: #8e44ad; }
+    .resource-type-icon.zip   { border-color: var(--gray); color: var(--gray); }
+
+    .resource-info { flex: 1; min-width: 0; }
+    .resource-name {
+      font-family: var(--font-cond);
+      font-size: 16px; letter-spacing: 0.5px;
+      color: var(--white); margin-bottom: 4px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .resource-meta {
+      display: flex; gap: 20px; flex-wrap: wrap;
+    }
+    .resource-meta-item {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    .resource-right {
+      display: flex; align-items: center; gap: 20px; flex-shrink: 0;
+    }
+    .resource-tag {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 4px 10px; border: 1px solid var(--line);
+      color: var(--gray);
+    }
+    .resource-tag.new { border-color: #27ae60; color: #27ae60; }
+
+    .resource-dl-btn {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--black); background: var(--white);
+      border: none; cursor: pointer;
+      padding: 9px 20px;
+      transition: background 0.2s;
+      text-decoration: none; display: inline-block;
+      white-space: nowrap;
+    }
+    .resource-dl-btn:hover { background: #ccc; }
+
+    /* ── NO RESULTS ── */
+    .no-results {
+      text-align: center; padding: 80px 0;
+      display: none;
+    }
+    .no-results.show { display: block; }
+    .no-results-title {
+      font-family: var(--font-display);
+      font-size: 40px; letter-spacing: 2px; color: var(--line);
+    }
+    .no-results-sub {
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--gray); margin-top: 12px;
+    }
+
+    /* ── PINNED / FEATURED ── */
+    .pinned-section { padding: 64px 56px 0; }
+    .pinned-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--line);
+      margin-top: 32px;
+    }
+    .pinned-card {
+      background: #0d0d0d;
+      padding: 32px 28px;
+      display: flex; flex-direction: column; gap: 16px;
+      transition: background 0.2s;
+    }
+    .pinned-card:hover { background: #111; }
+    .pinned-card-label {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: #27ae60;
+    }
+    .pinned-card-title {
+      font-family: var(--font-display);
+      font-size: 22px; letter-spacing: 1px; line-height: 1.1;
+    }
+    .pinned-card-desc {
+      font-size: 13px; color: var(--gray); line-height: 1.65; flex: 1;
+    }
+
+    /* ── UPLOAD CTA ── */
+    .upload-cta {
+      margin: 0 56px 64px;
+      border: 1px dashed var(--line);
+      padding: 40px;
+      display: flex; align-items: center; justify-content: space-between; gap: 32px;
+    }
+    .upload-cta p {
+      font-size: 14px; color: var(--gray); line-height: 1.7; max-width: 500px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .search-bar-wrap, .cat-bar, .resource-section, .pinned-section { padding-left: 28px; padding-right: 28px; }
+      .upload-cta { margin-left: 28px; margin-right: 28px; }
+      .pinned-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .resource-row { flex-wrap: wrap; }
+      .resource-right { width: 100%; justify-content: flex-end; }
+      .pinned-grid { grid-template-columns: 1fr; }
+      .upload-cta { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">BOUNDLESS FC</a>
+    <ul class="nav-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="activities.html">Activities</a></li>
+      <li><a href="event.html">Events</a></li>
+      <li><a href="highlights.html">Highlights</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="register.html" class="nav-join">Join</a>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-bg" style="background-image: url('https://images.unsplash.com/photo-1415226620359-7e4e314e56ef?w=1800&q=80');"></div>
+    <div class="page-hero-content">
+      <p class="page-hero-label">Resources &amp; Downloads</p>
+      <h1 class="page-hero-title">
+        EVERYTHING<br>
+        YOU <span class="stroke">NEED</span>
+      </h1>
+    </div>
+  </section>
+
+  <!-- PINNED / FEATURED -->
+  <div class="pinned-section reveal">
+    <p class="label">Pinned</p>
+    <h2 class="heading" style="font-size:clamp(32px,4vw,52px);">ESSENTIAL <span class="stroke">DOCS</span></h2>
+    <div class="pinned-grid">
+      <div class="pinned-card">
+        <div class="pinned-card-label">⬡ Must Read</div>
+        <div class="pinned-card-title">MEMBER HANDBOOK 2025</div>
+        <p class="pinned-card-desc">Everything you need to know as a Boundless FC member — code of conduct, training expectations, membership tiers and benefits.</p>
+        <a href="#" class="resource-dl-btn" onclick="triggerDownload('Member Handbook 2025.pdf', event)">Download PDF</a>
+      </div>
+      <div class="pinned-card">
+        <div class="pinned-card-label">⬡ Current</div>
+        <div class="pinned-card-title">2025/26 TRAINING SCHEDULE</div>
+        <p class="pinned-card-desc">Full semester training calendar including weekly session times, venue allocations and tournament preparation blocks.</p>
+        <a href="#" class="resource-dl-btn" onclick="triggerDownload('Training Schedule 2025-26.pdf', event)">Download PDF</a>
+      </div>
+      <div class="pinned-card">
+        <div class="pinned-card-label">⬡ Tournament</div>
+        <div class="pinned-card-title">TOURNAMENT RULEBOOK</div>
+        <p class="pinned-card-desc">Official Boundless FC tournament rules covering match format, eligibility, disciplinary procedures and scoring criteria.</p>
+        <a href="#" class="resource-dl-btn" onclick="triggerDownload('Tournament Rulebook.pdf', event)">Download PDF</a>
+      </div>
+    </div>
+  </div>
+
+  <hr class="rule" style="margin: 48px 0 0;" />
+
+  <!-- SEARCH -->
+  <div class="search-bar-wrap reveal">
+    <div class="search-bar">
+      <span class="search-icon">⌕</span>
+      <input class="search-input" id="search-input" type="text" placeholder="Search documents, guides, forms…" />
+      <button class="search-clear" id="search-clear">Clear</button>
+    </div>
+  </div>
+
+  <!-- CATEGORY TABS -->
+  <div class="cat-bar">
+    <button class="cat-btn active" data-cat="all">All Files</button>
+    <button class="cat-btn" data-cat="schedules">Schedules</button>
+    <button class="cat-btn" data-cat="forms">Forms</button>
+    <button class="cat-btn" data-cat="rules">Rules &amp; Guides</button>
+    <button class="cat-btn" data-cat="branding">Branding</button>
+  </div>
+
+  <!-- RESOURCE LIST -->
+  <section class="resource-section">
+    <div class="resource-count" id="result-count">Showing all files</div>
+
+    <div class="resource-list" id="resource-list">
+
+      <!-- SCHEDULES -->
+      <div class="resource-row" data-cat="schedules" data-name="2025/26 Training Schedule">
+        <div class="resource-type-icon pdf">PDF</div>
+        <div class="resource-info">
+          <div class="resource-name">2025/26 Training Schedule</div>
+          <div class="resource-meta">
+            <span class="resource-meta-item">PDF · 0.4 MB</span>
+            <span class="resource-meta-item">Updated Apr 2026</span>
+            <span class="resource-meta-item">Schedules</span>
+          </div>
+        </div>
+        <div class="resource-right">
+          <span class="resource-tag new">New</span>
+          <a href="#" class="resource-dl-btn" onclick="triggerDownload('Training Schedule 2025-26.pdf', event)">↓ Download</a>
+        </div>
+      </div>
+
+      <div class="resource-row" data-cat="schedules" data-name="April 2026 Weekly Timetable">
+        <div class="resource-type-icon xlsx">XLSX</div>
+        <div class="resource-info">
+          <div class="resource-name">April 2026 Weekly Timetable</div>
+          <div class="resource-meta">
+            <span class="resource-meta-item">Excel · 0.2 MB</span>
+            <span class="resource-meta-item">Apr 2026</span>
+            <span class="resource-meta-item">Schedules</span>
+          </div>
+        </div>
+        <div class="resource-right">
+          <span class="resource-tag new">New</span>
+          <a href="#" class="resource-dl-btn" onclick="triggerDownload('April 2026 Timetable.xlsx', event)">↓ Download</a>
+        </div>
+      </div>
+
+      <div class="resource-row" data-cat="schedules" data-name="Tournament Match Schedule — APU Cup 2025">
+        <div class="resource-type-icon pdf">PDF</div>
+        <div class="resource-info">
+          <div class="resource-name">Tournament Match Schedule — APU Cup 2025</div>
+          <div class="resource-meta">
+            <span class="resource-meta-item">PDF · 0.6 MB</span>
+            <span class="resource-meta-item">Mar 2025</span>
+            <span class="resource-meta-item">Schedules</span>
+          </div>
+        </div>
+        <div class="resource-right">
+          <span class="resource-tag">Archive</span>
+          <a href="#" class="resource-dl-btn" onclick="triggerDownload('APU Cup 2025 Schedule.pdf', event)">↓ Download</a>
+        </div>
+      </div>
+
+      <!-- FORMS -->
+      <div class="resource-row" data-cat="forms" data-name="Member Registration Form 2026">
+        <div class="resource-type-icon docx">DOCX</div>
+        <div class="resource-info">
+          <div class="resource-name">Member Registration Form 2026</div>
+          <div class="resource-meta">
+            <span class="resource-meta-item">Word · 0.3 MB</span>
+            <span class="resource-meta-item">Jan 2026</span>
+            <span class="resource-meta-item">Forms</span>
+          </div>
+        </div>
+        <div class="resource-right">
+          <span class="resource-tag">Form</span>
+          <a href="#" class="resource-dl-btn" onclick="triggerDownload('Registration Form 2026.docx', event)">↓ Download</a>
+        </div>
+      </div>
+
+      <div class="resource-row" data-cat="forms" data-name="Tournament Entry Form — Inter-Faculty Cup">
+        <div class="resource-type-icon pdf">PDF</div>
+        <div class="resource-info">
+          <div class="resource-name">Tournament Entry Form — Inter-Faculty Cup</div>
+          <div class="resource-meta">
+            <span class="resource-meta-item">PDF · 0.5 MB</span>
+            <span class="resource-meta-item">Feb 2026</span>
+            <span class="resource-meta-item">Forms</span>
+          </div>
+        </div>
+        <div class="resource-right">
+          <span class="resource-tag new">New</span>
+          <a href="#" class="resource-dl-btn" onclick="triggerDownload('Tournament Entry Form.pdf', event)">↓ Download</a>
+        </div>
+      </div>
+
+      <div class="resource-row" data-cat="forms" data-name="Volunteer Sign-Up Form">
+        <div class="resource-type-icon docx">DOCX</div>
+        <div class="resource-info">
+          <div class="resource-name">Volunteer Sign-Up Form</div>
+          <div class="resource-meta">
+            <span class="resource-meta-item">Word · 0.2 MB</span>
+            <span class="resource-meta-item">Mar 2026</span>
+            <span class="resource-meta-item">Forms</span>
+          </div>
+        </div>
+        <div class="resource-right">
+          <span class="resource-tag">Form</span>
+          <a href="#" class="resource-dl-btn" onclick="triggerDownload('Volunteer Form.docx', event)">↓ Download</a>
+        </div>
+      </div>
+
+      <!-- RULES -->
+      <div class="resource-row" data-cat="rules" data-name="Member Handbook 2025">
+        <div class="resource-type-icon pdf">PDF</div>
+        <div class="resource-info">
+          <div class="resource-name">Member Handbook 2025</div>
+          <div class="resource-meta">
+            <span class="resource-meta-item">PDF · 1.2 MB</span>
+            <span class="resource-meta-item">Sep 2025</span>
+            <span class="resource-meta-item">Rules &amp; Guides</span>
+          </div>
+        </div>
+        <div class="resource-right">
+          <span class="resource-tag">Guide</span>
+          <a href="#" class="resource-dl-btn" onclick="triggerDownload('Member Handbook 2025.pdf', event)">↓ Download</a>
+        </div>
+      </div>
+
+      <div class="resource-row" data-cat="rules" data-name="Tournament Rulebook — Boundless FC Official">
+        <div class="resource-type-icon pdf">PDF</div>
+        <div class="resource-info">
+          <div class="resource-name">Tournament Rulebook — Official</div>
+          <div class="resource-meta">
+            <span class="resource-meta-item">PDF · 0.8 MB</span>
+            <span class="resource-meta-item">Jan 2026</span>
+            <span class="resource-meta-item">Rules &amp; Guides</span>
+          </div>
+        </div>
+        <div class="resource-right">
+          <span class="resource-tag">Rules</span>
+          <a href="#" class="resource-dl-btn" onclick="triggerDownload('Tournament Rulebook.pdf', event)">↓ Download</a>
+        </div>
+      </div>
+
+      <div class="resource-row" data-cat="rules" data-name="Training Methodology Guide — Defensive Shape">
+        <div class="resource-type-icon pdf">PDF</div>
+        <div class="resource-info">
+          <div class="resource-name">Training Methodology Guide — Defensive Shape</div>
+          <div class="resource-meta">
+            <span class="resource-meta-item">PDF · 0.9 MB</span>
+            <span class="resource-meta-item">Oct 2025</span>
+            <span class="resource-meta-item">Rules &amp; Guides</span>
+          </div>
+        </div>
+        <div class="resource-right">
+          <span class="resource-tag">Training</span>
+          <a href="#" class="resource-dl-btn" onclick="triggerDownload('Training Guide Defensive.pdf', event)">↓ Download</a>
+        </div>
+      </div>
+
+      <div class="resource-row" data-cat="rules" data-name="Code of Conduct — Player Agreement">
+        <div class="resource-type-icon pdf">PDF</div>
+        <div class="resource-info">
+          <div class="resource-name">Code of Conduct — Player Agreement</div>
+          <div class="resource-meta">
+            <span class="resource-meta-item">PDF · 0.3 MB</span>
+            <span class="resource-meta-item">Sep 2025</span>
+            <span class="resource-meta-item">Rules &amp; Guides</span>
+          </div>
+        </div>
+        <div class="resource-right">
+          <span class="resource-tag">Conduct</span>
+          <a href="#" class="resource-dl-btn" onclick="triggerDownload('Code of Conduct.pdf', event)">↓ Download</a>
+        </div>
+      </div>
+
+      <!-- BRANDING -->
+      <div class="resource-row" data-cat="branding" data-name="Boundless FC Logo Pack — All Formats">
+        <div class="resource-type-icon zip">ZIP</div>
+        <div class="resource-info">
+          <div class="resource-name">Boundless FC Logo Pack — All Formats</div>
+          <div class="resource-meta">
+            <span class="resource-meta-item">ZIP · 8.4 MB</span>
+            <span class="resource-meta-item">Oct 2025</span>
+            <span class="resource-meta-item">Branding</span>
+          </div>
+        </div>
+        <div class="resource-right">
+          <span class="resource-tag">Brand</span>
+          <a href="#" class="resource-dl-btn" onclick="triggerDownload('BFC Logo Pack.zip', event)">↓ Download</a>
+        </div>
+      </div>
+
+      <div class="resource-row" data-cat="branding" data-name="Event Flyer Template — PSD + PNG">
+        <div class="resource-type-icon img">IMG</div>
+        <div class="resource-info">
+          <div class="resource-name">Event Flyer Template — PSD + PNG</div>
+          <div class="resource-meta">
+            <span class="resource-meta-item">ZIP · 12 MB</span>
+            <span class="resource-meta-item">Jan 2026</span>
+            <span class="resource-meta-item">Branding</span>
+          </div>
+        </div>
+        <div class="resource-right">
+          <span class="resource-tag">Brand</span>
+          <a href="#" class="resource-dl-btn" onclick="triggerDownload('Flyer Templates.zip', event)">↓ Download</a>
+        </div>
+      </div>
+
+      <div class="resource-row" data-cat="branding" data-name="Boundless FC Brand Guidelines">
+        <div class="resource-type-icon pdf">PDF</div>
+        <div class="resource-info">
+          <div class="resource-name">Boundless FC Brand Guidelines</div>
+          <div class="resource-meta">
+            <span class="resource-meta-item">PDF · 3.2 MB</span>
+            <span class="resource-meta-item">Oct 2025</span>
+            <span class="resource-meta-item">Branding</span>
+          </div>
+        </div>
+        <div class="resource-right">
+          <span class="resource-tag">Brand</span>
+          <a href="#" class="resource-dl-btn" onclick="triggerDownload('Brand Guidelines.pdf', event)">↓ Download</a>
+        </div>
+      </div>
+
+    </div><!-- /resource-list -->
+
+    <div class="no-results" id="no-results">
+      <div class="no-results-title">NO FILES FOUND</div>
+      <p class="no-results-sub">Try a different search term or category</p>
+    </div>
+  </section>
+
+  <!-- Upload CTA -->
+  <div class="upload-cta reveal">
+    <div>
+      <p class="label">Missing something?</p>
+      <p>If you need a document that isn't listed here — a past schedule, a form, or any club resource — get in touch with the committee and we'll get it uploaded.</p>
+    </div>
+    <a href="contact.html" class="btn-white" style="font-size:11px; padding:14px 36px; letter-spacing:2.5px; white-space:nowrap;">Contact Committee</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">BOUNDLESS FC</div>
+        <p class="footer-desc">A futsal community built for those who live and breathe the game. Play without limits.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="activities.html">Activities</a></li>
+          <li><a href="event.html">Events</a></li>
+          <li><a href="highlights.html">Highlights</a></li>
+          <li><a href="news.html">News</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="register.html">Join Us</a></li>
+          <li><a href="sponsors.html">Sponsors</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/boundless_fc" target="_blank">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Boundless FC</span>
+      <span>Futsal Community</span>
+    </div>
+  </footer>
+
+  <!-- DOWNLOAD TOAST -->
+  <div id="dl-toast" style="
+    position: fixed; bottom: 32px; right: 32px; z-index: 500;
+    background: var(--white); color: var(--black);
+    font-family: var(--font-cond); font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    padding: 14px 24px;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+  "></div>
+
+  <script>
+    /* ── Navbar ── */
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50));
+
+    /* ── Reveal ── */
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    /* ── Download simulation ── */
+    const toast = document.getElementById('dl-toast');
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateY(0)';
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(12px)';
+      }, 2500);
+    }
+    function triggerDownload(filename, e) {
+      e.preventDefault();
+      showToast('↓ Downloading ' + filename);
+    }
+
+    /* ── Category filter ── */
+    const catBtns   = document.querySelectorAll('.cat-btn');
+    const rows       = document.querySelectorAll('.resource-row');
+    let   activeCat  = 'all';
+    let   searchTerm = '';
+
+    function applyFilters() {
+      let visible = 0;
+      rows.forEach(row => {
+        const cat    = row.dataset.cat;
+        const name   = row.dataset.name.toLowerCase();
+        const catOk  = activeCat === 'all' || cat === activeCat;
+        const srchOk = searchTerm === '' || name.includes(searchTerm);
+        if (catOk && srchOk) { row.classList.remove('hidden'); visible++; }
+        else                  { row.classList.add('hidden'); }
+      });
+      document.getElementById('result-count').textContent =
+        visible === 0 ? 'No files found' : 'Showing ' + visible + ' file' + (visible === 1 ? '' : 's');
+      document.getElementById('no-results').classList.toggle('show', visible === 0);
+    }
+
+    catBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        catBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCat = btn.dataset.cat;
+        applyFilters();
+      });
+    });
+
+    /* ── Search ── */
+    document.getElementById('search-input').addEventListener('input', function() {
+      searchTerm = this.value.toLowerCase().trim();
+      applyFilters();
+    });
+    document.getElementById('search-clear').addEventListener('click', () => {
+      document.getElementById('search-input').value = '';
+      searchTerm = '';
+      applyFilters();
+    });
+  </script>
+</body>
+</html>

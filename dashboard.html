@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — BOUNDLESS FC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600&family=Barlow:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── DASHBOARD LAYOUT ── */
+    .dash-wrapper {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+      padding-top: 0; /* sidebar handles offset */
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      background: #080808;
+      border-right: 1px solid var(--line);
+      position: fixed;
+      top: 0; left: 0;
+      width: 260px;
+      height: 100vh;
+      display: flex; flex-direction: column;
+      padding: 36px 0 28px;
+      z-index: 50;
+      overflow-y: auto;
+    }
+    .sidebar-logo {
+      font-family: var(--font-display);
+      font-size: 18px; letter-spacing: 5px;
+      color: var(--white);
+      text-decoration: none;
+      padding: 0 32px 36px;
+      border-bottom: 1px solid var(--line);
+      display: block;
+    }
+    .sidebar-nav { padding: 28px 0; flex: 1; }
+    .sidebar-section-label {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 3.5px; text-transform: uppercase;
+      color: #333;
+      padding: 0 32px;
+      margin-bottom: 8px;
+      margin-top: 20px;
+    }
+    .sidebar-link {
+      display: flex; align-items: center; gap: 14px;
+      padding: 11px 32px;
+      font-family: var(--font-cond);
+      font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.2s, background 0.2s;
+      border-left: 2px solid transparent;
+    }
+    .sidebar-link:hover { color: var(--white); background: #111; }
+    .sidebar-link.active {
+      color: var(--white);
+      background: #111;
+      border-left-color: var(--white);
+    }
+    .sidebar-icon { font-size: 14px; width: 18px; text-align: center; }
+    .sidebar-bottom {
+      padding: 24px 32px 0;
+      border-top: 1px solid var(--line);
+    }
+    .sidebar-user {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px;
+    }
+    .user-avatar {
+      width: 36px; height: 36px;
+      background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: 16px; color: var(--black);
+      flex-shrink: 0;
+    }
+    .user-name {
+      font-family: var(--font-cond);
+      font-size: 13px; letter-spacing: 1px;
+      color: var(--white);
+    }
+    .user-role {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gray);
+      margin-top: 2px;
+    }
+    .sidebar-signout {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: #444;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .sidebar-signout:hover { color: #c0392b; }
+
+    /* ── MAIN CONTENT ── */
+    .dash-main {
+      margin-left: 260px;
+      padding: 52px 56px;
+      min-height: 100vh;
+    }
+    .dash-topbar {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 52px;
+    }
+    .dash-greeting-label {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 10px;
+    }
+    .dash-greeting {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4vw, 56px);
+      letter-spacing: 2px; line-height: 1;
+    }
+    .dash-greeting .stroke {
+      -webkit-text-stroke: 1px var(--white);
+      color: transparent;
+    }
+    .dash-date {
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    /* ── STAT CARDS ── */
+    .dash-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line);
+      margin-bottom: 48px;
+    }
+    .dash-stat {
+      background: #0d0d0d;
+      padding: 32px 28px;
+      transition: background 0.2s;
+    }
+    .dash-stat:hover { background: #111; }
+    .dash-stat-num {
+      font-family: var(--font-display);
+      font-size: 52px; line-height: 1;
+      margin-bottom: 6px;
+    }
+    .dash-stat-label {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gray);
+    }
+    .dash-stat-change {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 1px;
+      color: #27ae60;
+      margin-top: 6px;
+    }
+
+    /* ── TWO COLUMN LAYOUT ── */
+    .dash-cols {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    /* ── PANEL BASE ── */
+    .dash-panel {
+      background: #0d0d0d;
+      border: 1px solid var(--line);
+    }
+    .panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--line);
+    }
+    .panel-title {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 3.5px; text-transform: uppercase;
+      color: var(--gray);
+    }
+    .panel-action {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .panel-action:hover { color: var(--white); }
+
+    /* ── SCHEDULE TABLE ── */
+    .schedule-table { width: 100%; border-collapse: collapse; }
+    .schedule-table th {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: #333;
+      padding: 14px 28px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+    }
+    .schedule-table td {
+      padding: 16px 28px;
+      font-size: 14px; color: var(--gray);
+      border-bottom: 1px solid #111;
+      transition: background 0.15s;
+    }
+    .schedule-table tr:last-child td { border-bottom: none; }
+    .schedule-table tr:hover td { background: #111; }
+    .sched-name {
+      font-family: var(--font-cond);
+      font-size: 15px; letter-spacing: 0.5px;
+      color: var(--white);
+    }
+    .sched-badge {
+      display: inline-block;
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid var(--line);
+      color: var(--gray);
+    }
+    .sched-badge.upcoming { border-color: #27ae60; color: #27ae60; }
+    .sched-badge.registered { border-color: #f1c40f; color: #f1c40f; }
+    .sched-badge.open { border-color: var(--gray); }
+
+    /* ── ANNOUNCEMENTS ── */
+    .announce-list { padding: 0; }
+    .announce-item {
+      display: flex; gap: 16px;
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--line);
+      transition: background 0.15s;
+    }
+    .announce-item:last-child { border-bottom: none; }
+    .announce-item:hover { background: #111; }
+    .announce-dot {
+      width: 6px; height: 6px;
+      background: var(--white);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+    .announce-dot.read { background: var(--line); }
+    .announce-text {
+      font-size: 13px; color: var(--gray);
+      line-height: 1.6;
+    }
+    .announce-title {
+      font-family: var(--font-cond);
+      font-size: 14px; letter-spacing: 0.5px;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .announce-time {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: #333; margin-top: 6px;
+    }
+
+    /* ── ATTENDANCE BAR ── */
+    .attendance-section { margin-bottom: 48px; }
+    .attendance-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 24px;
+    }
+    .attendance-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 4px;
+    }
+    .att-month { text-align: center; }
+    .att-month-label {
+      font-family: var(--font-cond);
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: #333; margin-bottom: 6px;
+    }
+    .att-bar {
+      height: 60px;
+      background: var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+    .att-fill {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: var(--white);
+      transition: height 1s ease;
+    }
+    .att-pct {
+      font-family: var(--font-cond);
+      font-size: 9px; letter-spacing: 1px;
+      color: var(--gray); text-align: center;
+      margin-top: 4px;
+    }
+
+    /* ── QUICK ACTIONS ── */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line);
+      margin-bottom: 48px;
+    }
+    .quick-action {
+      background: #0d0d0d;
+      padding: 28px 24px;
+      text-decoration: none;
+      display: block;
+      transition: background 0.2s;
+      text-align: center;
+    }
+    .quick-action:hover { background: #161616; }
+    .qa-icon {
+      font-size: 20px; margin-bottom: 12px;
+      display: block;
+    }
+    .qa-label {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--gray);
+      transition: color 0.2s;
+    }
+    .quick-action:hover .qa-label { color: var(--white); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+      .sidebar.open { transform: none; }
+      .dash-main { margin-left: 0; padding: 80px 20px 40px; }
+      .dash-stats { grid-template-columns: 1fr 1fr; }
+      .dash-cols { grid-template-columns: 1fr; }
+      .quick-actions { grid-template-columns: 1fr 1fr; }
+      .attendance-grid { grid-template-columns: repeat(6, 1fr); }
+      .mob-menu-btn {
+        display: flex !important;
+        position: fixed; top: 16px; left: 16px; z-index: 200;
+        background: var(--black); border: 1px solid var(--line);
+        color: var(--white); padding: 10px 14px;
+        font-family: var(--font-cond); font-size: 13px;
+        letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+      }
+    }
+    .mob-menu-btn { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Mobile menu button -->
+  <button class="mob-menu-btn" id="mob-menu">☰ Menu</button>
+
+  <div class="dash-wrapper">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <a href="index.html" class="sidebar-logo">BOUNDLESS FC</a>
+
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-label">Main</div>
+        <a href="dashboard.html" class="sidebar-link active">
+          <span class="sidebar-icon">◈</span> Dashboard
+        </a>
+        <a href="event.html" class="sidebar-link">
+          <span class="sidebar-icon">◷</span> Schedule
+        </a>
+        <a href="register.html" class="sidebar-link">
+          <span class="sidebar-icon">◻</span> Registration
+        </a>
+        <a href="resources.html" class="sidebar-link">
+          <span class="sidebar-icon">↓</span> Resources
+        </a>
+
+        <div class="sidebar-section-label">Community</div>
+        <a href="highlights.html" class="sidebar-link">
+          <span class="sidebar-icon">◉</span> Highlights
+        </a>
+        <a href="gallery.html" class="sidebar-link">
+          <span class="sidebar-icon">▣</span> Gallery
+        </a>
+        <a href="news.html" class="sidebar-link">
+          <span class="sidebar-icon">◈</span> News
+        </a>
+        <a href="contact.html" class="sidebar-link">
+          <span class="sidebar-icon">◎</span> Contact
+        </a>
+
+        <div class="sidebar-section-label">Feedback</div>
+        <a href="feedback.html" class="sidebar-link">
+          <span class="sidebar-icon">◆</span> Feedback
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-user">
+          <div class="user-avatar" id="avatar-initials">—</div>
+          <div>
+            <div class="user-name" id="user-display">Member</div>
+            <div class="user-role">Active Member</div>
+          </div>
+        </div>
+        <a href="login.html" class="sidebar-signout" id="signout-link">Sign Out</a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dash-main">
+
+      <!-- Top bar -->
+      <div class="dash-topbar reveal">
+        <div>
+          <p class="dash-greeting-label">Member Portal</p>
+          <h1 class="dash-greeting">HELLO,<br><span class="stroke" id="greeting-name">PLAYER</span></h1>
+        </div>
+        <div class="dash-date" id="dash-date-display">—</div>
+      </div>
+
+      <!-- Quick actions -->
+      <div class="quick-actions reveal">
+        <a href="register.html" class="quick-action">
+          <span class="qa-icon">◻</span>
+          <span class="qa-label">Register Event</span>
+        </a>
+        <a href="resources.html" class="quick-action">
+          <span class="qa-icon">↓</span>
+          <span class="qa-label">Downloads</span>
+        </a>
+        <a href="highlights.html" class="quick-action">
+          <span class="qa-icon">◉</span>
+          <span class="qa-label">Highlights</span>
+        </a>
+        <a href="feedback.html" class="quick-action">
+          <span class="qa-icon">◆</span>
+          <span class="qa-label">Give Feedback</span>
+        </a>
+      </div>
+
+      <!-- Stat cards -->
+      <div class="dash-stats reveal">
+        <div class="dash-stat">
+          <div class="dash-stat-num" id="stat-sessions">12</div>
+          <div class="dash-stat-label">Sessions Attended</div>
+          <div class="dash-stat-change">↑ 3 this month</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-num">3</div>
+          <div class="dash-stat-label">Tournaments Joined</div>
+          <div class="dash-stat-change">↑ 1 upcoming</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-num">87<span style="font-size:28px; color:var(--gray)">%</span></div>
+          <div class="dash-stat-label">Attendance Rate</div>
+          <div class="dash-stat-change">↑ Top 20%</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-num">2</div>
+          <div class="dash-stat-label">Open Registrations</div>
+          <div class="dash-stat-change" style="color:#f1c40f;">⚑ Act now</div>
+        </div>
+      </div>
+
+      <!-- Attendance visual -->
+      <div class="attendance-section reveal">
+        <div class="attendance-header">
+          <div>
+            <p class="label">Attendance</p>
+            <h2 class="heading" style="font-size:clamp(28px,3vw,44px);">YOUR <span class="stroke">RECORD</span></h2>
+          </div>
+        </div>
+        <div class="attendance-grid" id="attendance-chart">
+          <!-- Generated by JS -->
+        </div>
+      </div>
+
+      <!-- Schedule + Announcements -->
+      <div class="dash-cols">
+
+        <!-- Schedule -->
+        <div class="dash-panel reveal">
+          <div class="panel-header">
+            <span class="panel-title">Upcoming Sessions</span>
+            <a href="event.html" class="panel-action">View All →</a>
+          </div>
+          <table class="schedule-table">
+            <thead>
+              <tr>
+                <th>Event</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="sched-name">Casual Friday Futsal</div>
+                  <div style="font-size:12px; margin-top:3px;">Sports Complex B</div>
+                </td>
+                <td>18 Apr 2026</td>
+                <td><span class="sched-badge upcoming">Registered</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="sched-name">APU Inter-Faculty Cup</div>
+                  <div style="font-size:12px; margin-top:3px;">Main Hall Court</div>
+                </td>
+                <td>25 Apr 2026</td>
+                <td><span class="sched-badge registered">Pending</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="sched-name">Training Camp — Defence</div>
+                  <div style="font-size:12px; margin-top:3px;">Outdoor Pitch</div>
+                </td>
+                <td>2 May 2026</td>
+                <td><span class="sched-badge open">Open</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="sched-name">Boundless Invitational</div>
+                  <div style="font-size:12px; margin-top:3px;">KL Sports Arena</div>
+                </td>
+                <td>10 May 2026</td>
+                <td><span class="sched-badge open">Open</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Announcements -->
+        <div class="dash-panel reveal">
+          <div class="panel-header">
+            <span class="panel-title">Announcements</span>
+            <a href="news.html" class="panel-action">All →</a>
+          </div>
+          <div class="announce-list">
+            <div class="announce-item">
+              <div class="announce-dot"></div>
+              <div>
+                <div class="announce-title">April Training Schedule Released</div>
+                <div class="announce-text">New weekly session times have been posted. Check the schedule page for full details.</div>
+                <div class="announce-time">2 hours ago</div>
+              </div>
+            </div>
+            <div class="announce-item">
+              <div class="announce-dot"></div>
+              <div>
+                <div class="announce-title">Inter-Faculty Cup — Registration Open</div>
+                <div class="announce-text">Spots are limited. Register before 20 April to secure your place.</div>
+                <div class="announce-time">1 day ago</div>
+              </div>
+            </div>
+            <div class="announce-item">
+              <div class="announce-dot read"></div>
+              <div>
+                <div class="announce-title">New Resources Uploaded</div>
+                <div class="announce-text">Tournament rulebook and training guides are now available for download.</div>
+                <div class="announce-time">3 days ago</div>
+              </div>
+            </div>
+            <div class="announce-item">
+              <div class="announce-dot read"></div>
+              <div>
+                <div class="announce-title">Welcome to Boundless FC Portal</div>
+                <div class="announce-text">Your member account is now active. Explore events, resources and more.</div>
+                <div class="announce-time">1 week ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /dash-cols -->
+
+    </main>
+  </div><!-- /dash-wrapper -->
+
+  <script>
+    /* ── Date display ── */
+    const months = ['January','February','March','April','May','June',
+                    'July','August','September','October','November','December'];
+    const days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const now    = new Date();
+    document.getElementById('dash-date-display').textContent =
+      days[now.getDay()] + ', ' + now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+
+    /* ── User greeting (front-end demo) ── */
+    const storedName = sessionStorage.getItem('bfc_name') || 'Player';
+    const initials   = storedName.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+    document.getElementById('greeting-name').textContent = storedName.split(' ')[0].toUpperCase();
+    document.getElementById('user-display').textContent  = storedName;
+    document.getElementById('avatar-initials').textContent = initials || '—';
+
+    /* ── Sign out ── */
+    document.getElementById('signout-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      sessionStorage.clear();
+      window.location.href = 'login.html';
+    });
+
+    /* ── Mobile sidebar ── */
+    const mob = document.getElementById('mob-menu');
+    const sid = document.getElementById('sidebar');
+    mob.addEventListener('click', () => sid.classList.toggle('open'));
+    document.addEventListener('click', (e) => {
+      if (!sid.contains(e.target) && !mob.contains(e.target)) sid.classList.remove('open');
+    });
+
+    /* ── Attendance chart generation ── */
+    const monthAbbr  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const attendData = [60, 75, 80, 90, 70, 85, 0, 0, 0, 0, 0, 0]; // % per month
+    const chart = document.getElementById('attendance-chart');
+
+    monthAbbr.forEach((m, i) => {
+      const pct = attendData[i];
+      const div = document.createElement('div');
+      div.className = 'att-month';
+      div.innerHTML = `
+        <div class="att-month-label">${m}</div>
+        <div class="att-bar">
+          <div class="att-fill" id="fill-${i}" style="height:0%"></div>
+        </div>
+        <div class="att-pct">${pct > 0 ? pct + '%' : '—'}</div>
+      `;
+      chart.appendChild(div);
+    });
+
+    // Animate bars after paint
+    setTimeout(() => {
+      attendData.forEach((pct, i) => {
+        const fill = document.getElementById('fill-' + i);
+        if (fill) fill.style.height = pct + '%';
+      });
+    }, 300);
+
+    /* ── Reveal on scroll ── */
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

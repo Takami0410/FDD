@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — BOUNDLESS FC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600&family=Barlow:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── AUTH LAYOUT ── */
+    .auth-wrapper {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* Left panel — visual */
+    .auth-visual {
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-visual-bg {
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1200&q=80') center/cover no-repeat;
+      filter: brightness(0.28);
+    }
+    .auth-visual-content {
+      position: relative; z-index: 2;
+      height: 100%;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      padding: 40px 48px;
+    }
+    .auth-brand {
+      font-family: var(--font-display);
+      font-size: 22px; letter-spacing: 5px;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .auth-visual-quote {
+      margin-bottom: 40px;
+    }
+    .auth-quote-text {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 5vw, 72px);
+      line-height: 0.93;
+      letter-spacing: 1.5px;
+    }
+    .auth-quote-text .stroke {
+      -webkit-text-stroke: 1px var(--white);
+      color: transparent;
+    }
+    .auth-quote-sub {
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-top: 20px;
+    }
+
+    /* Right panel — form */
+    .auth-form-panel {
+      background: #0d0d0d;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 60px 64px;
+      border-left: 1px solid var(--line);
+    }
+    .auth-tab-row {
+      display: flex;
+      gap: 0;
+      margin-bottom: 48px;
+      border-bottom: 1px solid var(--line);
+    }
+    .auth-tab {
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gray);
+      padding: 0 0 16px;
+      margin-right: 36px;
+      background: none; border: none; cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      position: relative; bottom: -1px;
+    }
+    .auth-tab.active {
+      color: var(--white);
+      border-bottom-color: var(--white);
+    }
+
+    .auth-form { display: none; flex-direction: column; gap: 20px; }
+    .auth-form.active { display: flex; }
+
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-label {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--gray);
+    }
+    .form-input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--line);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 14px; font-weight: 300;
+      padding: 12px 0;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    .form-input::placeholder { color: #333; }
+    .form-input:focus { border-color: var(--white); }
+    .form-input.error { border-color: #c0392b; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+    .form-hint {
+      font-size: 12px; color: #c0392b;
+      font-family: var(--font-cond);
+      letter-spacing: 1px;
+      display: none;
+      margin-top: 4px;
+    }
+    .form-hint.show { display: block; }
+
+    .form-forgot {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray);
+      text-decoration: none;
+      text-align: right;
+      transition: color 0.2s;
+    }
+    .form-forgot:hover { color: var(--white); }
+
+    .form-submit {
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--black); background: var(--white);
+      border: none; cursor: pointer;
+      padding: 16px;
+      margin-top: 8px;
+      transition: background 0.2s;
+      width: 100%;
+    }
+    .form-submit:hover { background: #ccc; }
+
+    .form-divider {
+      display: flex; align-items: center; gap: 16px;
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gray);
+    }
+    .form-divider::before,
+    .form-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--line);
+    }
+
+    .form-alt-link {
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gray);
+      text-align: center;
+    }
+    .form-alt-link a {
+      color: var(--white); text-decoration: none;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 2px;
+      transition: border-color 0.2s;
+    }
+    .form-alt-link a:hover { border-color: var(--white); }
+
+    /* Password strength */
+    .strength-bar {
+      display: flex; gap: 4px; margin-top: 8px;
+    }
+    .strength-seg {
+      flex: 1; height: 2px; background: var(--line);
+      transition: background 0.3s;
+    }
+    .strength-label {
+      font-family: var(--font-cond);
+      font-size: 10px; letter-spacing: 2px;
+      color: var(--gray);
+      margin-top: 6px;
+    }
+
+    /* Checkbox */
+    .form-check {
+      display: flex; align-items: flex-start; gap: 12px;
+      cursor: pointer;
+    }
+    .form-check input[type="checkbox"] { display: none; }
+    .check-box {
+      width: 14px; height: 14px;
+      border: 1px solid var(--line);
+      flex-shrink: 0; margin-top: 2px;
+      transition: background 0.2s, border-color 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .form-check input:checked + .check-box {
+      background: var(--white); border-color: var(--white);
+    }
+    .check-mark {
+      width: 8px; height: 8px;
+      background: var(--black);
+      clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+      display: none;
+    }
+    .form-check input:checked + .check-box .check-mark { display: block; }
+    .check-text {
+      font-size: 13px; color: var(--gray); line-height: 1.5;
+    }
+    .check-text a { color: var(--white); text-decoration: none; }
+
+    /* Success message */
+    .auth-success {
+      display: none;
+      text-align: center;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .auth-success.show { display: flex; }
+    .success-icon {
+      width: 56px; height: 56px;
+      border: 1px solid var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+    }
+    .success-title {
+      font-family: var(--font-display);
+      font-size: 40px; letter-spacing: 2px;
+    }
+    .success-sub {
+      font-family: var(--font-cond);
+      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .auth-wrapper { grid-template-columns: 1fr; }
+      .auth-visual { display: none; }
+      .auth-form-panel { padding: 100px 28px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">BOUNDLESS FC</a>
+    <ul class="nav-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="activities.html">Activities</a></li>
+      <li><a href="event.html">Events</a></li>
+      <li><a href="highlight.html">Highlights</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="register.html" class="nav-join">Join</a>
+  </nav>
+
+  <div class="auth-wrapper">
+
+    <!-- LEFT — Visual -->
+    <div class="auth-visual">
+      <div class="auth-visual-bg"></div>
+      <div class="auth-visual-content">
+        <a href="index.html" class="auth-brand">BOUNDLESS FC</a>
+        <div class="auth-visual-quote">
+          <div class="auth-quote-text">
+            YOUR<br>
+            <span class="stroke">GAME</span><br>
+            AWAITS
+          </div>
+          <p class="auth-quote-sub">Member portal · Boundless FC</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT — Form -->
+    <div class="auth-form-panel">
+
+      <!-- Tab switcher -->
+      <div class="auth-tab-row">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="register">Create Account</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form class="auth-form active" id="login-form" novalidate>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" id="login-email" placeholder="your@email.com" />
+          <span class="form-hint" id="login-email-hint">Please enter a valid email.</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="login-pass" placeholder="••••••••" />
+          <span class="form-hint" id="login-pass-hint">Password is required.</span>
+        </div>
+        <a href="#" class="form-forgot">Forgot password?</a>
+        <button type="submit" class="form-submit">Sign In</button>
+        <div class="form-divider">or</div>
+        <p class="form-alt-link">No account? <a href="#" id="go-register">Create one</a></p>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form class="auth-form" id="register-form" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-input" id="reg-fname" placeholder="Ahmad" />
+            <span class="form-hint" id="reg-fname-hint">Required.</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-input" id="reg-lname" placeholder="Razif" />
+            <span class="form-hint" id="reg-lname-hint">Required.</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" id="reg-email" placeholder="your@email.com" />
+          <span class="form-hint" id="reg-email-hint">Please enter a valid email.</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Student / Member ID</label>
+          <input type="text" class="form-input" id="reg-id" placeholder="TP000000" />
+          <span class="form-hint" id="reg-id-hint">Required.</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="reg-pass" placeholder="Min. 8 characters" />
+          <div class="strength-bar">
+            <div class="strength-seg" id="seg1"></div>
+            <div class="strength-seg" id="seg2"></div>
+            <div class="strength-seg" id="seg3"></div>
+            <div class="strength-seg" id="seg4"></div>
+          </div>
+          <div class="strength-label" id="strength-text">—</div>
+          <span class="form-hint" id="reg-pass-hint">Minimum 8 characters.</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <input type="password" class="form-input" id="reg-pass2" placeholder="Re-enter password" />
+          <span class="form-hint" id="reg-pass2-hint">Passwords do not match.</span>
+        </div>
+        <label class="form-check">
+          <input type="checkbox" id="reg-agree" />
+          <span class="check-box"><span class="check-mark"></span></span>
+          <span class="check-text">I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a></span>
+        </label>
+        <span class="form-hint" id="reg-agree-hint">You must agree to continue.</span>
+        <button type="submit" class="form-submit">Create Account</button>
+        <div class="form-divider">or</div>
+        <p class="form-alt-link">Already a member? <a href="#" id="go-login">Sign in</a></p>
+      </form>
+
+      <!-- SUCCESS STATE -->
+      <div class="auth-success" id="success-msg">
+        <div class="success-icon">✓</div>
+        <div class="success-title">WELCOME<br><span class="stroke">BACK</span></div>
+        <p class="success-sub">Redirecting to your dashboard…</p>
+        <a href="dashboard.html" class="btn-white" style="font-size:11px; padding:14px 36px; letter-spacing:2.5px;">Go to Dashboard</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* ── Navbar scroll ── */
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    /* ── Tab switching ── */
+    const tabs    = document.querySelectorAll('.auth-tab');
+    const forms   = document.querySelectorAll('.auth-form');
+    const success = document.getElementById('success-msg');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        forms.forEach(f => f.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab + '-form').classList.add('active');
+        success.classList.remove('show');
+      });
+    });
+
+    document.getElementById('go-register').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelector('[data-tab="register"]').click();
+    });
+    document.getElementById('go-login').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelector('[data-tab="login"]').click();
+    });
+
+    /* ── Helpers ── */
+    function setError(inputId, hintId, show) {
+      const inp  = document.getElementById(inputId);
+      const hint = document.getElementById(hintId);
+      if (show) {
+        inp.classList.add('error');
+        hint.classList.add('show');
+      } else {
+        inp.classList.remove('error');
+        hint.classList.remove('show');
+      }
+      return !show;
+    }
+
+    function isValidEmail(val) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+    }
+
+    /* ── Login validation ── */
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const pass  = document.getElementById('login-pass').value;
+
+      const v1 = setError('login-email', 'login-email-hint', !isValidEmail(email));
+      const v2 = setError('login-pass',  'login-pass-hint',  pass.length < 1);
+
+      if (v1 && v2) {
+        // Simulate login success (front-end only)
+        this.style.display = 'none';
+        document.querySelector('.auth-tab-row').style.display = 'none';
+        document.getElementById('success-msg').classList.add('show');
+        // In a real app: redirect after checking credentials
+        setTimeout(() => { window.location.href = 'dashboard.html'; }, 2400);
+      }
+    });
+
+    /* ── Password strength ── */
+    document.getElementById('reg-pass').addEventListener('input', function() {
+      const val   = this.value;
+      const segs  = [document.getElementById('seg1'), document.getElementById('seg2'),
+                     document.getElementById('seg3'), document.getElementById('seg4')];
+      const label = document.getElementById('strength-text');
+
+      let score = 0;
+      if (val.length >= 8)              score++;
+      if (/[A-Z]/.test(val))            score++;
+      if (/[0-9]/.test(val))            score++;
+      if (/[^A-Za-z0-9]/.test(val))     score++;
+
+      const colors = ['', '#c0392b', '#e67e22', '#f1c40f', '#27ae60'];
+      const labels = ['—', 'Weak', 'Fair', 'Good', 'Strong'];
+
+      segs.forEach((s, i) => {
+        s.style.background = i < score ? colors[score] : 'var(--line)';
+      });
+      label.textContent = labels[score];
+      label.style.color = colors[score] || 'var(--gray)';
+    });
+
+    /* ── Register validation ── */
+    document.getElementById('register-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const fname  = document.getElementById('reg-fname').value.trim();
+      const lname  = document.getElementById('reg-lname').value.trim();
+      const email  = document.getElementById('reg-email').value.trim();
+      const id     = document.getElementById('reg-id').value.trim();
+      const pass   = document.getElementById('reg-pass').value;
+      const pass2  = document.getElementById('reg-pass2').value;
+      const agreed = document.getElementById('reg-agree').checked;
+
+      const v1 = setError('reg-fname', 'reg-fname-hint', fname.length < 1);
+      const v2 = setError('reg-lname', 'reg-lname-hint', lname.length < 1);
+      const v3 = setError('reg-email', 'reg-email-hint', !isValidEmail(email));
+      const v4 = setError('reg-id',    'reg-id-hint',    id.length < 1);
+      const v5 = setError('reg-pass',  'reg-pass-hint',  pass.length < 8);
+      const v6 = setError('reg-pass2', 'reg-pass2-hint', pass !== pass2);
+      const agreeHint = document.getElementById('reg-agree-hint');
+      if (!agreed) { agreeHint.classList.add('show'); } else { agreeHint.classList.remove('show'); }
+
+      if (v1 && v2 && v3 && v4 && v5 && v6 && agreed) {
+        this.style.display = 'none';
+        document.querySelector('.auth-tab-row').style.display = 'none';
+        const s = document.getElementById('success-msg');
+        s.querySelector('.success-title').innerHTML = 'ACCOUNT<br><span class="stroke">CREATED</span>';
+        s.querySelector('.success-sub').textContent = 'Welcome to Boundless FC.';
+        s.classList.add('show');
+        setTimeout(() => { window.location.href = 'dashboard.html'; }, 2400);
+      }
+    });
+  </script>
+</body>
+</html>
