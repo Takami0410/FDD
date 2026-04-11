@@ -9,14 +9,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600&family=Barlow:wght@300;400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css">
   <style>
-    /* ── REGISTER PAGE ── */
-
     .reg-hero {
-      height: 48vh; min-height: 360px;
-      position: relative;
-      display: flex; align-items: flex-end;
-      padding: 0 56px 56px;
-      overflow: hidden;
+      height: 48vh; min-height: 360px; position: relative;
+      display: flex; align-items: flex-end; padding: 0 56px 56px; overflow: hidden;
     }
     .reg-hero-bg {
       position: absolute; inset: 0;
@@ -25,313 +20,130 @@
     }
     .reg-hero-content { position: relative; z-index: 2; }
 
-    /* Session info card */
-    .session-info-bar {
-      background: #111;
-      border-bottom: 1px solid #222;
-      padding: 36px 56px;
-    }
+    .session-info-bar { background: #111; border-bottom: 1px solid #222; padding: 36px 56px; }
     .session-info-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      background: #222;
-      border: 1px solid #222;
-      margin-top: 28px;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; background: #222; border: 1px solid #222; margin-top: 28px;
     }
-    .info-block {
-      background: #111;
-      padding: 24px 28px;
-      border-right: 1px solid #222;
-    }
+    .info-block { background: #111; padding: 24px 28px; border-right: 1px solid #222; }
     .info-block:last-child { border-right: none; }
     .info-block-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: #555; margin-bottom: 6px;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+      letter-spacing: 3px; text-transform: uppercase; color: #555; margin-bottom: 6px;
     }
-    .info-block-value {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px; letter-spacing: 1px;
-    }
-    .info-block-sub {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px; letter-spacing: 1.5px; color: #555;
-      margin-top: 2px;
-    }
+    .info-block-value { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; }
+    .info-block-sub { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 1.5px; color: #555; margin-top: 2px; }
 
-    /* Spots indicator */
-    .spots-status {
-      margin-top: 20px;
-      display: flex; align-items: center; gap: 16px;
-    }
-    .spots-track {
-      flex: 1; height: 2px; background: #222;
-    }
-    .spots-fill {
-      height: 100%; background: #f4f4f4;
-      transition: width 0.6s;
-    }
+    .spots-status { margin-top: 20px; display: flex; align-items: center; gap: 16px; }
+    .spots-track { flex: 1; height: 2px; background: #222; }
+    .spots-fill { height: 100%; background: #f4f4f4; transition: width 0.6s; }
     .spots-fill.warning { background: #e5a000; }
     .spots-fill.danger  { background: #cc3333; }
     .spots-text {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
-      color: #666; white-space: nowrap;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+      letter-spacing: 2.5px; text-transform: uppercase; color: #666; white-space: nowrap;
     }
 
-    /* ── FORM SECTION ── */
     .form-section {
-      padding: 80px 56px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
+      padding: 80px 56px; display: grid;
+      grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
     }
 
-    /* Left: form */
-    .form-panel {}
-    .form-fields { margin-top: 48px; }
-
-    .field-group {
-      margin-bottom: 28px;
-    }
+    .field-group { margin-bottom: 28px; }
     .field-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px; letter-spacing: 3.5px; text-transform: uppercase;
-      color: #666; display: block; margin-bottom: 8px;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+      letter-spacing: 3.5px; text-transform: uppercase; color: #666; display: block; margin-bottom: 8px;
     }
     .field-input {
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid #333;
-      color: #f4f4f4;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px; letter-spacing: 1px;
-      padding: 12px 0;
-      width: 100%;
-      outline: none;
-      transition: border-color 0.2s;
+      background: transparent; border: none; border-bottom: 1px solid #333;
+      color: #f4f4f4; font-family: 'Barlow Condensed', sans-serif; font-size: 16px;
+      letter-spacing: 1px; padding: 12px 0; width: 100%; outline: none; transition: border-color 0.2s;
     }
     .field-input:focus { border-color: #f4f4f4; }
     .field-input::placeholder { color: #333; }
     .field-input.error { border-color: #cc3333; }
-    .field-hint {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px; letter-spacing: 1px; color: #555;
-      margin-top: 6px;
-    }
-    .field-error {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px; letter-spacing: 1px; color: #cc3333;
-      margin-top: 6px; display: none;
-    }
+    .field-hint { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 1px; color: #555; margin-top: 6px; }
+    .field-error { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 1px; color: #cc3333; margin-top: 6px; display: none; }
     .field-error.show { display: block; }
 
-    .terms-row {
-      display: flex; gap: 12px; align-items: flex-start;
-      margin: 32px 0;
-    }
-    .terms-row input[type="checkbox"] {
-      width: 14px; height: 14px; margin-top: 2px; cursor: pointer;
-      accent-color: #f4f4f4; flex-shrink: 0;
-    }
-    .terms-text {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 12px; letter-spacing: 1px; color: #555;
-      line-height: 1.6;
-    }
+    .terms-row { display: flex; gap: 12px; align-items: flex-start; margin: 32px 0; }
+    .terms-row input[type="checkbox"] { width: 14px; height: 14px; margin-top: 2px; cursor: pointer; accent-color: #f4f4f4; flex-shrink: 0; }
+    .terms-text { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 1px; color: #555; line-height: 1.6; }
 
     .btn-submit {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 13px; letter-spacing: 3px; text-transform: uppercase;
-      color: #0a0a0a; background: #f4f4f4;
-      border: none; padding: 18px 56px;
-      cursor: pointer; width: 100%;
-      transition: background 0.2s;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 3px; text-transform: uppercase;
+      color: #0a0a0a; background: #f4f4f4; border: none; padding: 18px 56px;
+      cursor: pointer; width: 100%; transition: background 0.2s;
     }
     .btn-submit:hover { background: #ccc; }
     .btn-submit:disabled { background: #333; color: #666; cursor: not-allowed; }
 
-    /* Right: payment */
-    .payment-panel {
-      position: sticky; top: 120px;
-    }
-
-    .payment-card {
-      background: #111;
-      border: 1px solid #222;
-      padding: 40px;
-    }
-    .payment-amount {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 72px; line-height: 1;
-      letter-spacing: 1px;
-      margin: 24px 0;
-    }
-    .payment-amount span {
-      font-size: 28px; vertical-align: super;
-      font-family: 'Barlow Condensed', sans-serif;
-      color: #666;
-    }
-    .payment-divider {
-      border: none; border-top: 1px solid #222;
-      margin: 28px 0;
-    }
-
-    .payment-method {
-      margin-bottom: 24px;
-    }
+    .payment-panel { position: sticky; top: 120px; }
+    .payment-card { background: #111; border: 1px solid #222; padding: 40px; }
+    .payment-amount { font-family: 'Bebas Neue', sans-serif; font-size: 72px; line-height: 1; letter-spacing: 1px; margin: 24px 0; }
+    .payment-amount span { font-size: 28px; vertical-align: super; font-family: 'Barlow Condensed', sans-serif; color: #666; }
+    .payment-divider { border: none; border-top: 1px solid #222; margin: 28px 0; }
+    .payment-method { margin-bottom: 24px; }
     .payment-method-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: #555; margin-bottom: 12px;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+      letter-spacing: 3px; text-transform: uppercase; color: #555; margin-bottom: 12px;
     }
-    .payment-detail-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid #1a1a1a;
-    }
+    .payment-detail-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #1a1a1a; }
     .payment-detail-row:last-child { border-bottom: none; }
-    .pd-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
-      color: #555;
-    }
-    .pd-value {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 14px; letter-spacing: 1px;
-      color: #f4f4f4; text-align: right;
-    }
-    .pd-value.accent {
-      font-size: 16px; font-weight: 600;
-    }
-
+    .pd-label { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: #555; }
+    .pd-value { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; letter-spacing: 1px; color: #f4f4f4; text-align: right; }
+    .pd-value.accent { font-size: 16px; font-weight: 600; }
     .qr-placeholder {
-      background: #1a1a1a;
-      height: 160px;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      margin: 20px 0;
-      border: 1px dashed #333;
+      background: #1a1a1a; height: 160px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; margin: 20px 0; border: 1px dashed #333;
     }
-    .qr-placeholder-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
-      color: #444; margin-top: 12px;
-    }
-    .qr-icon {
-      font-size: 40px; opacity: 0.3;
-    }
+    .qr-placeholder-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #444; margin-top: 12px; }
+    .qr-icon { font-size: 40px; opacity: 0.3; }
+    .payment-note { font-family: 'Barlow', sans-serif; font-size: 12px; color: #555; line-height: 1.7; margin-top: 16px; }
 
-    .payment-note {
-      font-family: 'Barlow', sans-serif;
-      font-size: 12px; color: #555;
-      line-height: 1.7; margin-top: 16px;
-    }
-
-    /* ── SUCCESS STATE ── */
-    .success-screen {
-      display: none;
-      padding: 120px 56px;
-      text-align: center;
-    }
+    .success-screen { display: none; padding: 120px 56px; text-align: center; }
     .success-screen.show { display: block; }
-    .success-icon {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 80px; letter-spacing: 3px;
-      -webkit-text-stroke: 1px #f4f4f4;
-      color: transparent;
-      margin-bottom: 32px;
-    }
-    .success-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(48px, 7vw, 88px);
-      line-height: 0.92; letter-spacing: 2px;
-      margin-bottom: 24px;
-    }
-    .success-sub {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 14px; letter-spacing: 2px;
-      color: #666; margin-bottom: 48px; line-height: 1.8;
-    }
-    .success-ref {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px; letter-spacing: 4px;
-      border: 1px solid #333;
-      display: inline-block; padding: 12px 36px;
-      color: #666; margin-bottom: 48px;
-    }
-    .success-detail-card {
-      background: #111; border: 1px solid #222;
-      padding: 32px 40px; max-width: 480px;
-      margin: 0 auto 48px;
-      text-align: left;
-    }
+    .success-icon { font-family: 'Bebas Neue', sans-serif; font-size: 80px; letter-spacing: 3px; -webkit-text-stroke: 1px #f4f4f4; color: transparent; margin-bottom: 32px; }
+    .success-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px, 7vw, 88px); line-height: 0.92; letter-spacing: 2px; margin-bottom: 24px; }
+    .success-sub { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; letter-spacing: 2px; color: #666; margin-bottom: 48px; line-height: 1.8; }
+    .success-ref { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 4px; border: 1px solid #333; display: inline-block; padding: 12px 36px; color: #666; margin-bottom: 48px; }
+    .success-detail-card { background: #111; border: 1px solid #222; padding: 32px 40px; max-width: 480px; margin: 0 auto 48px; text-align: left; }
 
-    /* Full state */
-    .full-screen {
-      display: none; padding: 120px 56px; text-align: center;
-    }
+    .full-screen { display: none; padding: 120px 56px; text-align: center; }
     .full-screen.show { display: block; }
-
-    /* Not found state */
-    .notfound-screen {
-      display: none; padding: 120px 56px; text-align: center;
-    }
+    .notfound-screen { display: none; padding: 120px 56px; text-align: center; }
     .notfound-screen.show { display: block; }
+    .loading-screen { padding: 120px 56px; text-align: center; }
+    .loading-screen p { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #444; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
 
-    .reg-list-section {
-      display: none; padding: 0 56px 72px;
-    }
+    .reg-list-section { display: none; padding: 0 56px 72px; }
     .reg-list-section.show { display: block; }
-
-    .reg-table {
-      width: 100%; border-collapse: collapse;
-      margin-top: 32px;
-    }
+    .reg-table { width: 100%; border-collapse: collapse; margin-top: 32px; }
     .reg-table th {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: #555; padding: 12px 16px; text-align: left;
-      border-bottom: 1px solid #222;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: #555; padding: 12px 16px; text-align: left; border-bottom: 1px solid #222;
     }
-    .reg-table td {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 13px; letter-spacing: 1px;
-      color: #f4f4f4; padding: 14px 16px;
-      border-bottom: 1px solid #1a1a1a;
-    }
+    .reg-table td { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 1px; color: #f4f4f4; padding: 14px 16px; border-bottom: 1px solid #1a1a1a; }
     .reg-table tr:hover td { background: #111; }
-    .status-pending {
-      color: #e5a000; font-size: 11px; letter-spacing: 2px;
-    }
-    .status-confirmed {
-      color: #4caf50; font-size: 11px; letter-spacing: 2px;
-    }
-
-    /* Admin controls in list */
-    .reg-admin-bar {
-      display: flex; gap: 12px; align-items: center;
-      margin-top: 24px; flex-wrap: wrap;
-    }
+    .status-pending { color: #e5a000; font-size: 11px; letter-spacing: 2px; }
+    .status-confirmed { color: #4caf50; font-size: 11px; letter-spacing: 2px; }
+    .reg-admin-bar { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; align-items: center; }
     .btn-export {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
-      color: #f4f4f4; background: none;
-      border: 1px solid #333; padding: 10px 24px;
-      cursor: pointer; transition: border-color 0.2s;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: #f4f4f4; background: none; border: 1px solid #333; padding: 10px 24px; cursor: pointer; transition: border-color 0.2s;
     }
     .btn-export:hover { border-color: #f4f4f4; }
+    .btn-export:disabled { color: #444; border-color: #222; cursor: not-allowed; }
 
     @media (max-width: 1024px) {
       .reg-hero { padding: 0 28px 48px; }
-      .session-info-bar { padding: 28px 28px; }
+      .session-info-bar { padding: 28px; }
       .session-info-grid { grid-template-columns: 1fr 1fr; }
       .info-block:nth-child(2) { border-right: none; }
       .form-section { padding: 56px 28px; grid-template-columns: 1fr; gap: 56px; }
       .payment-panel { position: static; }
-      .success-screen, .full-screen, .notfound-screen { padding: 80px 28px; }
+      .success-screen, .full-screen, .notfound-screen, .loading-screen { padding: 80px 28px; }
       .reg-list-section { padding: 0 28px 56px; }
     }
     @media (max-width: 640px) {
@@ -343,14 +155,12 @@
 </head>
 <body>
 
-  <!-- NAV -->
   <nav id="navbar">
     <a href="index.html" class="nav-logo">BOUNDLESS FC</a>
     <ul class="nav-links">
       <li><a href="about.html">About</a></li>
       <li><a href="activities.html">Activities</a></li>
-      <li><a href="event.html">Events</a></li>
-      <li><a href="events.html">Schedule</a></li>
+      <li><a href="events.html">Events</a></li>
       <li><a href="highlight.html">Highlights</a></li>
       <li><a href="news.html">News</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -358,66 +168,62 @@
     <a href="register.html" class="nav-join">Join</a>
   </nav>
 
+  <!-- LOADING -->
+  <div class="loading-screen" id="loading-screen">
+    <p>Loading session...</p>
+  </div>
+
   <!-- HERO -->
-  <section class="reg-hero" id="reg-hero">
+  <section class="reg-hero" id="reg-hero" style="display:none;">
     <div class="reg-hero-bg"></div>
     <div class="reg-hero-content">
       <p class="hero-label" id="hero-label">Register for Session</p>
-      <h1 class="hero-title" style="font-size: clamp(60px, 9vw, 110px);" id="hero-title">
-        SECURE<br>
-        <span class="stroke">YOUR SPOT</span>
+      <h1 class="hero-title" style="font-size: clamp(60px, 9vw, 110px);">
+        SECURE<br><span class="stroke">YOUR SPOT</span>
       </h1>
     </div>
   </section>
 
-  <!-- SESSION INFO BAR -->
-  <div class="session-info-bar reveal" id="session-info-bar">
+  <!-- SESSION INFO -->
+  <div class="session-info-bar reveal" id="session-info-bar" style="display:none;">
     <p class="label">Session Details</p>
-    <div class="session-info-grid" id="session-info-grid">
-      <!-- Filled by JS -->
-    </div>
-    <div class="spots-status" id="spots-status">
+    <div class="session-info-grid" id="session-info-grid"></div>
+    <div class="spots-status">
       <span class="spots-text" id="spots-text-label">— spots left</span>
       <div class="spots-track"><div class="spots-fill" id="spots-fill-bar"></div></div>
       <span class="spots-text" id="spots-text-count">—/—</span>
     </div>
   </div>
 
-  <!-- FORM SECTION -->
-  <section class="form-section" id="form-section">
-    <!-- LEFT: FORM -->
+  <!-- FORM -->
+  <section class="form-section" id="form-section" style="display:none;">
     <div class="form-panel reveal">
       <p class="label">Your Details</p>
       <h2 class="heading">FILL IN<br><span class="stroke">THE FORM</span></h2>
-
-      <div class="form-fields">
+      <div class="form-fields" style="margin-top:48px;">
         <div class="field-group">
           <label class="field-label" for="f-fullname">Full Name</label>
           <input class="field-input" type="text" id="f-fullname" placeholder="Ahmad bin Abdullah" autocomplete="name" />
           <div class="field-error" id="err-name">Please enter your full name.</div>
         </div>
-
         <div class="field-group">
           <label class="field-label" for="f-instagram">Instagram ID</label>
           <input class="field-input" type="text" id="f-instagram" placeholder="@yourusername" autocomplete="off" />
           <div class="field-hint">e.g. @boundless_fc — used for confirmation</div>
           <div class="field-error" id="err-ig">Please enter your Instagram ID.</div>
         </div>
-
         <div class="field-group">
           <label class="field-label" for="f-phone">Phone Number</label>
           <input class="field-input" type="tel" id="f-phone" placeholder="01X-XXXXXXX" autocomplete="tel" />
           <div class="field-hint">Malaysian number — WhatsApp preferred</div>
           <div class="field-error" id="err-phone">Please enter a valid phone number.</div>
         </div>
-
         <div class="field-group">
           <label class="field-label" for="f-payref">Payment Reference</label>
           <input class="field-input" type="text" id="f-payref" placeholder="e.g. DuitNow ref / transfer ID" autocomplete="off" />
           <div class="field-hint">Transfer RM<span id="price-hint">16</span> first, then enter the reference here</div>
           <div class="field-error" id="err-pay">Please enter your payment reference.</div>
         </div>
-
         <div class="terms-row">
           <input type="checkbox" id="f-terms" />
           <span class="terms-text">
@@ -425,27 +231,19 @@
             I understand that my spot is only confirmed after payment is verified by the organiser.
           </span>
         </div>
-        <div class="field-error" id="err-terms" style="margin-top:-16px; margin-bottom:16px;">Please confirm payment above.</div>
-
-        <button class="btn-submit" id="btn-submit" onclick="submitRegistration()">
-          Register &amp; Confirm Spot →
-        </button>
+        <div class="field-error" id="err-terms" style="margin-top:-16px;margin-bottom:16px;">Please confirm payment above.</div>
+        <button class="btn-submit" id="btn-submit" onclick="submitRegistration()">Register &amp; Confirm Spot →</button>
+        <div id="submit-msg" style="margin-top:16px;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;color:#cc3333;display:none;"></div>
       </div>
     </div>
 
-    <!-- RIGHT: PAYMENT -->
     <div class="payment-panel reveal">
       <p class="label">Payment</p>
       <h2 class="heading">HOW TO<br><span class="stroke">PAY</span></h2>
-
       <div class="payment-card">
-        <div style="font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:3px; text-transform:uppercase; color:#555;">
-          Session Fee
-        </div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#555;">Session Fee</div>
         <div class="payment-amount"><span>RM</span><span id="payment-amount-num">16</span></div>
-
         <hr class="payment-divider" />
-
         <div class="payment-method">
           <div class="payment-method-title">Bank Transfer / DuitNow</div>
           <div class="payment-detail-row">
@@ -465,12 +263,10 @@
             <span class="pd-value accent" id="pay-detail-amount">RM 16.00</span>
           </div>
         </div>
-
         <div class="qr-placeholder">
           <div class="qr-icon">⬛</div>
           <div class="qr-placeholder-label">Place DuitNow QR Here</div>
         </div>
-
         <p class="payment-note">
           Transfer the exact amount then enter the transaction reference number in the form.
           Spots are held for <strong style="color:#f4f4f4;">24 hours</strong> pending payment verification.
@@ -480,64 +276,50 @@
     </div>
   </section>
 
-  <!-- SUCCESS SCREEN -->
+  <!-- SUCCESS -->
   <div class="success-screen" id="success-screen">
     <div class="success-icon reveal">✓</div>
-    <h2 class="success-title reveal">
-      YOU'RE<br>
-      <span class="stroke">REGISTERED</span>
-    </h2>
-    <p class="success-sub reveal">
-      Registration received. Your spot is pending payment verification.<br>
-      We'll confirm via Instagram or WhatsApp.
-    </p>
+    <h2 class="success-title reveal">YOU'RE<br><span class="stroke">REGISTERED</span></h2>
+    <p class="success-sub reveal">Registration received. Your spot is pending payment verification.<br>We'll confirm via Instagram or WhatsApp.</p>
     <div class="success-ref reveal" id="success-ref">REF: —</div>
-    <div class="success-detail-card reveal" id="success-detail">
-      <!-- filled by JS -->
-    </div>
-    <div class="reveal" style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap;">
-      <a href="events.html" class="btn-white" style="font-size:12px; padding:14px 40px; letter-spacing:2.5px;">View Schedule</a>
-      <a href="index.html" class="btn-line" style="font-size:12px; padding:14px 0; letter-spacing:2.5px;">Back to Home</a>
+    <div class="success-detail-card reveal" id="success-detail"></div>
+    <div class="reveal" style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
+      <a href="events.html" class="btn-white" style="font-size:12px;padding:14px 40px;letter-spacing:2.5px;">View Schedule</a>
+      <a href="index.html" class="btn-line" style="font-size:12px;padding:14px 0;letter-spacing:2.5px;">Back to Home</a>
     </div>
   </div>
 
-  <!-- FULL SCREEN -->
+  <!-- FULL -->
   <div class="full-screen" id="full-screen">
-    <h2 class="hero-title" style="font-size: clamp(56px, 8vw, 100px);">
-      SESSION<br>
-      <span class="stroke">IS FULL</span>
-    </h2>
-    <p style="font-family:'Barlow Condensed',sans-serif; font-size:14px; letter-spacing:2px; color:#666; margin:24px 0 48px;">
+    <h2 class="hero-title" style="font-size:clamp(56px,8vw,100px);">SESSION<br><span class="stroke">IS FULL</span></h2>
+    <p style="font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:2px;color:#666;margin:24px 0 48px;">
       All spots have been taken for this session.<br>Follow us on Instagram for the next one.
     </p>
-    <a href="events.html" class="btn-white" style="font-size:12px; padding:14px 40px; letter-spacing:2.5px;">See Other Sessions</a>
+    <a href="events.html" class="btn-white" style="font-size:12px;padding:14px 40px;letter-spacing:2.5px;">See Other Sessions</a>
   </div>
 
   <!-- NOT FOUND -->
   <div class="notfound-screen" id="notfound-screen">
-    <h2 class="hero-title" style="font-size: clamp(56px, 8vw, 100px);">
-      SESSION<br>
-      <span class="stroke">NOT FOUND</span>
-    </h2>
-    <p style="font-family:'Barlow Condensed',sans-serif; font-size:14px; letter-spacing:2px; color:#666; margin:24px 0 48px;">
+    <h2 class="hero-title" style="font-size:clamp(56px,8vw,100px);">SESSION<br><span class="stroke">NOT FOUND</span></h2>
+    <p style="font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:2px;color:#666;margin:24px 0 48px;">
       This session doesn't exist or may have been removed.
     </p>
-    <a href="events.html" class="btn-white" style="font-size:12px; padding:14px 40px; letter-spacing:2.5px;">View All Sessions</a>
+    <a href="events.html" class="btn-white" style="font-size:12px;padding:14px 40px;letter-spacing:2.5px;">View All Sessions</a>
   </div>
 
-  <!-- REGISTRATIONS LIST (admin view) -->
+  <!-- ADMIN LIST -->
   <div class="reg-list-section" id="reg-list-section">
     <hr class="rule" style="margin-bottom:56px;" />
     <p class="label">Admin View</p>
     <h2 class="heading">REGISTRATIONS<br><span class="stroke">LIST</span></h2>
     <div class="reg-admin-bar">
       <button class="btn-export" onclick="exportCSV()">Export CSV</button>
-      <button class="btn-export" onclick="clearRegs()">Clear Registrations</button>
     </div>
     <table class="reg-table">
       <thead>
         <tr>
           <th>#</th>
+          <th>Ref</th>
           <th>Name</th>
           <th>Instagram</th>
           <th>Phone</th>
@@ -550,7 +332,6 @@
     </table>
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-top">
       <div>
@@ -562,8 +343,7 @@
         <ul>
           <li><a href="about.html">About</a></li>
           <li><a href="activities.html">Activities</a></li>
-          <li><a href="event.html">Events</a></li>
-          <li><a href="events.html">Schedule</a></li>
+          <li><a href="events.html">Events</a></li>
           <li><a href="highlight.html">Highlights</a></li>
           <li><a href="news.html">News</a></li>
         </ul>
@@ -590,90 +370,67 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script>
-    // ── NAV ──
-    const nav = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 50);
-    });
+    const SUPABASE_URL = 'https://xgoccholeihlylkwmphq.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_O-cDhB4I17zZcxBLWaGOUA_F-6_xTDS';
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // ── REVEAL ──
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50));
     const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
-      });
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
     }, { threshold: 0.05 });
     document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-    // ── STORAGE ──
-    const SESSIONS_KEY = 'bfc_sessions';
-    const REGS_KEY = 'bfc_registrations';
-
-    function getSessions() {
-      try { return JSON.parse(localStorage.getItem(SESSIONS_KEY)) || []; }
-      catch { return []; }
-    }
-    function getSessionById(id) {
-      return getSessions().find(s => s.id === id) || null;
-    }
-    function getRegistrations(sessionId) {
-      try {
-        const all = JSON.parse(localStorage.getItem(REGS_KEY)) || {};
-        return all[sessionId] || [];
-      } catch { return []; }
-    }
-    function saveRegistration(sessionId, reg) {
-      let all;
-      try { all = JSON.parse(localStorage.getItem(REGS_KEY)) || {}; }
-      catch { all = {}; }
-      if (!all[sessionId]) all[sessionId] = [];
-      all[sessionId].push(reg);
-      localStorage.setItem(REGS_KEY, JSON.stringify(all));
-    }
-
-    // ── INIT ──
-    const params = new URLSearchParams(window.location.search);
-    const sessionId = params.get('id');
-    const isAdmin = params.get('admin') === 'true';
-
     const MONTHS_LONG  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    const DAYS_LONG    = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     const MONTHS_SHORT = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    const DAYS_LONG    = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
-    if (!sessionId) {
-      // No session ID: show generic registration hero (original register.html mode)
-      showGenericMode();
-    } else {
-      const session = getSessionById(sessionId);
-      if (!session) {
-        showNotFound();
-      } else {
-        const regs = getRegistrations(sessionId);
-        const max = session.max || 20;
-        if (regs.length >= max) {
-          showFull(session);
-        } else {
-          showForm(session, regs, max);
-          if (isAdmin) showAdminList(session);
-        }
-      }
+    const params    = new URLSearchParams(window.location.search);
+    const sessionId = params.get('id');
+    const isAdmin   = params.get('admin') === 'true';
+
+    let currentSession = null;
+    let currentTaken   = 0;
+
+    async function init() {
+      if (!sessionId) { showGeneric(); return; }
+
+      const { data: session, error } = await sb.from('sessions').select('*').eq('id', sessionId).single();
+      if (error || !session) { showNotFound(); return; }
+
+      const { count, error: cErr } = await sb.from('registrations')
+        .select('*', { count: 'exact', head: true })
+        .eq('session_id', sessionId);
+
+      const taken = cErr ? 0 : (count ?? 0);
+      currentSession = session;
+      currentTaken = taken;
+
+      if (taken >= (session.max_players || 20)) { showFull(); return; }
+
+      showForm(session, taken);
+      if (isAdmin) loadAdminList();
+
+      document.getElementById('loading-screen').style.display = 'none';
     }
 
-    // ── SHOW FORM ──
-    function showForm(session, regs, max) {
-      const d = new Date(session.date);
-      const taken = regs.length;
+    function showForm(session, taken) {
+      const d   = new Date(session.date + 'T00:00:00');
+      const max = session.max_players || 20;
       const remaining = max - taken;
       const pct = Math.round((taken / max) * 100);
       const price = session.price || 16;
 
-      // Hero
+      document.getElementById('loading-screen').style.display = 'none';
+      document.getElementById('reg-hero').style.display = 'flex';
+      document.getElementById('session-info-bar').style.display = 'block';
+      document.getElementById('form-section').style.display = 'grid';
+
       document.getElementById('hero-label').textContent =
         `${DAYS_LONG[d.getDay()]} · ${d.getDate()} ${MONTHS_LONG[d.getMonth()]} ${d.getFullYear()}`;
-      document.getElementById('hero-title').innerHTML =
-        `${session.name.split(' ').slice(0,2).join('<br>')}<br><span class="stroke">REGISTRATION</span>`;
 
-      // Session info bar
       const timeStr = session.time ? session.time.substring(0,5) : 'TBA';
       document.getElementById('session-info-grid').innerHTML = `
         <div class="info-block">
@@ -688,212 +445,219 @@
         </div>
         <div class="info-block">
           <div class="info-block-label">Venue</div>
-          <div class="info-block-value" style="font-size:16px; font-family:'Barlow Condensed',sans-serif; font-weight:600; letter-spacing:1px;">Bukit Jalil</div>
+          <div class="info-block-value" style="font-size:16px;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:1px;">Bukit Jalil</div>
           <div class="info-block-sub">Futsal Court</div>
         </div>
         <div class="info-block">
           <div class="info-block-label">Fee</div>
           <div class="info-block-value">RM ${price}</div>
           <div class="info-block-sub">Per player</div>
-        </div>
-      `;
+        </div>`;
 
-      // Spots bar
-      let fillClass = '';
-      if (pct >= 80) fillClass = 'danger';
-      else if (pct >= 60) fillClass = 'warning';
+      const fillClass = pct >= 80 ? 'danger' : pct >= 60 ? 'warning' : '';
       document.getElementById('spots-text-label').textContent = `${remaining} spot${remaining !== 1 ? 's' : ''} remaining`;
       document.getElementById('spots-fill-bar').className = `spots-fill ${fillClass}`;
       document.getElementById('spots-fill-bar').style.width = pct + '%';
       document.getElementById('spots-text-count').textContent = `${taken}/${max}`;
 
-      // Price hints
       document.getElementById('price-hint').textContent = price;
       document.getElementById('price-terms').textContent = price;
       document.getElementById('payment-amount-num').textContent = price;
-      document.getElementById('pay-detail-amount').textContent = `RM ${price.toFixed(2)}`;
+      document.getElementById('pay-detail-amount').textContent = `RM ${parseFloat(price).toFixed(2)}`;
+
+      setTimeout(() => {
+        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+      }, 100);
+    }
+
+    function showGeneric() {
+      document.getElementById('loading-screen').style.display = 'none';
+      document.getElementById('reg-hero').style.display = 'flex';
+      document.getElementById('session-info-bar').style.display = 'none';
+      document.getElementById('form-section').style.display = 'grid';
     }
 
     function showNotFound() {
-      document.getElementById('reg-hero').style.display = 'none';
-      document.getElementById('session-info-bar').style.display = 'none';
-      document.getElementById('form-section').style.display = 'none';
+      document.getElementById('loading-screen').style.display = 'none';
       document.getElementById('notfound-screen').classList.add('show');
     }
 
-    function showFull(session) {
-      document.getElementById('form-section').style.display = 'none';
+    function showFull() {
+      document.getElementById('loading-screen').style.display = 'none';
       document.getElementById('full-screen').classList.add('show');
     }
 
-    function showGenericMode() {
-      // Show the form in generic mode (no session linked)
-      document.getElementById('hero-label').textContent = 'Open Registration';
-      document.getElementById('session-info-bar').style.display = 'none';
-      document.getElementById('price-hint').textContent = '16';
-      document.getElementById('price-terms').textContent = '16';
-      document.getElementById('payment-amount-num').textContent = '16';
-      document.getElementById('pay-detail-amount').textContent = 'RM 16.00';
-    }
-
-    // ── SUBMIT ──
-    function submitRegistration() {
+    async function submitRegistration() {
       let valid = true;
 
-      const name  = document.getElementById('f-fullname').value.trim();
-      const ig    = document.getElementById('f-instagram').value.trim();
-      const phone = document.getElementById('f-phone').value.trim();
+      const name   = document.getElementById('f-fullname').value.trim();
+      const ig     = document.getElementById('f-instagram').value.trim();
+      const phone  = document.getElementById('f-phone').value.trim();
       const payRef = document.getElementById('f-payref').value.trim();
-      const terms = document.getElementById('f-terms').checked;
+      const terms  = document.getElementById('f-terms').checked;
 
-      // Validation
-      function setErr(id, inputEl, show) {
-        document.getElementById(id).classList.toggle('show', show);
-        if (inputEl) document.getElementById(inputEl).classList.toggle('error', show);
+      function setErr(errId, inputId, show) {
+        document.getElementById(errId).classList.toggle('show', show);
+        if (inputId) document.getElementById(inputId).classList.toggle('error', show);
       }
 
-      setErr('err-name',  'f-fullname', !name);  if (!name)  valid = false;
-      setErr('err-ig',    'f-instagram', !ig);    if (!ig)    valid = false;
-      setErr('err-phone', 'f-phone', !phone);     if (!phone) valid = false;
-      setErr('err-pay',   'f-payref', !payRef);   if (!payRef) valid = false;
-      setErr('err-terms', null, !terms);           if (!terms) valid = false;
+      setErr('err-name',  'f-fullname',  !name);   if (!name)   valid = false;
+      setErr('err-ig',    'f-instagram', !ig);      if (!ig)     valid = false;
+      setErr('err-phone', 'f-phone',     !phone);   if (!phone)  valid = false;
+      setErr('err-pay',   'f-payref',    !payRef);  if (!payRef) valid = false;
+      setErr('err-terms', null,          !terms);   if (!terms)  valid = false;
 
       if (!valid) return;
 
-      // Check capacity again
+      const btn = document.getElementById('btn-submit');
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+      document.getElementById('submit-msg').style.display = 'none';
+
+      // Re-check capacity
       if (sessionId) {
-        const sess = getSessionById(sessionId);
-        if (sess) {
-          const regs = getRegistrations(sessionId);
-          if (regs.length >= (sess.max || 20)) {
-            showFull(sess);
-            document.getElementById('form-section').style.display = 'none';
-            return;
-          }
-          // Duplicate check
-          const dup = regs.find(r => r.phone === phone || r.instagram.toLowerCase() === ig.toLowerCase());
-          if (dup) {
-            alert('You appear to have already registered for this session.');
-            return;
-          }
+        const { count } = await sb.from('registrations')
+          .select('*', { count: 'exact', head: true })
+          .eq('session_id', sessionId);
+
+        if (count >= (currentSession?.max_players || 20)) {
+          showFull();
+          document.getElementById('form-section').style.display = 'none';
+          document.getElementById('reg-hero').style.display = 'none';
+          document.getElementById('session-info-bar').style.display = 'none';
+          return;
+        }
+
+        // Duplicate check
+        const { data: dup } = await sb.from('registrations')
+          .select('id')
+          .eq('session_id', sessionId)
+          .or(`phone.eq.${phone},instagram.eq.${ig}`)
+          .limit(1);
+
+        if (dup && dup.length > 0) {
+          btn.disabled = false;
+          btn.textContent = 'Register & Confirm Spot →';
+          const msg = document.getElementById('submit-msg');
+          msg.textContent = 'You appear to have already registered for this session.';
+          msg.style.display = 'block';
+          return;
         }
       }
 
-      // Save
       const refId = 'BFC' + Date.now().toString(36).toUpperCase();
-      const reg = {
-        id: refId,
-        name, instagram: ig, phone, payRef,
-        sessionId: sessionId || 'general',
-        status: 'pending',
-        registeredAt: new Date().toISOString()
+
+      const insertData = {
+        session_id: sessionId || null,
+        ref_id: refId,
+        name, instagram: ig, phone,
+        pay_ref: payRef,
+        status: 'pending'
       };
 
-      if (sessionId) saveRegistration(sessionId, reg);
+      const { error } = await sb.from('registrations').insert(insertData);
 
-      // Success
+      if (error) {
+        btn.disabled = false;
+        btn.textContent = 'Register & Confirm Spot →';
+        const msg = document.getElementById('submit-msg');
+        msg.textContent = 'Error: ' + error.message;
+        msg.style.display = 'block';
+        return;
+      }
+
+      // Show success
       document.getElementById('form-section').style.display = 'none';
       document.getElementById('session-info-bar').style.display = 'none';
       document.getElementById('reg-hero').style.display = 'none';
+
       const successEl = document.getElementById('success-screen');
       successEl.classList.add('show');
-
       document.getElementById('success-ref').textContent = 'REF: ' + refId;
 
       let sessionLine = '';
-      if (sessionId) {
-        const sess = getSessionById(sessionId);
-        if (sess) {
-          const d = new Date(sess.date);
-          sessionLine = `
-            <div class="payment-detail-row" style="border-bottom:1px solid #222; padding: 10px 0;">
-              <span style="font-family:'Barlow Condensed',sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#555;">Session</span>
-              <span style="font-family:'Barlow Condensed',sans-serif; font-size:13px; color:#f4f4f4;">${sess.name}</span>
-            </div>
-            <div class="payment-detail-row" style="border-bottom:1px solid #222; padding: 10px 0;">
-              <span style="font-family:'Barlow Condensed',sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#555;">Date</span>
-              <span style="font-family:'Barlow Condensed',sans-serif; font-size:13px; color:#f4f4f4;">${d.getDate()} ${MONTHS_LONG[d.getMonth()]} ${d.getFullYear()}</span>
-            </div>`;
-        }
+      if (currentSession) {
+        const d = new Date(currentSession.date + 'T00:00:00');
+        sessionLine = `
+          <div class="payment-detail-row" style="border-bottom:1px solid #222;padding:10px 0;">
+            <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#555;">Session</span>
+            <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;color:#f4f4f4;">${currentSession.name}</span>
+          </div>
+          <div class="payment-detail-row" style="border-bottom:1px solid #222;padding:10px 0;">
+            <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#555;">Date</span>
+            <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;color:#f4f4f4;">${d.getDate()} ${MONTHS_LONG[d.getMonth()]} ${d.getFullYear()}</span>
+          </div>`;
       }
 
       document.getElementById('success-detail').innerHTML = `
         ${sessionLine}
-        <div class="payment-detail-row" style="padding: 10px 0; border-bottom:1px solid #222;">
-          <span style="font-family:'Barlow Condensed',sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#555;">Name</span>
-          <span style="font-family:'Barlow Condensed',sans-serif; font-size:13px; color:#f4f4f4;">${name}</span>
+        <div class="payment-detail-row" style="padding:10px 0;border-bottom:1px solid #222;">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#555;">Name</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;color:#f4f4f4;">${name}</span>
         </div>
-        <div class="payment-detail-row" style="padding: 10px 0; border-bottom:1px solid #222;">
-          <span style="font-family:'Barlow Condensed',sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#555;">Instagram</span>
-          <span style="font-family:'Barlow Condensed',sans-serif; font-size:13px; color:#f4f4f4;">${ig}</span>
+        <div class="payment-detail-row" style="padding:10px 0;border-bottom:1px solid #222;">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#555;">Instagram</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;color:#f4f4f4;">${ig}</span>
         </div>
-        <div class="payment-detail-row" style="padding: 10px 0; border-bottom:1px solid #222;">
-          <span style="font-family:'Barlow Condensed',sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#555;">Phone</span>
-          <span style="font-family:'Barlow Condensed',sans-serif; font-size:13px; color:#f4f4f4;">${phone}</span>
+        <div class="payment-detail-row" style="padding:10px 0;border-bottom:1px solid #222;">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#555;">Phone</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;color:#f4f4f4;">${phone}</span>
         </div>
-        <div class="payment-detail-row" style="padding: 10px 0;">
-          <span style="font-family:'Barlow Condensed',sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#555;">Status</span>
-          <span style="font-family:'Barlow Condensed',sans-serif; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:#e5a000;">Pending Verification</span>
-        </div>
-      `;
+        <div class="payment-detail-row" style="padding:10px 0;">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#555;">Status</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#e5a000;">Pending Verification</span>
+        </div>`;
 
-      // Trigger reveals on success screen
       setTimeout(() => {
         document.querySelectorAll('#success-screen .reveal').forEach(el => el.classList.add('visible'));
       }, 100);
     }
 
-    // ── ADMIN LIST ──
-    function showAdminList(session) {
+    async function loadAdminList() {
       const section = document.getElementById('reg-list-section');
       section.classList.add('show');
-      renderAdminList(session);
-    }
 
-    function renderAdminList(session) {
-      const regs = getRegistrations(session.id);
+      const { data: regs, error } = await sb.from('registrations')
+        .select('*')
+        .eq('session_id', sessionId)
+        .order('created_at', { ascending: true });
+
       const tbody = document.getElementById('reg-tbody');
-      if (regs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="color:#555; text-align:center; padding:32px; font-family:'Barlow Condensed',sans-serif; letter-spacing:2px; font-size:12px; text-transform:uppercase;">No registrations yet</td></tr>`;
+      if (error || !regs || regs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="color:#555;text-align:center;padding:32px;font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;font-size:12px;text-transform:uppercase;">No registrations yet</td></tr>`;
         return;
       }
+
       tbody.innerHTML = regs.map((r, i) => {
-        const dt = new Date(r.registeredAt);
+        const dt = new Date(r.created_at);
         return `<tr>
           <td>${i + 1}</td>
+          <td style="color:#555;">${r.ref_id}</td>
           <td>${r.name}</td>
           <td>${r.instagram}</td>
           <td>${r.phone}</td>
-          <td>${r.payRef}</td>
+          <td>${r.pay_ref}</td>
           <td><span class="status-${r.status || 'pending'}">${(r.status || 'PENDING').toUpperCase()}</span></td>
-          <td style="color:#555;">${dt.toLocaleDateString('en-MY')} ${dt.toLocaleTimeString('en-MY', {hour:'2-digit',minute:'2-digit'})}</td>
+          <td style="color:#555;">${dt.toLocaleDateString('en-MY')} ${dt.toLocaleTimeString('en-MY',{hour:'2-digit',minute:'2-digit'})}</td>
         </tr>`;
       }).join('');
     }
 
-    function exportCSV() {
+    async function exportCSV() {
       if (!sessionId) return;
-      const regs = getRegistrations(sessionId);
-      const header = 'No,Name,Instagram,Phone,Pay Ref,Status,Registered At\n';
+      const { data: regs } = await sb.from('registrations')
+        .select('*').eq('session_id', sessionId).order('created_at', { ascending: true });
+      if (!regs || regs.length === 0) return;
+      const header = 'No,Ref,Name,Instagram,Phone,Pay Ref,Status,Registered At\n';
       const rows = regs.map((r, i) =>
-        `${i+1},"${r.name}","${r.instagram}","${r.phone}","${r.payRef}","${r.status || 'pending'}","${r.registeredAt}"`
+        `${i+1},"${r.ref_id}","${r.name}","${r.instagram}","${r.phone}","${r.pay_ref}","${r.status || 'pending'}","${r.created_at}"`
       ).join('\n');
       const blob = new Blob([header + rows], { type: 'text/csv' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = `registrations_${sessionId}.csv`; a.click();
+      const a = document.createElement('a'); a.href = url; a.download = `registrations_${sessionId}.csv`; a.click();
     }
 
-    function clearRegs() {
-      if (!sessionId) return;
-      if (confirm('Clear all registrations for this session?')) {
-        let all;
-        try { all = JSON.parse(localStorage.getItem(REGS_KEY)) || {}; } catch { all = {}; }
-        all[sessionId] = [];
-        localStorage.setItem(REGS_KEY, JSON.stringify(all));
-        location.reload();
-      }
-    }
+    init();
   </script>
 </body>
 </html>

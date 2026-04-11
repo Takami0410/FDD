@@ -9,13 +9,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600&family=Barlow:wght@300;400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css">
   <style>
-    /* ── SCHEDULE SPECIFIC ── */
     .schedule-hero {
       height: 52vh; min-height: 400px;
-      position: relative;
-      display: flex; align-items: flex-end;
-      padding: 0 56px 60px;
-      overflow: hidden;
+      position: relative; display: flex; align-items: flex-end;
+      padding: 0 56px 60px; overflow: hidden;
     }
     .schedule-hero-bg {
       position: absolute; inset: 0;
@@ -24,219 +21,116 @@
     }
     .schedule-hero-content { position: relative; z-index: 2; }
 
-    /* ── ADMIN PANEL ── */
-    .admin-panel {
-      display: none;
-      background: #111;
-      border: 1px solid #333;
-      padding: 48px 56px;
-    }
+    .admin-panel { display: none; background: #111; border: 1px solid #333; padding: 48px 56px; }
     .admin-panel.open { display: block; }
-    .admin-form {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 16px;
-      margin-top: 32px;
-    }
+    .admin-form { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 32px; }
     .admin-form input, .admin-form select {
-      background: #0a0a0a;
-      border: 1px solid #333;
-      color: #f4f4f4;
-      padding: 12px 16px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 13px;
-      letter-spacing: 1px;
-      width: 100%;
-      box-sizing: border-box;
-      outline: none;
+      background: #0a0a0a; border: 1px solid #333; color: #f4f4f4;
+      padding: 12px 16px; font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px; letter-spacing: 1px; width: 100%; box-sizing: border-box; outline: none;
     }
-    .admin-form input:focus, .admin-form select:focus {
-      border-color: #f4f4f4;
-    }
+    .admin-form input:focus, .admin-form select:focus { border-color: #f4f4f4; }
     .admin-form label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #666;
-      display: block;
-      margin-bottom: 6px;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+      letter-spacing: 3px; text-transform: uppercase; color: #666; display: block; margin-bottom: 6px;
     }
     .admin-form .field { display: flex; flex-direction: column; }
     .admin-form .field-full { grid-column: 1 / -1; }
-    .admin-actions { display: flex; gap: 12px; margin-top: 24px; }
+    .admin-actions { display: flex; gap: 16px; margin-top: 24px; align-items: center; flex-wrap: wrap; }
     .btn-admin {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
-      background: #f4f4f4; color: #0a0a0a;
-      border: none; padding: 13px 32px; cursor: pointer;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      background: #f4f4f4; color: #0a0a0a; border: none; padding: 13px 32px; cursor: pointer;
       transition: background 0.2s;
     }
     .btn-admin:hover { background: #ccc; }
-    .btn-admin-line {
-      background: transparent; color: #f4f4f4;
-      border: 1px solid #333; padding: 13px 32px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
-      cursor: pointer;
-      transition: border-color 0.2s;
+    .btn-admin:disabled { background: #333; color: #666; cursor: not-allowed; }
+    .admin-msg {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
     }
-    .btn-admin-line:hover { border-color: #f4f4f4; }
 
-    /* ── SESSION FILTER BAR ── */
-    .filter-bar {
-      display: flex; gap: 0;
-      border-bottom: 1px solid #222;
-      padding: 0 56px;
-    }
+    .filter-bar { display: flex; border-bottom: 1px solid #222; padding: 0 56px; }
     .filter-btn {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
-      color: #666; background: none; border: none;
-      padding: 20px 24px; cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: color 0.2s, border-color 0.2s;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: #666; background: none; border: none; padding: 20px 24px; cursor: pointer;
+      border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s;
     }
-    .filter-btn.active, .filter-btn:hover {
-      color: #f4f4f4;
-      border-color: #f4f4f4;
-    }
+    .filter-btn.active, .filter-btn:hover { color: #f4f4f4; border-color: #f4f4f4; }
 
-    /* ── SESSION LIST ── */
     .sessions-section { padding: 72px 56px; }
     .sessions-list { margin-top: 48px; }
 
+    .sessions-header-bar {
+      display: grid; grid-template-columns: 80px 1fr 160px 140px 100px 160px;
+      gap: 24px; padding-bottom: 16px; border-bottom: 1px solid #1a1a1a;
+    }
+    .col-label {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+      letter-spacing: 3px; text-transform: uppercase; color: #333;
+    }
+
     .session-row {
-      display: grid;
-      grid-template-columns: 80px 1fr 160px 140px 100px 160px;
-      align-items: center;
-      gap: 24px;
-      padding: 28px 0;
-      border-bottom: 1px solid #222;
-      transition: background 0.2s, padding-left 0.2s;
+      display: grid; grid-template-columns: 80px 1fr 160px 140px 100px 160px;
+      align-items: center; gap: 24px; padding: 28px 0;
+      border-bottom: 1px solid #222; transition: padding-left 0.2s;
     }
     .session-row:hover { padding-left: 12px; }
     .session-row.full { opacity: 0.45; pointer-events: none; }
 
-    .session-date-block {
-      font-family: 'Bebas Neue', sans-serif;
-      line-height: 1;
-    }
+    .session-date-block { font-family: 'Bebas Neue', sans-serif; line-height: 1; }
     .session-day { font-size: 36px; }
     .session-month {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
-      color: #666;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+      letter-spacing: 3px; text-transform: uppercase; color: #666;
     }
-
-    .session-info {}
-    .session-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 26px; letter-spacing: 1px;
-    }
-    .session-meta-row {
-      display: flex; gap: 16px; align-items: center;
-      margin-top: 4px;
-    }
+    .session-name { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px; }
+    .session-meta-row { display: flex; gap: 16px; align-items: center; margin-top: 4px; }
     .session-time, .session-venue {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-      color: #666;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+      letter-spacing: 2px; text-transform: uppercase; color: #666;
     }
-
-    .session-spots {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 12px; letter-spacing: 1.5px;
-    }
-    .spots-bar {
-      height: 2px; background: #222;
-      margin-top: 6px; width: 100%;
-    }
-    .spots-fill {
-      height: 100%; background: #f4f4f4;
-      transition: width 0.4s;
-    }
+    .spots-bar { height: 2px; background: #222; margin-top: 6px; width: 100%; }
+    .spots-fill { height: 100%; background: #f4f4f4; transition: width 0.4s; }
     .spots-fill.warning { background: #e5a000; }
     .spots-fill.danger  { background: #cc3333; }
 
     .session-type {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
-      color: #666;
-      border: 1px solid #222; padding: 5px 12px;
-      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      color: #666; border: 1px solid #222; padding: 5px 12px; display: inline-block;
     }
     .session-type.competitive { color: #f4f4f4; border-color: #555; }
-
-    .session-price {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 28px;
-    }
+    .session-price { font-family: 'Bebas Neue', sans-serif; font-size: 28px; }
     .session-price span {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 12px; letter-spacing: 1px; color: #666;
-      vertical-align: super;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 1px; color: #666; vertical-align: super;
     }
-
-    .session-cta {}
     .btn-register {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
-      color: #0a0a0a; background: #f4f4f4;
-      padding: 12px 28px; text-decoration: none;
-      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: #0a0a0a; background: #f4f4f4; padding: 12px 28px; text-decoration: none; display: inline-block;
       transition: background 0.2s;
     }
     .btn-register:hover { background: #ccc; }
     .btn-full {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
       color: #444; display: inline-block; padding: 12px 0;
     }
+    .empty-state { text-align: center; padding: 80px 0; }
+    .empty-state h3 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; color: #444; margin-bottom: 12px; }
+    .empty-state p { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #333; }
 
-    /* Empty state */
-    .empty-state {
-      text-align: center; padding: 80px 0;
-      color: #333;
+    .loading-state { text-align: center; padding: 80px 0; }
+    .loading-state p {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #444;
+      animation: pulse 1.5s infinite;
     }
-    .empty-state h3 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 36px; letter-spacing: 2px;
-      color: #444; margin-bottom: 12px;
-    }
-    .empty-state p {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
-      color: #333;
-    }
+    @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
 
-    /* Admin toggle */
-    .admin-toggle-wrap {
-      padding: 0 56px;
-      border-top: 1px solid #222;
-    }
+    .admin-toggle-wrap { padding: 0 56px; border-top: 1px solid #222; }
     .admin-toggle {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: #333; background: none; border: none;
-      padding: 16px 0; cursor: pointer;
-      transition: color 0.2s;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: #333; background: none; border: none; padding: 16px 0; cursor: pointer; transition: color 0.2s;
     }
     .admin-toggle:hover { color: #666; }
-
-    /* Sessions header bar */
-    .sessions-header-bar {
-      display: grid;
-      grid-template-columns: 80px 1fr 160px 140px 100px 160px;
-      gap: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #1a1a1a;
-    }
-    .col-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: #333;
-    }
 
     @media (max-width: 1024px) {
       .schedule-hero { padding: 0 28px 48px; }
@@ -244,10 +138,7 @@
       .sessions-section { padding: 56px 28px; }
       .admin-panel { padding: 36px 28px; }
       .admin-toggle-wrap { padding: 0 28px; }
-      .session-row {
-        grid-template-columns: 64px 1fr 1fr;
-        grid-template-rows: auto auto;
-      }
+      .session-row { grid-template-columns: 64px 1fr 1fr; }
       .sessions-header-bar { display: none; }
       .session-price { font-size: 22px; }
       .session-cta { grid-column: 1 / -1; }
@@ -261,16 +152,16 @@
     }
   </style>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="js/events.js"></script>
 <body>
 
-  <!-- NAV -->
   <nav id="navbar">
     <a href="index.html" class="nav-logo">BOUNDLESS FC</a>
     <ul class="nav-links">
       <li><a href="about.html">About</a></li>
       <li><a href="activities.html">Activities</a></li>
-      <li><a href="event.html">Events</a></li>
-      <li><a href="events.html" style="color:#f4f4f4;">Schedule</a></li>
+      <li><a href="events.html" style="color:#f4f4f4;">Events</a></li>
       <li><a href="highlight.html">Highlights</a></li>
       <li><a href="news.html">News</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -278,19 +169,16 @@
     <a href="register.html" class="nav-join">Join</a>
   </nav>
 
-  <!-- HERO -->
   <section class="schedule-hero">
     <div class="schedule-hero-bg"></div>
     <div class="schedule-hero-content">
       <p class="hero-label">Bukit Jalil Futsal Court · 16 RM / session</p>
       <h1 class="hero-title" style="font-size: clamp(60px, 9vw, 120px);">
-        UPCOMING<br>
-        <span class="stroke">SESSIONS</span>
+        UPCOMING<br><span class="stroke">SESSIONS</span>
       </h1>
     </div>
   </section>
 
-  <!-- FILTER BAR -->
   <div class="filter-bar">
     <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
     <button class="filter-btn" onclick="setFilter('casual', this)">Casual</button>
@@ -298,31 +186,26 @@
     <button class="filter-btn" onclick="setFilter('training', this)">Training</button>
   </div>
 
-  <!-- SESSIONS -->
   <section class="sessions-section">
     <div class="reveal">
       <p class="label">What's Coming</p>
       <h2 class="heading">SESSION<br><span class="stroke">SCHEDULE</span></h2>
     </div>
-
     <div class="sessions-list reveal" id="sessions-list">
-      <!-- Rendered by JS -->
+      <div class="loading-state"><p>Loading sessions...</p></div>
     </div>
   </section>
 
   <hr class="rule" />
 
-  <!-- ADMIN TOGGLE -->
   <div class="admin-toggle-wrap">
     <button class="admin-toggle" onclick="toggleAdmin()">⚙ Manage Sessions (Admin)</button>
   </div>
 
-  <!-- ADMIN PANEL -->
   <div class="admin-panel" id="admin-panel">
     <p class="label">Admin</p>
     <h2 class="heading">ADD<br><span class="stroke">SESSION</span></h2>
-
-    <div class="admin-form" id="admin-form">
+    <div class="admin-form">
       <div class="field">
         <label>Session Name</label>
         <input type="text" id="f-name" placeholder="e.g. Weekly Futsal Session" />
@@ -357,12 +240,11 @@
       </div>
     </div>
     <div class="admin-actions">
-      <button class="btn-admin" onclick="addSession()">Add Session</button>
-      <button class="btn-admin-line" onclick="clearAllSessions()">Clear All Sessions</button>
+      <button class="btn-admin" id="btn-add" onclick="addSession()">Add Session</button>
+      <span class="admin-msg" id="admin-msg"></span>
     </div>
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-top">
       <div>
@@ -374,8 +256,7 @@
         <ul>
           <li><a href="about.html">About</a></li>
           <li><a href="activities.html">Activities</a></li>
-          <li><a href="event.html">Events</a></li>
-          <li><a href="events.html">Schedule</a></li>
+          <li><a href="events.html">Events</a></li>
           <li><a href="highlight.html">Highlights</a></li>
           <li><a href="news.html">News</a></li>
         </ul>
@@ -402,66 +283,51 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script>
-    // ── NAV SCROLL ──
-    const nav = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 50);
-    });
+    const SUPABASE_URL = 'https://xgoccholeihlylkwmphq.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_O-cDhB4I17zZcxBLWaGOUA_F-6_xTDS';
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // ── SCROLL REVEAL ──
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50));
+
     const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
-      });
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-    // ── STORAGE HELPERS ──
-    const SESSIONS_KEY = 'bfc_sessions';
-    const REGS_KEY = 'bfc_registrations';
-
-    function getSessions() {
-      try { return JSON.parse(localStorage.getItem(SESSIONS_KEY)) || []; }
-      catch { return []; }
-    }
-    function saveSessions(sessions) {
-      localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
-    }
-    function getRegistrations(sessionId) {
-      try {
-        const all = JSON.parse(localStorage.getItem(REGS_KEY)) || {};
-        return all[sessionId] || [];
-      } catch { return []; }
-    }
-
-    // ── FILTER ──
+    const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    const DAYS   = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
     let activeFilter = 'all';
-    function setFilter(filter, btn) {
-      activeFilter = filter;
+
+    function setFilter(f, btn) {
+      activeFilter = f;
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      renderSessions();
+      loadSessions();
     }
 
-    // ── RENDER ──
-    function renderSessions() {
+    async function loadSessions() {
       const list = document.getElementById('sessions-list');
-      let sessions = getSessions();
-      const today = new Date(); today.setHours(0,0,0,0);
+      list.innerHTML = '<div class="loading-state"><p>Loading sessions...</p></div>';
 
-      // Sort by date
-      sessions.sort((a, b) => new Date(a.date) - new Date(b.date));
+      const today = new Date().toISOString().split('T')[0];
+      let query = sb.from('sessions')
+        .select('*, registrations(count)')
+        .gte('date', today)
+        .order('date', { ascending: true });
 
-      // Filter upcoming + type
-      sessions = sessions.filter(s => {
-        const d = new Date(s.date);
-        if (d < today) return false;
-        if (activeFilter !== 'all' && s.type !== activeFilter) return false;
-        return true;
-      });
+      if (activeFilter !== 'all') query = query.eq('type', activeFilter);
 
-      if (sessions.length === 0) {
+      const { data: sessions, error } = await query;
+
+      if (error) {
+        list.innerHTML = `<div class="empty-state"><h3>ERROR</h3><p>${error.message}</p></div>`;
+        return;
+      }
+
+      if (!sessions || sessions.length === 0) {
         list.innerHTML = `
           <div class="empty-state">
             <h3>NO SESSIONS SCHEDULED</h3>
@@ -469,9 +335,6 @@
           </div>`;
         return;
       }
-
-      const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-      const DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 
       let html = `
         <div class="sessions-header-bar">
@@ -484,18 +347,13 @@
         </div>`;
 
       sessions.forEach(s => {
-        const d = new Date(s.date);
-        const regs = getRegistrations(s.id);
-        const taken = regs.length;
-        const max = s.max || 20;
+        const d = new Date(s.date + 'T00:00:00');
+        const taken = s.registrations?.[0]?.count ?? 0;
+        const max = s.max_players || 20;
         const remaining = max - taken;
         const pct = Math.round((taken / max) * 100);
         const isFull = remaining <= 0;
-
-        let fillClass = '';
-        if (pct >= 80) fillClass = 'danger';
-        else if (pct >= 60) fillClass = 'warning';
-
+        const fillClass = pct >= 80 ? 'danger' : pct >= 60 ? 'warning' : '';
         const timeStr = s.time ? s.time.substring(0, 5) : '';
 
         html += `
@@ -504,37 +362,27 @@
               <div class="session-day">${d.getDate()}</div>
               <div class="session-month">${MONTHS[d.getMonth()]}<br>${DAYS[d.getDay()]}</div>
             </div>
-
-            <div class="session-info">
+            <div>
               <div class="session-name">${s.name}</div>
               <div class="session-meta-row">
                 ${timeStr ? `<span class="session-time">${timeStr}</span>` : ''}
                 <span class="session-venue">Bukit Jalil Futsal Court</span>
               </div>
-              ${s.notes ? `<div style="margin-top:6px; font-size:12px; color:#555; font-family:'Barlow Condensed',sans-serif; letter-spacing:1px;">${s.notes}</div>` : ''}
+              ${s.notes ? `<div style="margin-top:6px;font-size:12px;color:#555;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;">${s.notes}</div>` : ''}
             </div>
-
-            <div class="session-spots">
-              <div style="display:flex; justify-content:space-between; align-items:baseline;">
-                <span style="font-family:'Barlow Condensed',sans-serif; font-size:13px;">${isFull ? 'FULL' : `${remaining} left`}</span>
-                <span style="font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:2px; color:#555;">${taken}/${max}</span>
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;">${isFull ? 'FULL' : `${remaining} left`}</span>
+                <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;color:#555;">${taken}/${max}</span>
               </div>
               <div class="spots-bar"><div class="spots-fill ${fillClass}" style="width:${pct}%"></div></div>
             </div>
-
-            <div>
-              <span class="session-type ${s.type === 'competitive' ? 'competitive' : ''}">${s.type}</span>
-            </div>
-
-            <div class="session-price">
-              <span>RM</span>${s.price || 16}
-            </div>
-
+            <div><span class="session-type ${s.type === 'competitive' ? 'competitive' : ''}">${s.type}</span></div>
+            <div class="session-price"><span>RM</span>${s.price || 16}</div>
             <div class="session-cta">
               ${isFull
                 ? `<span class="btn-full">Session Full</span>`
-                : `<a href="register.html?id=${s.id}" class="btn-register">Register →</a>`
-              }
+                : `<a href="register.html?id=${s.id}" class="btn-register">Register →</a>`}
             </div>
           </div>`;
       });
@@ -542,52 +390,51 @@
       list.innerHTML = html;
     }
 
-    // ── ADD SESSION ──
-    function addSession() {
+    async function addSession() {
       const name  = document.getElementById('f-name').value.trim();
       const date  = document.getElementById('f-date').value;
-      const time  = document.getElementById('f-time').value;
+      const time  = document.getElementById('f-time').value || null;
       const type  = document.getElementById('f-type').value;
       const max   = parseInt(document.getElementById('f-max').value) || 20;
       const price = parseFloat(document.getElementById('f-price').value) || 16;
-      const notes = document.getElementById('f-notes').value.trim();
+      const notes = document.getElementById('f-notes').value.trim() || null;
 
-      if (!name || !date) { alert('Please enter session name and date.'); return; }
+      if (!name || !date) { showMsg('Please enter name and date.', 'error'); return; }
 
-      const sessions = getSessions();
-      const newSession = {
-        id: 'sess_' + Date.now(),
-        name, date, time, type, max, price, notes,
-        createdAt: new Date().toISOString()
-      };
-      sessions.push(newSession);
-      saveSessions(sessions);
+      const btn = document.getElementById('btn-add');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+      showMsg('', '');
 
-      // Reset form
+      const { error } = await sb.from('sessions').insert({
+        name, date, time, type, max_players: max, price, notes
+      });
+
+      btn.disabled = false;
+      btn.textContent = 'Add Session';
+
+      if (error) { showMsg('Error: ' + error.message, 'error'); return; }
+
       document.getElementById('f-name').value = '';
       document.getElementById('f-date').value = '';
       document.getElementById('f-time').value = '';
       document.getElementById('f-notes').value = '';
 
-      renderSessions();
-      alert(`Session "${name}" added successfully.`);
+      showMsg('"' + name + '" added!', 'success');
+      loadSessions();
     }
 
-    function clearAllSessions() {
-      if (confirm('Delete all sessions? This cannot be undone.')) {
-        saveSessions([]);
-        renderSessions();
-      }
+    function showMsg(text, type) {
+      const el = document.getElementById('admin-msg');
+      el.textContent = text;
+      el.style.color = type === 'error' ? '#cc3333' : '#4caf50';
     }
 
-    // ── ADMIN TOGGLE ──
     function toggleAdmin() {
-      const panel = document.getElementById('admin-panel');
-      panel.classList.toggle('open');
+      document.getElementById('admin-panel').classList.toggle('open');
     }
 
-    // ── INIT ──
-    renderSessions();
+    loadSessions();
   </script>
 </body>
 </html>
