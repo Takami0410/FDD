@@ -246,7 +246,7 @@
       <div class="info-card">
         <div class="info-card-icon">✉️</div>
         <div class="info-card-label">Email</div>
-        <div class="info-card-value"><a href="mailto:hello@boundlessfc.my">hello@boundlessfc.my</a></div>
+        <div class="info-card-value"><a href="/cdn-cgi/l/email-protection#ddb5b8b1b1b29dbfb2a8b3b9b1b8aeaebbbef3b0a4"><span class="__cf_email__" data-cfemail="f39b969f9f9cb3919c869d979f9680809590dd9e8a">[email&#160;protected]</span></a></div>
         <div class="info-card-sub">We respond within 1–2 working days.</div>
       </div>
       <div class="info-card">
@@ -391,9 +391,9 @@
             <span>WhatsApp</span>
             <span>Chat Now →</span>
           </a>
-          <a href="mailto:hello@boundlessfc.my" class="social-link">
+          <a href="/cdn-cgi/l/email-protection#96fef3fafaf9d6f4f9e3f8f2faf3e5e5f0f5b8fbef" class="social-link">
             <span>Email</span>
-            <span>hello@boundlessfc.my →</span>
+            <span><span class="__cf_email__" data-cfemail="49212c252526092b263c272d252c3a3a2f2a672430">[email&#160;protected]</span> →</span>
           </a>
         </div>
       </div>
@@ -447,97 +447,10 @@
     </div>
   </footer>
 
-  <script>
-    // Navbar scroll
-    const nav = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 50);
-    });
-
-    // Scroll reveal
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
-      });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-    // Topic chips
-    let selectedTopic = '';
-    document.querySelectorAll('.chip').forEach(chip => {
-      chip.addEventListener('click', () => {
-        document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-        chip.classList.add('selected');
-        selectedTopic = chip.dataset.topic;
-      });
-    });
-
-    // Character count
-    const msgInput = document.getElementById('message');
-    const charDisplay = document.getElementById('charDisplay');
-    const MAX_CHARS = 500;
-    msgInput.addEventListener('input', () => {
-      const len = msgInput.value.length;
-      charDisplay.textContent = len + ' / ' + MAX_CHARS;
-      charDisplay.className = 'char-count';
-      if (len > MAX_CHARS * 0.9) charDisplay.classList.add('warn');
-      if (len > MAX_CHARS) charDisplay.classList.add('over');
-    });
-
-    // Form validation & submit
-    document.getElementById('submitBtn').addEventListener('click', () => {
-      let valid = true;
-
-      const fields = [
-        { id: 'fname', errId: 'fnameErr', check: v => v.trim().length > 0 },
-        { id: 'lname', errId: 'lnameErr', check: v => v.trim().length > 0 },
-        { id: 'email', errId: 'emailErr', check: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
-        { id: 'message', errId: 'messageErr', check: v => v.trim().length >= 10 && v.trim().length <= MAX_CHARS },
-      ];
-
-      fields.forEach(({ id, errId, check }) => {
-        const input = document.getElementById(id);
-        const err = document.getElementById(errId);
-        const val = input.value;
-        if (!check(val)) {
-          input.classList.add('error');
-          err.style.display = 'block';
-          valid = false;
-        } else {
-          input.classList.remove('error');
-          err.style.display = 'none';
-        }
-      });
-
-      if (valid) {
-        document.getElementById('contactForm').style.display = 'none';
-        document.getElementById('formSuccess').style.display = 'block';
-      }
-    });
-
-    // Reset form
-    document.getElementById('resetBtn').addEventListener('click', () => {
-      document.getElementById('contactForm').style.display = 'block';
-      document.getElementById('formSuccess').style.display = 'none';
-      document.getElementById('fname').value = '';
-      document.getElementById('lname').value = '';
-      document.getElementById('email').value = '';
-      document.getElementById('phone').value = '';
-      document.getElementById('message').value = '';
-      document.getElementById('source').value = '';
-      charDisplay.textContent = '0 / 500';
-      charDisplay.className = 'char-count';
-      document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-      selectedTopic = '';
-    });
-
-    // Clear error on input
-    ['fname', 'lname', 'email', 'message'].forEach(id => {
-      document.getElementById(id).addEventListener('input', () => {
-        document.getElementById(id).classList.remove('error');
-        document.getElementById(id + 'Err').style.display = 'none';
-      });
-    });
-  </script>
+  <!-- EmailJS SDK (must load before contact.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <!-- Contact page logic -->
+  <script src="contact.js" defer></script>
+-e 
 </body>
 </html>
