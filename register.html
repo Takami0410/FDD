@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register — BOUNDLESS FC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600&family=Barlow:wght@300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .reg-hero {
+      height: 46vh; min-height: 340px; position: relative;
+      display: flex; align-items: flex-end; padding: 0 56px 56px; overflow: hidden;
+    }
+    .reg-hero-bg {
+      position: absolute; inset: 0;
+      background: url('assets/images/IMG_3177.jpeg') center/cover no-repeat;
+      filter: brightness(0.2);
+    }
+    .reg-hero-content { position: relative; z-index: 2; }
+
+    /* ── EVENT SUMMARY BAR ── */
+    .event-bar {
+      background: #111; border-bottom: 1px solid #1a1a1a; padding: 0 56px;
+      display: none;
+    }
+    .event-bar.show { display: block; }
+    .event-bar-inner {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: 0; background: #1a1a1a;
+      border: 1px solid #1a1a1a; margin: 32px 0;
+    }
+    .eb-block { background: #111; padding: 20px 22px; border-right: 1px solid #1a1a1a; }
+    .eb-block:last-child { border-right: none; }
+    .eb-label {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 9px;
+      letter-spacing: 3px; text-transform: uppercase; color: #444; margin-bottom: 4px;
+    }
+    .eb-val {
+      font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1px;
+    }
+    .eb-val.small {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 1px;
+    }
+
+    .spots-mini { margin-top: 20px 0 0; display: flex; gap: 12px; align-items: center; }
+    .spots-track { flex: 1; height: 1px; background: #222; }
+    .spots-fill { height: 100%; background: #f4f4f4; }
+    .spots-fill.warn { background: #e5a000; }
+    .spots-fill.full-c { background: #cc3333; }
+    .spots-label {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+      letter-spacing: 2.5px; text-transform: uppercase; color: #555; white-space: nowrap;
+    }
+
+    /* ── FORM LAYOUT ── */
+    .form-wrap {
+      display: none; padding: 80px 56px;
+      display: none; grid-template-columns: 1fr 400px; gap: 80px; align-items: start;
+    }
+    .form-wrap.show { display: grid; }
+
+    /* ── FORM FIELDS ── */
+    .form-panel {}
+    .field-group { margin-bottom: 32px; }
+    .field-label {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+      letter-spacing: 3.5px; text-transform: uppercase; color: #555;
+      display: block; margin-bottom: 10px;
+    }
+    .field-input {
+      background: transparent; border: none; border-bottom: 1px solid #2a2a2a;
+      color: #f4f4f4; font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px; letter-spacing: 1px; padding: 10px 0; width: 100%; outline: none;
+      transition: border-color .2s;
+    }
+    .field-input:focus { border-color: #f4f4f4; }
+    .field-input::placeholder { color: #2a2a2a; }
+    .field-input.readonly {
+      color: #f4f4f4; cursor: default; border-color: #333;
+      font-style: normal;
+    }
+    .field-input.error { border-color: #cc3333; }
+    .field-hint {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+      letter-spacing: 1px; color: #444; margin-top: 6px;
+    }
+    .field-err {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+      letter-spacing: 1px; color: #cc3333; margin-top: 6px; display: none;
+    }
+    .field-err.show { display: block; }
+    .field-readonly-badge {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 9px;
+      letter-spacing: 2px; text-transform: uppercase; color: #444;
+      border: 1px solid #222; padding: 2px 8px; display: inline-block; margin-bottom: 8px;
+    }
+
+    .btn-submit {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 13px;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: #0a0a0a; background: #f4f4f4; border: none;
+      padding: 18px 0; width: 100%; cursor: pointer; margin-top: 8px;
+      transition: background .2s;
+    }
+    .btn-submit:hover { background: #d0d0d0; }
+    .btn-submit:disabled { background: #222; color: #555; cursor: not-allowed; }
+
+    .submit-err {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+      letter-spacing: 1.5px; color: #cc3333; margin-top: 14px; display: none;
+    }
+    .submit-err.show { display: block; }
+
+    /* ── SIDE INFO ── */
+    .form-side { position: sticky; top: 110px; }
+    .side-card { background: #111; border: 1px solid #1a1a1a; padding: 36px; }
+    .side-section { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid #1a1a1a; }
+    .side-section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    .side-title {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+      letter-spacing: 3px; text-transform: uppercase; color: #444; margin-bottom: 16px;
+    }
+    .side-event-name {
+      font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px;
+      line-height: 1.05; margin-bottom: 16px;
+    }
+    .side-detail-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 8px 0; border-bottom: 1px solid #111;
+    }
+    .side-detail-row:last-child { border-bottom: none; }
+    .sd-label {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+      letter-spacing: 2px; text-transform: uppercase; color: #444;
+    }
+    .sd-val {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 14px; letter-spacing: 1px;
+    }
+    .side-note {
+      font-family: 'Barlow', sans-serif; font-size: 12px; line-height: 1.75; color: #555;
+    }
+    .side-note strong { color: #888; font-weight: 400; }
+
+    /* ── STATES ── */
+    .state-screen {
+      display: none; padding: 100px 56px; text-align: center;
+    }
+    .state-screen.show { display: block; }
+    .state-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 8vw, 100px); line-height: .92; letter-spacing: 2px; margin-bottom: 24px;
+    }
+    .state-sub {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 13px;
+      letter-spacing: 2px; text-transform: uppercase; color: #555; line-height: 1.8; margin-bottom: 48px;
+    }
+
+    /* ── SUCCESS DETAIL ── */
+    .success-ref {
+      font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 5px;
+      border: 1px solid #222; display: inline-block; padding: 10px 32px;
+      color: #555; margin-bottom: 40px;
+    }
+    .success-card {
+      background: #111; border: 1px solid #1a1a1a;
+      padding: 28px 36px; max-width: 440px; margin: 0 auto 40px; text-align: left;
+    }
+    .sc-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 10px 0; border-bottom: 1px solid #1a1a1a;
+    }
+    .sc-row:last-child { border-bottom: none; }
+    .sc-label {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+      letter-spacing: 3px; text-transform: uppercase; color: #444;
+    }
+    .sc-val {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 1px;
+    }
+    .status-pending {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+      letter-spacing: 2.5px; text-transform: uppercase; color: #e5a000;
+    }
+
+    .loading-screen { padding: 120px 56px; text-align: center; }
+    .loading-screen p {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+      letter-spacing: 3px; text-transform: uppercase; color: #333;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:.8} }
+
+    @media (max-width: 1024px) {
+      .reg-hero { padding: 0 28px 48px; }
+      .event-bar { padding: 0 28px; }
+      .event-bar-inner { grid-template-columns: 1fr 1fr; }
+      .eb-block:nth-child(2) { border-right: none; }
+      .form-wrap { padding: 56px 28px; grid-template-columns: 1fr; gap: 48px; }
+      .form-side { position: static; }
+      .state-screen { padding: 72px 28px; }
+      .loading-screen { padding: 80px 28px; }
+    }
+    @media (max-width: 640px) {
+      .nav-links, .nav-join { display: none; }
+      .event-bar-inner { grid-template-columns: 1fr; }
+      .eb-block { border-right: none; border-bottom: 1px solid #1a1a1a; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">BOUNDLESS FC</a>
+    <ul class="nav-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="activities.html">Activities</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="highlight.html">Highlights</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="register.html" class="nav-join">Join</a>
+  </nav>
+
+  <!-- LOADING -->
+  <div class="loading-screen" id="loading-screen">
+    <p>Loading event...</p>
+  </div>
+
+  <!-- HERO -->
+  <section class="reg-hero" id="reg-hero" style="display:none;">
+    <div class="reg-hero-bg"></div>
+    <div class="reg-hero-content">
+      <p class="hero-label" id="hero-label">Register · Boundless FC</p>
+      <h1 class="hero-title" style="font-size:clamp(56px,9vw,110px);">
+        SECURE<br><span class="stroke">YOUR SPOT</span>
+      </h1>
+    </div>
+  </section>
+
+  <!-- EVENT SUMMARY BAR -->
+  <div class="event-bar" id="event-bar">
+    <div class="event-bar-inner" id="event-bar-inner"></div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-wrap" id="form-wrap">
+
+    <!-- LEFT: FORM -->
+    <div class="form-panel reveal">
+      <p class="label">Your Details</p>
+      <h2 class="heading">FILL IN<br><span class="stroke">THE FORM</span></h2>
+
+      <div style="margin-top:48px;">
+
+        <div class="field-group">
+          <span class="field-readonly-badge">Auto-filled</span>
+          <label class="field-label" for="f-event">Event</label>
+          <input class="field-input readonly" type="text" id="f-event" readonly tabindex="-1"/>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="f-name">Full Name</label>
+          <input class="field-input" type="text" id="f-name" placeholder="Ahmad bin Abdullah" autocomplete="name"/>
+          <div class="field-err" id="err-name">Please enter your full name.</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="f-ig">Instagram ID</label>
+          <input class="field-input" type="text" id="f-ig" placeholder="@yourusername"/>
+          <div class="field-hint">e.g. @boundless_fc — used for confirmation DM</div>
+          <div class="field-err" id="err-ig">Please enter your Instagram ID.</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="f-phone">Phone Number</label>
+          <input class="field-input" type="tel" id="f-phone" placeholder="01X-XXXXXXX" autocomplete="tel"/>
+          <div class="field-hint">WhatsApp preferred</div>
+          <div class="field-err" id="err-phone">Please enter your phone number.</div>
+        </div>
+
+        <button class="btn-submit" id="btn-submit" onclick="submitForm()">
+          Confirm Registration →
+        </button>
+        <div class="submit-err" id="submit-err"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: SIDE INFO -->
+    <div class="form-side reveal">
+      <div class="side-card">
+        <div class="side-section">
+          <div class="side-title">You're registering for</div>
+          <div class="side-event-name" id="side-event-name">—</div>
+          <div id="side-details"></div>
+        </div>
+        <div class="side-section">
+          <div class="side-title">What happens next</div>
+          <p class="side-note">
+            After submitting, we'll <strong>DM you on Instagram</strong> to confirm your spot and share payment details.<br><br>
+            Your spot is reserved for <strong>24 hours</strong> pending confirmation.
+            Contact <strong>@boundless_fc</strong> if you have any questions.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="state-screen" id="success-screen">
+    <div class="state-title reveal">
+      YOU'RE<br><span class="stroke">IN</span>
+    </div>
+    <p class="state-sub reveal">
+      Registration received — we'll DM you on Instagram to confirm.<br>
+      Check your requests if you don't follow us yet.
+    </p>
+    <div class="success-ref reveal" id="success-ref">REF: —</div>
+    <div class="success-card reveal" id="success-card"></div>
+    <div class="reveal" style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
+      <a href="events.html" class="btn-white" style="font-size:12px;padding:14px 40px;letter-spacing:2.5px;">All Events</a>
+      <a href="index.html"  class="btn-line"  style="font-size:12px;padding:14px 0;letter-spacing:2.5px;">Home</a>
+    </div>
+  </div>
+
+  <!-- FULL -->
+  <div class="state-screen" id="full-screen">
+    <h2 class="state-title">SESSION<br><span class="stroke">IS FULL</span></h2>
+    <p class="state-sub">All spots have been taken.<br>Follow @boundless_fc for the next session.</p>
+    <a href="events.html" class="btn-white" style="font-size:12px;padding:14px 40px;letter-spacing:2.5px;">See All Events</a>
+  </div>
+
+  <!-- NOT FOUND -->
+  <div class="state-screen" id="notfound-screen">
+    <h2 class="state-title">EVENT<br><span class="stroke">NOT FOUND</span></h2>
+    <p class="state-sub">This event may have been removed or doesn't exist.</p>
+    <a href="events.html" class="btn-white" style="font-size:12px;padding:14px 40px;letter-spacing:2.5px;">View All Events</a>
+  </div>
+
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">BOUNDLESS FC</div>
+        <p class="footer-desc">A futsal community built for those who live and breathe the game. Play without limits.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="highlight.html">Highlights</a></li>
+          <li><a href="news.html">News</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/boundless_fc" target="_blank">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Boundless FC</span><span>Futsal Community</span>
+    </div>
+  </footer>
+
+  <script src="events.js"></script>
+  <script>
+    bfcInitNav();
+    const revealObs = bfcInitReveal();
+
+    const params    = new URLSearchParams(window.location.search);
+    const eventId   = params.get('id');
+    const eventName = params.get('name') ? decodeURIComponent(params.get('name')) : '';
+
+    let currentEvent = null;
+
+    async function init() {
+      document.getElementById('loading-screen').style.display = 'block';
+
+      if (!eventId) {
+        // No event ID — show generic form
+        prefillForm(null);
+        return;
+      }
+
+      try {
+        const data = await bfcGetEvents();
+        const ev = (data.events || []).find(e => e.id === eventId);
+
+        if (!ev) { showScreen('notfound'); return; }
+
+        currentEvent = ev;
+        const cap   = parseInt(ev.capacity) || 20;
+        const taken = parseInt(ev.registered) || 0;
+        if (taken >= cap) { showScreen('full'); return; }
+
+        prefillForm(ev);
+      } catch (err) {
+        // If API fails, still allow form with name from URL
+        prefillForm(null);
+      }
+    }
+
+    function prefillForm(ev) {
+      document.getElementById('loading-screen').style.display = 'none';
+      document.getElementById('reg-hero').style.display = 'flex';
+      document.getElementById('form-wrap').classList.add('show');
+
+      const name = ev ? ev.name : eventName;
+      document.getElementById('hero-label').textContent = name || 'Register · Boundless FC';
+      document.getElementById('f-event').value = name || '';
+      document.getElementById('side-event-name').textContent = name || '—';
+
+      if (ev) {
+        // Event bar
+        const cap   = parseInt(ev.capacity) || 20;
+        const taken = parseInt(ev.registered) || 0;
+        const left  = cap - taken;
+        const pct   = Math.min(100, Math.round((taken / cap) * 100));
+        const fillCls = pct >= 80 ? 'full-c' : pct >= 60 ? 'warn' : '';
+
+        document.getElementById('event-bar').classList.add('show');
+        document.getElementById('event-bar-inner').innerHTML = `
+          <div class="eb-block">
+            <div class="eb-label">Date</div>
+            <div class="eb-val">${bfcFormatDateShort(ev.date)}</div>
+          </div>
+          <div class="eb-block">
+            <div class="eb-label">Day</div>
+            <div class="eb-val small">${bfcDayOfWeekShort(ev.date)}</div>
+          </div>
+          <div class="eb-block">
+            <div class="eb-label">Time</div>
+            <div class="eb-val small">${bfcFormatTime(ev.time) || 'TBA'}</div>
+          </div>
+          <div class="eb-block">
+            <div class="eb-label">Venue</div>
+            <div class="eb-val small">${ev.venue || 'Bukit Jalil'}</div>
+          </div>
+          <div class="eb-block">
+            <div class="eb-label">Spots Left</div>
+            <div class="eb-val">${left}</div>
+          </div>`;
+
+        // Side details
+        document.getElementById('side-details').innerHTML = `
+          <div class="side-detail-row">
+            <span class="sd-label">Date</span>
+            <span class="sd-val">${bfcFormatDateLong(ev.date)}</span>
+          </div>
+          <div class="side-detail-row">
+            <span class="sd-label">Time</span>
+            <span class="sd-val">${bfcFormatTime(ev.time) || 'TBA'}</span>
+          </div>
+          <div class="side-detail-row">
+            <span class="sd-label">Venue</span>
+            <span class="sd-val">${ev.venue || 'Bukit Jalil Futsal Court'}</span>
+          </div>
+          <div class="side-detail-row">
+            <span class="sd-label">Fee</span>
+            <span class="sd-val">${ev.price ? 'RM ' + ev.price : '—'}</span>
+          </div>
+          <div class="side-detail-row">
+            <span class="sd-label">Spots</span>
+            <span class="sd-val">${left} / ${cap} remaining</span>
+          </div>`;
+      }
+
+      setTimeout(() => document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el)), 80);
+    }
+
+    function showScreen(which) {
+      document.getElementById('loading-screen').style.display = 'none';
+      document.getElementById('reg-hero').style.display = 'none';
+      document.getElementById('event-bar').classList.remove('show');
+      document.getElementById('form-wrap').classList.remove('show');
+      if (which === 'full')     document.getElementById('full-screen').classList.add('show');
+      if (which === 'notfound') document.getElementById('notfound-screen').classList.add('show');
+      if (which === 'success')  document.getElementById('success-screen').classList.add('show');
+    }
+
+    // ── SUBMIT ──
+    async function submitForm() {
+      const evName = document.getElementById('f-event').value.trim();
+      const name   = document.getElementById('f-name').value.trim();
+      const ig     = document.getElementById('f-ig').value.trim();
+      const phone  = document.getElementById('f-phone').value.trim();
+
+      let valid = true;
+      function setErr(errId, inpId, show) {
+        document.getElementById(errId).classList.toggle('show', show);
+        if (inpId) document.getElementById(inpId).classList.toggle('error', show);
+      }
+      setErr('err-name',  'f-name',  !name);  if (!name)  valid = false;
+      setErr('err-ig',    'f-ig',    !ig);     if (!ig)    valid = false;
+      setErr('err-phone', 'f-phone', !phone);  if (!phone) valid = false;
+      if (!valid) return;
+
+      const btn = document.getElementById('btn-submit');
+      const errDiv = document.getElementById('submit-err');
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+      errDiv.classList.remove('show');
+
+      try {
+        const result = await bfcRegister({
+          eventId:   eventId || '',
+          eventName: evName,
+          name, instagram: ig, phone
+        });
+
+        if (result.error === 'FULL') { showScreen('full'); return; }
+        if (result.error === 'DUPLICATE') {
+          btn.disabled = false;
+          btn.textContent = 'Confirm Registration →';
+          errDiv.textContent = 'You appear to have already registered for this event.';
+          errDiv.classList.add('show');
+          return;
+        }
+        if (result.error) throw new Error(result.error);
+
+        // Success
+        document.getElementById('success-ref').textContent = 'REF: ' + (result.refId || '—');
+        document.getElementById('success-card').innerHTML = `
+          <div class="sc-row"><span class="sc-label">Event</span><span class="sc-val">${evName || '—'}</span></div>
+          <div class="sc-row"><span class="sc-label">Name</span><span class="sc-val">${name}</span></div>
+          <div class="sc-row"><span class="sc-label">Instagram</span><span class="sc-val">${ig}</span></div>
+          <div class="sc-row"><span class="sc-label">Phone</span><span class="sc-val">${phone}</span></div>
+          <div class="sc-row"><span class="sc-label">Status</span><span class="status-pending">Pending Confirmation</span></div>`;
+
+        showScreen('success');
+        setTimeout(() => document.querySelectorAll('#success-screen .reveal').forEach(el => el.classList.add('visible')), 80);
+
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Confirm Registration →';
+        errDiv.textContent = 'Error: ' + err.message + ' — please try again.';
+        errDiv.classList.add('show');
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
