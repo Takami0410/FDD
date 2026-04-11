@@ -1,154 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Events — BOUNDLESS FC</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600&family=Barlow:wght@300;400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600&family=Barlow:wght@300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
   <style>
-    .schedule-hero {
-      height: 52vh; min-height: 400px;
-      position: relative; display: flex; align-items: flex-end;
-      padding: 0 56px 60px; overflow: hidden;
+    /* ── HERO ── */
+    .events-hero {
+      height: 54vh; min-height: 400px; position: relative;
+      display: flex; align-items: flex-end;
+      padding: 0 56px 64px; overflow: hidden;
     }
-    .schedule-hero-bg {
+    .events-hero-bg {
       position: absolute; inset: 0;
       background: url('assets/images/IMG_3399.JPG') center/cover no-repeat;
-      filter: brightness(0.25);
+      filter: brightness(0.22);
     }
-    .schedule-hero-content { position: relative; z-index: 2; }
+    .events-hero-content { position: relative; z-index: 2; }
 
-    .admin-panel { display: none; background: #111; border: 1px solid #333; padding: 48px 56px; }
-    .admin-panel.open { display: block; }
-    .admin-form { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 32px; }
-    .admin-form input, .admin-form select {
-      background: #0a0a0a; border: 1px solid #333; color: #f4f4f4;
-      padding: 12px 16px; font-family: 'Barlow Condensed', sans-serif;
-      font-size: 13px; letter-spacing: 1px; width: 100%; box-sizing: border-box; outline: none;
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      display: flex; border-bottom: 1px solid #222; padding: 0 56px;
+      background: #0a0a0a; position: sticky; top: 0; z-index: 50;
     }
-    .admin-form input:focus, .admin-form select:focus { border-color: #f4f4f4; }
-    .admin-form label {
-      font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
-      letter-spacing: 3px; text-transform: uppercase; color: #666; display: block; margin-bottom: 6px;
-    }
-    .admin-form .field { display: flex; flex-direction: column; }
-    .admin-form .field-full { grid-column: 1 / -1; }
-    .admin-actions { display: flex; gap: 16px; margin-top: 24px; align-items: center; flex-wrap: wrap; }
-    .btn-admin {
-      font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
-      letter-spacing: 2.5px; text-transform: uppercase;
-      background: #f4f4f4; color: #0a0a0a; border: none; padding: 13px 32px; cursor: pointer;
-      transition: background 0.2s;
-    }
-    .btn-admin:hover { background: #ccc; }
-    .btn-admin:disabled { background: #333; color: #666; cursor: not-allowed; }
-    .admin-msg {
-      font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
-    }
-
-    .filter-bar { display: flex; border-bottom: 1px solid #222; padding: 0 56px; }
     .filter-btn {
-      font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
-      color: #666; background: none; border: none; padding: 20px 24px; cursor: pointer;
-      border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: #555; background: none; border: none; border-bottom: 2px solid transparent;
+      padding: 18px 22px; cursor: pointer; transition: color .2s, border-color .2s;
     }
     .filter-btn.active, .filter-btn:hover { color: #f4f4f4; border-color: #f4f4f4; }
 
-    .sessions-section { padding: 72px 56px; }
-    .sessions-list { margin-top: 48px; }
+    /* ── EVENTS SECTION ── */
+    .events-section { padding: 80px 56px; }
 
-    .sessions-header-bar {
-      display: grid; grid-template-columns: 80px 1fr 160px 140px 100px 160px;
-      gap: 24px; padding-bottom: 16px; border-bottom: 1px solid #1a1a1a;
+    /* ── EVENT CARD ── */
+    .events-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: #1a1a1a; margin-top: 56px;
     }
-    .col-label {
-      font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
-      letter-spacing: 3px; text-transform: uppercase; color: #333;
+    .event-card {
+      background: #0a0a0a; padding: 36px 32px;
+      display: flex; flex-direction: column; gap: 0;
+      cursor: pointer; text-decoration: none; color: #f4f4f4;
+      transition: background .2s;
+      position: relative; overflow: hidden;
     }
+    .event-card::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 2px;
+      background: #f4f4f4; transform: scaleX(0);
+      transform-origin: left; transition: transform .3s;
+    }
+    .event-card:hover { background: #111; }
+    .event-card:hover::after { transform: scaleX(1); }
 
-    .session-row {
-      display: grid; grid-template-columns: 80px 1fr 160px 140px 100px 160px;
-      align-items: center; gap: 24px; padding: 28px 0;
-      border-bottom: 1px solid #222; transition: padding-left 0.2s;
+    .event-card-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 28px;
     }
-    .session-row:hover { padding-left: 12px; }
-    .session-row.full { opacity: 0.45; pointer-events: none; }
-
-    .session-date-block { font-family: 'Bebas Neue', sans-serif; line-height: 1; }
-    .session-day { font-size: 36px; }
-    .session-month {
-      font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
-      letter-spacing: 3px; text-transform: uppercase; color: #666;
+    .event-date-block { font-family: 'Bebas Neue', sans-serif; line-height: 1; }
+    .event-day { font-size: 52px; }
+    .event-month-dow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #555;
     }
-    .session-name { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px; }
-    .session-meta-row { display: flex; gap: 16px; align-items: center; margin-top: 4px; }
-    .session-time, .session-venue {
-      font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
-      letter-spacing: 2px; text-transform: uppercase; color: #666;
-    }
-    .spots-bar { height: 2px; background: #222; margin-top: 6px; width: 100%; }
-    .spots-fill { height: 100%; background: #f4f4f4; transition: width 0.4s; }
-    .spots-fill.warning { background: #e5a000; }
-    .spots-fill.danger  { background: #cc3333; }
-
-    .session-type {
+    .event-type-badge {
       font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
       letter-spacing: 2.5px; text-transform: uppercase;
-      color: #666; border: 1px solid #222; padding: 5px 12px; display: inline-block;
+      border: 1px solid #222; color: #555; padding: 4px 10px;
     }
-    .session-type.competitive { color: #f4f4f4; border-color: #555; }
-    .session-price { font-family: 'Bebas Neue', sans-serif; font-size: 28px; }
-    .session-price span {
-      font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 1px; color: #666; vertical-align: super;
-    }
-    .btn-register {
-      font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
-      color: #0a0a0a; background: #f4f4f4; padding: 12px 28px; text-decoration: none; display: inline-block;
-      transition: background 0.2s;
-    }
-    .btn-register:hover { background: #ccc; }
-    .btn-full {
-      font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-      color: #444; display: inline-block; padding: 12px 0;
-    }
-    .empty-state { text-align: center; padding: 80px 0; }
-    .empty-state h3 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; color: #444; margin-bottom: 12px; }
-    .empty-state p { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #333; }
+    .event-type-badge.competitive { border-color: #555; color: #f4f4f4; }
+    .event-type-badge.training { border-color: #333; color: #888; }
 
-    .loading-state { text-align: center; padding: 80px 0; }
-    .loading-state p {
-      font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #444;
-      animation: pulse 1.5s infinite;
+    .event-name {
+      font-family: 'Bebas Neue', sans-serif; font-size: 30px;
+      letter-spacing: 1px; line-height: 1.05; margin-bottom: 20px;
     }
-    @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
 
-    .admin-toggle-wrap { padding: 0 56px; border-top: 1px solid #222; }
-    .admin-toggle {
-      font-family: 'Barlow Condensed', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: #333; background: none; border: none; padding: 16px 0; cursor: pointer; transition: color 0.2s;
+    .event-details {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+      background: #1a1a1a; margin-bottom: 24px;
     }
-    .admin-toggle:hover { color: #666; }
+    .event-detail {
+      background: #0a0a0a; padding: 12px 14px;
+      transition: background .2s;
+    }
+    .event-card:hover .event-detail { background: #111; }
+    .event-detail-label {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 9px;
+      letter-spacing: 3px; text-transform: uppercase; color: #444; margin-bottom: 3px;
+    }
+    .event-detail-val {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 14px;
+      letter-spacing: 1px; color: #f4f4f4;
+    }
 
+    .event-spots {
+      margin-bottom: 28px;
+    }
+    .spots-row {
+      display: flex; justify-content: space-between;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: #555; margin-bottom: 8px;
+    }
+    .spots-row span:last-child { color: #f4f4f4; }
+    .spots-track { height: 1px; background: #222; }
+    .spots-fill { height: 100%; background: #f4f4f4; transition: width .5s; }
+    .spots-fill.warn { background: #e5a000; }
+    .spots-fill.full-bar { background: #cc3333; }
+
+    .event-card-cta {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 20px; border-top: 1px solid #1a1a1a;
+      margin-top: auto;
+    }
+    .cta-label {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+      letter-spacing: 3px; text-transform: uppercase; color: #555;
+    }
+    .cta-arrow {
+      font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+      color: #333; transition: color .2s, transform .2s;
+    }
+    .event-card:hover .cta-arrow { color: #f4f4f4; transform: translateX(4px); }
+    .event-card:hover .cta-label { color: #f4f4f4; }
+    .cta-full {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+      letter-spacing: 2px; text-transform: uppercase; color: #333;
+    }
+
+    /* ── STATE SCREENS ── */
+    .state-screen {
+      text-align: center; padding: 80px 0;
+    }
+    .state-screen h3 {
+      font-family: 'Bebas Neue', sans-serif; font-size: 36px;
+      letter-spacing: 2px; color: #333; margin-bottom: 10px;
+    }
+    .state-screen p {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+      letter-spacing: 2.5px; text-transform: uppercase; color: #2a2a2a;
+    }
+    .state-screen.loading p { animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:.8} }
+
+    /* ── RESPONSIVE ── */
     @media (max-width: 1024px) {
-      .schedule-hero { padding: 0 28px 48px; }
+      .events-hero { padding: 0 28px 48px; }
       .filter-bar { padding: 0 28px; }
-      .sessions-section { padding: 56px 28px; }
-      .admin-panel { padding: 36px 28px; }
-      .admin-toggle-wrap { padding: 0 28px; }
-      .session-row { grid-template-columns: 64px 1fr 1fr; }
-      .sessions-header-bar { display: none; }
-      .session-price { font-size: 22px; }
-      .session-cta { grid-column: 1 / -1; }
-      .admin-form { grid-template-columns: 1fr 1fr; }
+      .events-section { padding: 56px 28px; }
+      .events-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 640px) {
       .nav-links, .nav-join { display: none; }
-      .session-row { grid-template-columns: 1fr; }
-      .session-date-block { display: flex; gap: 8px; align-items: baseline; }
-      .admin-form { grid-template-columns: 1fr; }
+      .events-grid { grid-template-columns: 1fr; }
+      .event-day { font-size: 40px; }
     }
   </style>
 </head>
@@ -167,84 +179,37 @@
     <a href="register.html" class="nav-join">Join</a>
   </nav>
 
-  <section class="schedule-hero">
-    <div class="schedule-hero-bg"></div>
-    <div class="schedule-hero-content">
-      <p class="hero-label">Bukit Jalil Futsal Court · 16 RM / session</p>
-      <h1 class="hero-title" style="font-size: clamp(60px, 9vw, 120px);">
-        UPCOMING<br><span class="stroke">SESSIONS</span>
+  <!-- HERO -->
+  <section class="events-hero">
+    <div class="events-hero-bg"></div>
+    <div class="events-hero-content">
+      <p class="hero-label">Bukit Jalil Futsal Court</p>
+      <h1 class="hero-title" style="font-size:clamp(60px,9vw,130px);">
+        UPCOMING<br><span class="stroke">EVENTS</span>
       </h1>
     </div>
   </section>
 
+  <!-- FILTER -->
   <div class="filter-bar">
-    <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-    <button class="filter-btn" onclick="setFilter('casual', this)">Casual</button>
-    <button class="filter-btn" onclick="setFilter('competitive', this)">Competitive</button>
-    <button class="filter-btn" onclick="setFilter('training', this)">Training</button>
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="casual">Casual</button>
+    <button class="filter-btn" data-filter="competitive">Competitive</button>
+    <button class="filter-btn" data-filter="training">Training</button>
   </div>
 
-  <section class="sessions-section">
+  <!-- EVENTS -->
+  <section class="events-section">
     <div class="reveal">
-      <p class="label">What's Coming</p>
+      <p class="label">What's On</p>
       <h2 class="heading">SESSION<br><span class="stroke">SCHEDULE</span></h2>
     </div>
-    <div class="sessions-list reveal" id="sessions-list">
-      <div class="loading-state"><p>Loading sessions...</p></div>
+    <div id="events-container">
+      <div class="state-screen loading"><p>Loading events...</p></div>
     </div>
   </section>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="js/events.js"></script>
 
-  <hr class="rule" />
-
-  <div class="admin-toggle-wrap">
-    <button class="admin-toggle" onclick="toggleAdmin()">⚙ Manage Sessions (Admin)</button>
-  </div>
-
-  <div class="admin-panel" id="admin-panel">
-    <p class="label">Admin</p>
-    <h2 class="heading">ADD<br><span class="stroke">SESSION</span></h2>
-    <div class="admin-form">
-      <div class="field">
-        <label>Session Name</label>
-        <input type="text" id="f-name" placeholder="e.g. Weekly Futsal Session" />
-      </div>
-      <div class="field">
-        <label>Date</label>
-        <input type="date" id="f-date" />
-      </div>
-      <div class="field">
-        <label>Time</label>
-        <input type="time" id="f-time" />
-      </div>
-      <div class="field">
-        <label>Type</label>
-        <select id="f-type">
-          <option value="casual">Casual</option>
-          <option value="competitive">Competitive</option>
-          <option value="training">Training</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Max Players</label>
-        <input type="number" id="f-max" value="20" min="5" max="40" />
-      </div>
-      <div class="field">
-        <label>Price (RM)</label>
-        <input type="number" id="f-price" value="16" />
-      </div>
-      <div class="field field-full">
-        <label>Notes (optional)</label>
-        <input type="text" id="f-notes" placeholder="e.g. Bring your own shin guards" />
-      </div>
-    </div>
-    <div class="admin-actions">
-      <button class="btn-admin" id="btn-add" onclick="addSession()">Add Session</button>
-      <span class="admin-msg" id="admin-msg"></span>
-    </div>
-  </div>
-
+  <!-- FOOTER -->
   <footer>
     <div class="footer-top">
       <div>
@@ -265,8 +230,6 @@
         <h4>Community</h4>
         <ul>
           <li><a href="register.html">Join Us</a></li>
-          <li><a href="sponsors.html">Sponsors</a></li>
-          <li><a href="faq.html">FAQ</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
@@ -283,160 +246,139 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="events.js"></script>
   <script>
-    const SUPABASE_URL = 'https://xgoccholeihlylkwmphq.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_O-cDhB4I17zZcxBLWaGOUA_F-6_xTDS';
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    bfcInitNav();
+    bfcInitReveal();
 
-    const nav = document.getElementById('navbar');
-    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50));
-
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-    const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-    const DAYS   = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+    let allEvents = [];
     let activeFilter = 'all';
 
-    function setFilter(f, btn) {
-      activeFilter = f;
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      loadSessions();
-    }
+    // ── FILTER BUTTONS ──
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.filter;
+        renderEvents();
+      });
+    });
 
-    async function loadSessions() {
-      const list = document.getElementById('sessions-list');
-      list.innerHTML = '<div class="loading-state"><p>Loading sessions...</p></div>';
-
+    // ── RENDER ──
+    function renderEvents() {
+      const container = document.getElementById('events-container');
       const today = new Date().toISOString().split('T')[0];
-      let query = sb.from('sessions')
-        .select('*, registrations(count)')
-        .gte('date', today)
-        .order('date', { ascending: true });
 
-      if (activeFilter !== 'all') query = query.eq('type', activeFilter);
+      let events = allEvents.filter(e => {
+        if (e.date < today) return false;
+        if (activeFilter !== 'all' && e.type !== activeFilter) return false;
+        return true;
+      });
 
-      const { data: sessions, error } = await query;
+      events.sort((a, b) => a.date.localeCompare(b.date));
 
-      if (error) {
-        list.innerHTML = `<div class="empty-state"><h3>ERROR</h3><p>${error.message}</p></div>`;
-        return;
-      }
-
-      if (!sessions || sessions.length === 0) {
-        list.innerHTML = `
-          <div class="empty-state">
-            <h3>NO SESSIONS SCHEDULED</h3>
-            <p>Check back soon — new sessions are added regularly</p>
+      if (events.length === 0) {
+        container.innerHTML = `
+          <div class="state-screen">
+            <h3>NO EVENTS SCHEDULED</h3>
+            <p>Check back soon — new sessions added regularly</p>
           </div>`;
         return;
       }
 
-      let html = `
-        <div class="sessions-header-bar">
-          <span class="col-label">Date</span>
-          <span class="col-label">Session</span>
-          <span class="col-label">Spots</span>
-          <span class="col-label">Type</span>
-          <span class="col-label">Price</span>
-          <span class="col-label"></span>
-        </div>`;
+      container.innerHTML = `<div class="events-grid">${events.map(buildCard).join('')}</div>`;
 
-      sessions.forEach(s => {
-        const d = new Date(s.date + 'T00:00:00');
-        const taken = s.registrations?.[0]?.count ?? 0;
-        const max = s.max_players || 20;
-        const remaining = max - taken;
-        const pct = Math.round((taken / max) * 100);
-        const isFull = remaining <= 0;
-        const fillClass = pct >= 80 ? 'danger' : pct >= 60 ? 'warning' : '';
-        const timeStr = s.time ? s.time.substring(0, 5) : '';
+      // Scroll reveal on new cards
+      container.querySelectorAll('.reveal').forEach(el => {
+        const obs2 = new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs2.unobserve(e.target); } });
+        }, { threshold: 0.05 });
+        obs2.observe(el);
+      });
+    }
 
-        html += `
-          <div class="session-row${isFull ? ' full' : ''}">
-            <div class="session-date-block">
-              <div class="session-day">${d.getDate()}</div>
-              <div class="session-month">${MONTHS[d.getMonth()]}<br>${DAYS[d.getDay()]}</div>
+    function buildCard(ev) {
+      const cap   = parseInt(ev.capacity) || 20;
+      const taken = parseInt(ev.registered) || 0;
+      const left  = cap - taken;
+      const pct   = Math.min(100, Math.round((taken / cap) * 100));
+      const isFull = left <= 0;
+      const fillClass = isFull ? 'full-bar' : pct >= 75 ? 'warn' : '';
+
+      const typeClass = ev.type === 'competitive' ? 'competitive' : ev.type === 'training' ? 'training' : '';
+      const timeStr   = bfcFormatTime(ev.time) || 'TBA';
+      const priceStr  = ev.price ? `RM ${ev.price}` : 'RM —';
+
+      const registerUrl = `register.html?id=${encodeURIComponent(ev.id)}&name=${encodeURIComponent(ev.name)}`;
+
+      return `
+        <a class="event-card reveal" href="${isFull ? 'javascript:void(0)' : registerUrl}"
+           style="${isFull ? 'pointer-events:none;opacity:.45;' : ''}">
+          <div class="event-card-top">
+            <div class="event-date-block">
+              <div class="event-day">${bfcDayNum(ev.date)}</div>
+              <div class="event-month-dow">${bfcMonthShort(ev.date)} · ${bfcDayOfWeekShort(ev.date)}</div>
             </div>
-            <div>
-              <div class="session-name">${s.name}</div>
-              <div class="session-meta-row">
-                ${timeStr ? `<span class="session-time">${timeStr}</span>` : ''}
-                <span class="session-venue">Bukit Jalil Futsal Court</span>
-              </div>
-              ${s.notes ? `<div style="margin-top:6px;font-size:12px;color:#555;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;">${s.notes}</div>` : ''}
+            <span class="event-type-badge ${typeClass}">${ev.type || 'casual'}</span>
+          </div>
+
+          <div class="event-name">${ev.name}</div>
+
+          <div class="event-details">
+            <div class="event-detail">
+              <div class="event-detail-label">Venue</div>
+              <div class="event-detail-val">${ev.venue || 'Bukit Jalil'}</div>
             </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:baseline;">
-                <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;">${isFull ? 'FULL' : `${remaining} left`}</span>
-                <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;color:#555;">${taken}/${max}</span>
-              </div>
-              <div class="spots-bar"><div class="spots-fill ${fillClass}" style="width:${pct}%"></div></div>
+            <div class="event-detail">
+              <div class="event-detail-label">Time</div>
+              <div class="event-detail-val">${timeStr}</div>
             </div>
-            <div><span class="session-type ${s.type === 'competitive' ? 'competitive' : ''}">${s.type}</span></div>
-            <div class="session-price"><span>RM</span>${s.price || 16}</div>
-            <div class="session-cta">
-              ${isFull
-                ? `<span class="btn-full">Session Full</span>`
-                : `<a href="register.html?id=${s.id}" class="btn-register">Register →</a>`}
+            <div class="event-detail">
+              <div class="event-detail-label">Fee</div>
+              <div class="event-detail-val">${priceStr}</div>
             </div>
+            <div class="event-detail">
+              <div class="event-detail-label">Capacity</div>
+              <div class="event-detail-val">${cap} players</div>
+            </div>
+          </div>
+
+          <div class="event-spots">
+            <div class="spots-row">
+              <span>Spots</span>
+              <span>${isFull ? 'FULL' : `${left} remaining`}</span>
+            </div>
+            <div class="spots-track">
+              <div class="spots-fill ${fillClass}" style="width:${pct}%"></div>
+            </div>
+          </div>
+
+          <div class="event-card-cta">
+            ${isFull
+              ? `<span class="cta-full">Session Full</span>`
+              : `<span class="cta-label">Register Now</span><span class="cta-arrow">→</span>`
+            }
+          </div>
+        </a>`;
+    }
+
+    // ── LOAD ──
+    async function loadEvents() {
+      try {
+        const data = await bfcGetEvents();
+        if (data.error) throw new Error(data.error);
+        allEvents = data.events || [];
+        renderEvents();
+      } catch (err) {
+        document.getElementById('events-container').innerHTML = `
+          <div class="state-screen">
+            <h3>COULD NOT LOAD</h3>
+            <p>${err.message}</p>
           </div>`;
-      });
-
-      list.innerHTML = html;
+      }
     }
 
-    async function addSession() {
-      const name  = document.getElementById('f-name').value.trim();
-      const date  = document.getElementById('f-date').value;
-      const time  = document.getElementById('f-time').value || null;
-      const type  = document.getElementById('f-type').value;
-      const max   = parseInt(document.getElementById('f-max').value) || 20;
-      const price = parseFloat(document.getElementById('f-price').value) || 16;
-      const notes = document.getElementById('f-notes').value.trim() || null;
-
-      if (!name || !date) { showMsg('Please enter name and date.', 'error'); return; }
-
-      const btn = document.getElementById('btn-add');
-      btn.disabled = true;
-      btn.textContent = 'Saving...';
-      showMsg('', '');
-
-      const { error } = await sb.from('sessions').insert({
-        name, date, time, type, max_players: max, price, notes
-      });
-
-      btn.disabled = false;
-      btn.textContent = 'Add Session';
-
-      if (error) { showMsg('Error: ' + error.message, 'error'); return; }
-
-      document.getElementById('f-name').value = '';
-      document.getElementById('f-date').value = '';
-      document.getElementById('f-time').value = '';
-      document.getElementById('f-notes').value = '';
-
-      showMsg('"' + name + '" added!', 'success');
-      loadSessions();
-    }
-
-    function showMsg(text, type) {
-      const el = document.getElementById('admin-msg');
-      el.textContent = text;
-      el.style.color = type === 'error' ? '#cc3333' : '#4caf50';
-    }
-
-    function toggleAdmin() {
-      document.getElementById('admin-panel').classList.toggle('open');
-    }
-
-    loadSessions();
-    
+    loadEvents();
   </script>
-
 </body>
 </html>

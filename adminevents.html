@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin — BOUNDLESS FC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600&family=Barlow:wght@300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── ADMIN LAYOUT ── */
+    .admin-hero {
+      height: 38vh; min-height: 280px; position: relative;
+      display: flex; align-items: flex-end; padding: 0 56px 48px; overflow: hidden;
+    }
+    .admin-hero-bg {
+      position: absolute; inset: 0;
+      background: url('assets/images/IMG_3399.JPG') center/cover no-repeat;
+      filter: brightness(0.15);
+    }
+    .admin-hero-content { position: relative; z-index: 2; }
+
+    .admin-body { padding: 72px 56px; }
+
+    /* ── ADD FORM ── */
+    .add-form-section { margin-bottom: 72px; }
+    .form-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0;
+      background: #1a1a1a; border: 1px solid #1a1a1a; margin-top: 40px;
+    }
+    .form-cell {
+      background: #0f0f0f; padding: 24px 20px; border-right: 1px solid #1a1a1a;
+    }
+    .form-cell:last-child { border-right: none; }
+    .form-cell.wide { grid-column: 1 / -1; border-right: none; }
+    .form-cell label {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 9px;
+      letter-spacing: 3px; text-transform: uppercase; color: #444;
+      display: block; margin-bottom: 8px;
+    }
+    .form-cell input, .form-cell select, .form-cell textarea {
+      background: transparent; border: none; border-bottom: 1px solid #2a2a2a;
+      color: #f4f4f4; font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px; letter-spacing: 1px; padding: 8px 0; width: 100%; outline: none;
+      transition: border-color .2s;
+    }
+    .form-cell input:focus, .form-cell select:focus, .form-cell textarea:focus { border-bottom-color: #f4f4f4; }
+    .form-cell input::placeholder, .form-cell textarea::placeholder { color: #2a2a2a; }
+    .form-cell select option { background: #111; color: #f4f4f4; }
+    .form-cell textarea { resize: vertical; min-height: 48px; }
+
+    .add-actions { display: flex; gap: 16px; align-items: center; margin-top: 20px; }
+    .btn-add {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      background: #f4f4f4; color: #0a0a0a; border: none;
+      padding: 14px 40px; cursor: pointer; transition: background .2s;
+    }
+    .btn-add:hover { background: #ccc; }
+    .btn-add:disabled { background: #222; color: #555; cursor: not-allowed; }
+    .add-msg {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+      letter-spacing: 2px; text-transform: uppercase;
+    }
+
+    /* ── EVENTS LIST ── */
+    .events-list-section {}
+    .admin-event-list { margin-top: 40px; }
+
+    .admin-event-row {
+      display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto;
+      align-items: center; gap: 20px;
+      padding: 24px 0; border-bottom: 1px solid #1a1a1a;
+    }
+    .ae-name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; }
+    .ae-date {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 13px;
+      letter-spacing: 1.5px; color: #555;
+    }
+    .ae-meta {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+      letter-spacing: 1.5px; color: #555;
+    }
+    .ae-spots {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 1.5px;
+    }
+    .ae-spots span { color: #555; }
+
+    .ae-actions { display: flex; gap: 8px; }
+    .btn-view {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+      letter-spacing: 2px; text-transform: uppercase;
+      border: 1px solid #222; color: #666; background: none;
+      padding: 8px 16px; cursor: pointer; text-decoration: none; display: inline-block;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-view:hover { border-color: #555; color: #f4f4f4; }
+    .btn-del {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+      letter-spacing: 2px; text-transform: uppercase;
+      border: 1px solid #222; color: #555; background: none;
+      padding: 8px 14px; cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-del:hover { border-color: #cc3333; color: #cc3333; }
+
+    /* ── REGISTRATIONS TABLE ── */
+    .regs-section {
+      display: none; margin-top: 56px; padding-top: 56px; border-top: 1px solid #1a1a1a;
+    }
+    .regs-section.show { display: block; }
+    .regs-event-title {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+      letter-spacing: 3px; text-transform: uppercase; color: #555; margin-bottom: 8px;
+    }
+    .regs-event-name {
+      font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 1px; margin-bottom: 24px;
+    }
+
+    .regs-bar { display: flex; gap: 12px; margin-bottom: 24px; align-items: center; flex-wrap: wrap; }
+    .btn-csv {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      border: 1px solid #222; color: #666; background: none;
+      padding: 9px 20px; cursor: pointer; transition: border-color .2s, color .2s;
+    }
+    .btn-csv:hover { border-color: #f4f4f4; color: #f4f4f4; }
+    .regs-count {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+      letter-spacing: 2px; text-transform: uppercase; color: #555;
+    }
+
+    .regs-table { width: 100%; border-collapse: collapse; }
+    .regs-table th {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 9px;
+      letter-spacing: 3px; text-transform: uppercase; color: #444;
+      padding: 12px 16px; text-align: left; border-bottom: 1px solid #1a1a1a;
+    }
+    .regs-table td {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 13px;
+      letter-spacing: 1px; color: #f4f4f4;
+      padding: 13px 16px; border-bottom: 1px solid #111;
+    }
+    .regs-table tr:hover td { background: #0f0f0f; }
+    .s-pending  { color: #e5a000; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+    .s-confirmed{ color: #4caf50; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+
+    /* Loading state */
+    .list-loading {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+      letter-spacing: 3px; text-transform: uppercase; color: #333;
+      padding: 40px 0; animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:.8} }
+
+    @media (max-width: 1024px) {
+      .admin-hero { padding: 0 28px 40px; }
+      .admin-body { padding: 48px 28px; }
+      .form-grid { grid-template-columns: 1fr 1fr; }
+      .admin-event-row { grid-template-columns: 1fr 1fr; }
+      .ae-actions { grid-column: 1 / -1; }
+    }
+    @media (max-width: 640px) {
+      .nav-links, .nav-join { display: none; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-cell { border-right: none; }
+      .admin-event-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">BOUNDLESS FC</a>
+    <ul class="nav-links">
+      <li><a href="events.html">Events</a></li>
+      <li><a href="adminevents.html" style="color:#f4f4f4;">Admin</a></li>
+    </ul>
+  </nav>
+
+    <div class="admin-hero">
+      <div class="admin-hero-bg"></div>
+      <div class="admin-hero-content">
+        <p class="hero-label">Staff Access · Boundless FC</p>
+        <h1 class="hero-title" style="font-size:clamp(56px,8vw,110px);">
+          EVENT<br><span class="stroke">MANAGEMENT</span>
+        </h1>
+      </div>
+    </div>
+
+    <div class="admin-body">
+
+      <!-- ADD EVENT -->
+      <div class="add-form-section">
+        <p class="label">New Event</p>
+        <h2 class="heading">ADD<br><span class="stroke">SESSION</span></h2>
+
+        <div class="form-grid">
+          <div class="form-cell">
+            <label>Event Name *</label>
+            <input type="text" id="f-name" placeholder="Weekly Casual Session"/>
+          </div>
+          <div class="form-cell">
+            <label>Venue *</label>
+            <input type="text" id="f-venue" placeholder="Bukit Jalil Futsal Court"/>
+          </div>
+          <div class="form-cell">
+            <label>Type</label>
+            <select id="f-type">
+              <option value="casual">Casual</option>
+              <option value="competitive">Competitive</option>
+              <option value="training">Training</option>
+            </select>
+          </div>
+          <div class="form-cell">
+            <label>Date *</label>
+            <input type="date" id="f-date"/>
+          </div>
+          <div class="form-cell">
+            <label>Time</label>
+            <input type="time" id="f-time"/>
+          </div>
+          <div class="form-cell">
+            <label>Fee (RM)</label>
+            <input type="number" id="f-price" value="16" min="0"/>
+          </div>
+          <div class="form-cell">
+            <label>Capacity</label>
+            <input type="number" id="f-cap" value="20" min="2" max="100"/>
+          </div>
+          <div class="form-cell wide">
+            <label>Notes (optional)</label>
+            <input type="text" id="f-notes" placeholder="e.g. Bring your own shin guards"/>
+          </div>
+        </div>
+
+        <div class="add-actions">
+          <button class="btn-add" id="btn-add-ev" onclick="addEvent()">Add Event</button>
+          <span class="add-msg" id="add-msg"></span>
+        </div>
+      </div>
+
+      <hr class="rule" style="margin-bottom:56px;"/>
+
+      <!-- EVENTS LIST -->
+      <div class="events-list-section">
+        <p class="label">Manage</p>
+        <h2 class="heading">ALL<br><span class="stroke">EVENTS</span></h2>
+
+        <div class="admin-event-list" id="admin-event-list">
+          <p class="list-loading">Loading events...</p>
+        </div>
+      </div>
+
+      <!-- REGISTRATIONS for selected event -->
+      <div class="regs-section" id="regs-section">
+        <div class="regs-event-title">Registrations for</div>
+        <div class="regs-event-name" id="regs-event-name">—</div>
+        <div class="regs-bar">
+          <button class="btn-csv" onclick="exportCSV()">Export CSV</button>
+          <span class="regs-count" id="regs-count"></span>
+        </div>
+        <table class="regs-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Ref</th>
+              <th>Name</th>
+              <th>Instagram</th>
+              <th>Phone</th>
+              <th>Status</th>
+              <th>Registered At</th>
+            </tr>
+          </thead>
+          <tbody id="regs-tbody"></tbody>
+        </table>
+      </div>
+
+    </div><!-- /admin-body -->
+
+  <script src="js/events.js"></script>
+  <script>
+    const adminKey = BFC_ADMIN_KEY;
+    let viewingEventId = null;
+    let viewingRegs = [];
+
+    bfcInitNav();
+    loadAdminEvents();
+
+    // ── LOAD EVENTS ──
+    async function loadAdminEvents() {
+      const list = document.getElementById('admin-event-list');
+      list.innerHTML = '<p class="list-loading">Loading events...</p>';
+
+      try {
+        const data = await bfcGetEvents();
+        const events = (data.events || []).sort((a,b) => a.date.localeCompare(b.date));
+
+        if (events.length === 0) {
+          list.innerHTML = `<p style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:#333;padding:32px 0;">No events yet — add one above.</p>`;
+          return;
+        }
+
+        list.innerHTML = events.map(ev => {
+          const cap   = parseInt(ev.capacity) || 20;
+          const taken = parseInt(ev.registered) || 0;
+          return `
+            <div class="admin-event-row">
+              <div>
+                <div class="ae-name">${ev.name}</div>
+                <div class="ae-date">${bfcFormatDateLong(ev.date)}</div>
+              </div>
+              <div class="ae-meta">${ev.venue || '—'}<br>${bfcFormatTime(ev.time) || 'TBA'}</div>
+              <div class="ae-meta">RM ${ev.price || '—'}<br>${ev.type || 'casual'}</div>
+              <div class="ae-spots">${taken} / ${cap} <span>registered</span></div>
+              <div class="ae-actions">
+                <button class="btn-view" onclick="viewRegs('${ev.id}', '${ev.name.replace(/'/g,"\\'")}')">View Regs</button>
+                <button class="btn-del"  onclick="deleteEvent('${ev.id}', '${ev.name.replace(/'/g,"\\'")}')">✕</button>
+              </div>
+            </div>`;
+        }).join('');
+      } catch (err) {
+        list.innerHTML = `<p style="color:#cc3333;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;">${err.message}</p>`;
+      }
+    }
+
+    // ── ADD EVENT ──
+    async function addEvent() {
+      const name  = document.getElementById('f-name').value.trim();
+      const venue = document.getElementById('f-venue').value.trim();
+      const type  = document.getElementById('f-type').value;
+      const date  = document.getElementById('f-date').value;
+      const time  = document.getElementById('f-time').value || '';
+      const price = parseFloat(document.getElementById('f-price').value) || 16;
+      const cap   = parseInt(document.getElementById('f-cap').value) || 20;
+      const notes = document.getElementById('f-notes').value.trim();
+
+      if (!name || !date || !venue) {
+        showAddMsg('Name, venue, and date are required.', 'err');
+        return;
+      }
+
+      const btn = document.getElementById('btn-add-ev');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+      showAddMsg('', '');
+
+      try {
+        const res = await bfcAddEvent(adminKey, { name, venue, type, date, time, price, capacity: cap, notes });
+        if (res.error) throw new Error(res.error);
+        showAddMsg(`"${name}" added!`, 'ok');
+        // Clear form
+        ['f-name','f-venue','f-date','f-time','f-notes'].forEach(id => document.getElementById(id).value = '');
+        document.getElementById('f-price').value = '16';
+        document.getElementById('f-cap').value   = '20';
+        loadAdminEvents();
+      } catch (err) {
+        showAddMsg('Error: ' + err.message, 'err');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Add Event';
+      }
+    }
+
+    function showAddMsg(text, type) {
+      const el = document.getElementById('add-msg');
+      el.textContent = text;
+      el.style.color = type === 'err' ? '#cc3333' : '#4caf50';
+    }
+
+    // ── DELETE EVENT ──
+    async function deleteEvent(id, name) {
+      if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+      try {
+        const res = await bfcDeleteEvent(adminKey, id);
+        if (res.error) throw new Error(res.error);
+        if (viewingEventId === id) {
+          document.getElementById('regs-section').classList.remove('show');
+          viewingEventId = null;
+        }
+        loadAdminEvents();
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    }
+
+    // ── VIEW REGISTRATIONS ──
+    async function viewRegs(eventId, eventName) {
+      viewingEventId = eventId;
+      const section = document.getElementById('regs-section');
+      section.classList.add('show');
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.getElementById('regs-event-name').textContent = eventName;
+      document.getElementById('regs-count').textContent = 'Loading...';
+      document.getElementById('regs-tbody').innerHTML =
+        `<tr><td colspan="7" style="color:#333;font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;font-size:12px;text-transform:uppercase;padding:24px 16px;">Loading...</td></tr>`;
+
+      try {
+        // Re-fetch events to get latest registration count, and registrations separately
+        const res = await bfcGet({ action: 'getRegistrations', adminKey, eventId });
+        if (res.error) throw new Error(res.error);
+        viewingRegs = res.registrations || [];
+        renderRegsTable(viewingRegs);
+      } catch (err) {
+        document.getElementById('regs-tbody').innerHTML =
+          `<tr><td colspan="7" style="color:#cc3333;">${err.message}</td></tr>`;
+      }
+    }
+
+    function renderRegsTable(regs) {
+      document.getElementById('regs-count').textContent = `${regs.length} registered`;
+      const tbody = document.getElementById('regs-tbody');
+      if (regs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="color:#333;font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;font-size:12px;text-transform:uppercase;padding:24px 16px;">No registrations yet.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = regs.map((r, i) => {
+        const dt = new Date(r.created_at);
+        const dateStr = dt.toLocaleDateString('en-MY') + ' ' + dt.toLocaleTimeString('en-MY', {hour:'2-digit',minute:'2-digit'});
+        return `<tr>
+          <td>${i + 1}</td>
+          <td style="color:#555;">${r.ref_id || '—'}</td>
+          <td>${r.name}</td>
+          <td>${r.instagram}</td>
+          <td>${r.phone}</td>
+          <td><span class="s-${r.status || 'pending'}">${(r.status || 'pending').toUpperCase()}</span></td>
+          <td style="color:#555;">${dateStr}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    // ── EXPORT CSV ──
+    function exportCSV() {
+      if (!viewingRegs.length) return;
+      const header = 'No,Ref,Name,Instagram,Phone,Status,Registered At\n';
+      const rows = viewingRegs.map((r, i) =>
+        `${i+1},"${r.ref_id || ''}","${r.name}","${r.instagram}","${r.phone}","${r.status || 'pending'}","${r.created_at}"`
+      ).join('\n');
+      const blob = new Blob([header + rows], { type: 'text/csv' });
+      const a = Object.assign(document.createElement('a'), {
+        href: URL.createObjectURL(blob),
+        download: `regs_${viewingEventId}.csv`
+      });
+      a.click();
+    }
+  </script>
+</body>
+</html>
