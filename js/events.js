@@ -3,7 +3,7 @@
 // Set these two values after deploying Apps Script
 // ─────────────────────────────────────────────
 
-const BFC_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydw329Cop36-774mmvb1OWfWKWnuZg7JnMH49BbzCrEh6tu1NcCOKbQQ1pvyroBMKP/exec';
+const BFC_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwC_om_WBh9hS9Eg2fZ95iUexdDP9P59Nc4Z-d1YlvYjaf0qc1i_rGC1Bqf9W9hJ_0/exec';
 const BFC_ADMIN_KEY  = 'Takami_0410';
 
 // ─── LOW-LEVEL HELPER ────────────────────────
