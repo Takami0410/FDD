@@ -413,6 +413,18 @@
       document.getElementById('f-event').value = name || '';
       document.getElementById('side-event-name').textContent = name || '—';
 
+      // Lock event field if coming from event page (has ID), editable if from JOIN
+      const eventInput = document.getElementById('f-event');
+      if (eventId) {
+        eventInput.readOnly = true;
+        eventInput.classList.add('readonly');
+        eventInput.tabIndex = -1;
+      } else {
+        eventInput.readOnly = false;
+        eventInput.classList.remove('readonly');
+        eventInput.tabIndex = 0;
+      }
+
       if (ev) {
         // Event bar
         const cap   = parseInt(ev.capacity) || 20;
