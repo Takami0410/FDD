@@ -265,12 +265,20 @@
     });
 
     // ── RENDER ──
+    function normalizeDate(str) {
+      if (!str) return '';
+      const d = new Date(str);
+      if (!isNaN(d)) return d.toISOString().split('T')[0];
+      return String(str).trim();
+    }
+
     function renderEvents() {
       const container = document.getElementById('events-container');
       const today = new Date().toISOString().split('T')[0];
 
       let events = allEvents.filter(e => {
-        if (e.date < today) return false;
+        const d = normalizeDate(e.date);
+        if (d && d < today) return false;
         if (activeFilter !== 'all' && e.type !== activeFilter) return false;
         return true;
       });
@@ -368,6 +376,7 @@
         const data = await bfcGetEvents();
         if (data.error) throw new Error(data.error);
         allEvents = data.events || [];
+        console.log('Events received:', JSON.stringify(allEvents));
         renderEvents();
       } catch (err) {
         document.getElementById('events-container').innerHTML = `

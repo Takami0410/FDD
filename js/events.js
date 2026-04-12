@@ -3,42 +3,41 @@
 // Set these two values after deploying Apps Script
 // ─────────────────────────────────────────────
 
-const BFC_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxK4Yx9p59b51mJWOiXw5UaOHRDzzA_tDYWloqp_-HFXRX0LMiGO00Ut1kx__4r1LtZ/exec';
+const BFC_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydw329Cop36-774mmvb1OWfWKWnuZg7JnMH49BbzCrEh6tu1NcCOKbQQ1pvyroBMKP/exec';
 const BFC_ADMIN_KEY  = 'Takami_0410';
 
-// ─── LOW-LEVEL HELPERS ───────────────────────
+// ─── LOW-LEVEL HELPER ────────────────────────
+// All requests use GET to avoid CORS preflight issues with Apps Script.
 
-async function bfcGet(params = {}) {
+async function bfcCall(params = {}) {
   const url = new URL(BFC_SCRIPT_URL);
-  Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
-  const res = await fetch(url.toString(), { redirect: 'follow' });
-  return res.json();
-}
-
-async function bfcPost(data) {
-  const res = await fetch(BFC_SCRIPT_URL, {
-    method: 'POST',
-    body: JSON.stringify(data)
+  Object.entries(params).forEach(([k, v]) => {
+    if (v !== undefined && v !== null) url.searchParams.set(k, String(v));
   });
+  const res = await fetch(url.toString(), { redirect: 'follow' });
   return res.json();
 }
 
 // ─── PUBLIC API ───────────────────────────────
 
 async function bfcGetEvents() {
-  return bfcGet({ action: 'getEvents' });
+  return bfcCall({ action: 'getEvents' });
 }
 
 async function bfcRegister({ eventId, eventName, name, instagram, phone }) {
-  return bfcGet({ action: 'register', eventId, eventName, name, instagram, phone });
+  return bfcCall({ action: 'register', eventId, eventName, name, instagram, phone });
 }
 
 async function bfcAddEvent(adminKey, eventData) {
-  return bfcGet({ action: 'addEvent', adminKey, ...eventData });
+  return bfcCall({ action: 'addEvent', adminKey, ...eventData });
 }
 
 async function bfcDeleteEvent(adminKey, eventId) {
-  return bfcGet({ action: 'deleteEvent', adminKey, eventId });
+  return bfcCall({ action: 'deleteEvent', adminKey, eventId });
+}
+
+async function bfcGetRegistrations(adminKey, eventId) {
+  return bfcCall({ action: 'getRegistrations', adminKey, eventId });
 }
 
 // ─── UTILITIES ───────────────────────────────
